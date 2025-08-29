@@ -190,18 +190,35 @@
 
     function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
 
-    const KEY = 'mc_like_achievements_v1';
-    function save(){
-      const litIndices = Array.from(cellsEl.querySelectorAll('button.lit')).map(b=>+b.dataset.idx);
-      const data = { R, C, labels, legendary:[...legendary], lit: litIndices };
-      localStorage.setItem(KEY, JSON.stringify(data));
-      alert('保存しました');
+function getStorageKey() {
+  const preset = presetEl.value || "custom"; // プリセット選択がなければ "custom"
+  return "mc_like_achievements_" + preset;
+}
+
+function save(){
+  const litIndices = Array.from(cellsEl.querySelectorAll('button.lit')).map(b=>+b.dataset.idx);
+  const data = { R, C, labels, legendary:[...legendary], lit: litIndices };
+  localStorage.setItem(getStorageKey(), JSON.stringify(data));
+  alert(`保存しました（プリセット: ${presetEl.value || "custom"}）`);
+}
+
+function load(){
+  const raw = localStorage.getItem(getStorageKey());
+  if (!raw) { alert('保存データがありません'); return; }
+  try {
+    const data = JSON.parse(raw);
+    R = data.R; C = data.C; labels = data.labels || []; legendary = new Set(data.legendary || []);
+    rowsEl.value = R; colsEl.value = C;
+    buildGrid(R, C, labels);
+    for (const idx of data.lit || []) {
+      const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+      if (btn) { btn.classList.add('lit'); btn.setAttribute('aria-pressed','true'); }
     }
-    function load(){
-      const raw = localStorage.getItem(KEY);
-      if (!raw) { alert('保存データがありません'); return; }
-      try {
-        const data = JSON.parse(raw);
+    updateCounts();
+    alert(`読込完了（プリセット: ${presetEl.value || "custom"}）`);
+  } catch(e){ alert('読込に失敗しました'); }
+}
+
         R = data.R; C = data.C; labels = data.labels || []; legendary = new Set(data.legendary || []);
         rowsEl.value = R; colsEl.value = C;
         buildGrid(R, C, labels);
