@@ -168,7 +168,64 @@
     const PRESETS = {
   "tenkenmin": {
     size:[10,5],
-    labels:['実績解除画像/ex001.jpg','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ'],
+    labels:[
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+      {img:"実績解除画像/ex001.jpg",text:"けた"},
+    ],
     legendary:[49] // ←50番目のセルは index=49
   },
   "stargazing-specialist": {
@@ -208,17 +265,17 @@
         btn.dataset.idx = i;
         btn.setAttribute('aria-pressed', 'false');
         if (legendary.has(i)) btn.classList.add('legendary');
-       btn.innerHTML = `<span class="badge">#${(i+1)}</span>`;
+      // 画像かどうかを判定
+const isImage = (labels[i] && labels[i].match(/\.(jpg|png|gif)$/));
+const imgSrc = isImage ? labels[i] : "images/placeholder.png";
 
-// 画像が指定されていれば使い、なければプレースホルダー
-const imgSrc = (labels[i] && labels[i].match(/\.(jpg|png|gif)$/)) 
-  ? labels[i] 
-  : "images/placeholder.png"; // 予備画像を用意しておくと便利
-
-btn.innerHTML += `
-  <img src="${imgSrc}" alt="" />
-  <span class="cell-text">${labels[i]}</span>
+// 画像とテキストを同じマスに配置
+btn.innerHTML = `
+  <span class="badge">#${i+1}</span>
+  <img src="${imgSrc}" alt="">
+  <span class="cell-text">${isImage ? "" : labels[i]}</span>
 `;
+
         btn.addEventListener('click', () => toggle(btn));
         cell.appendChild(btn);
         cellsEl.appendChild(cell);
