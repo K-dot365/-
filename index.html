@@ -257,7 +257,7 @@
       while (labels.length < r*c) labels.push(`実績 ${labels.length+1}`);
 
       cellsEl.innerHTML = '';
-     for (let i=0; i<r*c; i++) {
+    for (let i=0; i<r*c; i++) {
   const cell = document.createElement('div');
   cell.className = 'cell';
   const btn = document.createElement('button');
@@ -265,17 +265,41 @@
   btn.dataset.idx = i;
   btn.setAttribute('aria-pressed', 'false');
   if (legendary.has(i)) btn.classList.add('legendary');
-  // 画像かどうかを判定
-  const isImage = (labels[i] && labels[i].match(/\.(jpg|png|gif)$/));
-  const imgSrc = isImage ? labels[i] : "images/placeholder.png";
+
+  let imgSrc = "images/placeholder.png";
+  let textLabel = "";
+
+  // オブジェクト型 {img, text} に対応
+  if (labels[i] && typeof labels[i] === "object") {
+    imgSrc = labels[i].img || "images/placeholder.png";
+    textLabel = labels[i].text || "";
+  }
+  // 文字列型のとき（従来通り）
+  else if (typeof labels[i] === "string") {
+    // 画像拡張子なら画像、それ以外は文字
+    if (labels[i].match(/\.(jpg|png|gif)$/)) {
+      imgSrc = labels[i];
+      textLabel = "";
+    } else {
+      textLabel = labels[i];
+    }
+  }
+  // 空のとき（fallback）
+  else {
+    textLabel = `実績 ${i+1}`;
+  }
 
   // 画像とテキストを同じマスに配置
   btn.innerHTML = `
     <span class="badge">#${i+1}</span>
     <img src="${imgSrc}" alt="">
-    <span class="cell-text">${isImage ? "" : labels[i]}</span>
+    <span class="cell-text">${textLabel}</span>
   `;
 
+  btn.addEventListener('click', () => toggle(btn));
+  cell.appendChild(btn);
+  cellsEl.appendChild(cell);
+}
 
       }
       updateCounts();
