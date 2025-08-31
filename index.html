@@ -91,24 +91,34 @@
       h1 { font-size: 16px; }
     }
 
-    .cell button img.cell-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+.cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
-    .cell button .label {
-      position: absolute;
-      bottom: 8px;
-      left: 10px;
-      right: 10px;
-      z-index: 1;
-      color: white;
-      text-shadow: 0 0 5px black;
-    }
+.cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 画像をセルいっぱいにフィット */
+  display: block;
+}
+
+.cell-text {
+  position: absolute;
+  bottom: 0;  
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5); /* 半透明の黒背景で可読性UP */
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
   </style>
 </head>
 <body>
@@ -198,14 +208,17 @@
         btn.dataset.idx = i;
         btn.setAttribute('aria-pressed', 'false');
         if (legendary.has(i)) btn.classList.add('legendary');
-        btn.innerHTML = `<span class="badge">#${(i+1)}</span>`;
-        if (labels[i] && labels[i].match(/\.(jpg|png|gif)$/)) {
-          // 画像URLだったら画像を表示
-          btn.innerHTML += `<img src="${labels[i]}" alt="" class="cell-image">`;
-        } else {
-          // 文字だったら文字ラベルを表示
-          btn.innerHTML += `<span class="label">${labels[i]}</span>`;
-        }
+       btn.innerHTML = `<span class="badge">#${(i+1)}</span>`;
+
+// 画像が指定されていれば使い、なければプレースホルダー
+const imgSrc = (labels[i] && labels[i].match(/\.(jpg|png|gif)$/)) 
+  ? labels[i] 
+  : "images/placeholder.png"; // 予備画像を用意しておくと便利
+
+btn.innerHTML += `
+  <img src="${imgSrc}" alt="" />
+  <span class="cell-text">${labels[i]}</span>
+`;
         btn.addEventListener('click', () => toggle(btn));
         cell.appendChild(btn);
         cellsEl.appendChild(cell);
