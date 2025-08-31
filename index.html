@@ -90,6 +90,25 @@
       .cell button .badge { font-size: 9px; padding: 2px 6px; }
       h1 { font-size: 16px; }
     }
+
+    .cell button img.cell-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .cell button .label {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      z-index: 1;
+      color: white;
+      text-shadow: 0 0 5px black;
+    }
   </style>
 </head>
 <body>
@@ -139,7 +158,7 @@
     const PRESETS = {
   "tenkenmin": {
     size:[10,5],
-    labels:['あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ'],
+    labels:['ex001.jpg','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ','あ'],
     legendary:[49] // ←50番目のセルは index=49
   },
   "stargazing-specialist": {
@@ -179,8 +198,14 @@
         btn.dataset.idx = i;
         btn.setAttribute('aria-pressed', 'false');
         if (legendary.has(i)) btn.classList.add('legendary');
-        btn.innerHTML = `<span class="badge">#${(i+1)}</span><span class="label"></span>`;
-        btn.querySelector('.label').textContent = labels[i];
+        btn.innerHTML = `<span class="badge">#${(i+1)}</span>`;
+        if (labels[i] && labels[i].match(/\.(jpg|png|gif)$/)) {
+          // 画像URLだったら画像を表示
+          btn.innerHTML += `<img src="${labels[i]}" alt="" class="cell-image">`;
+        } else {
+          // 文字だったら文字ラベルを表示
+          btn.innerHTML += `<span class="label">${labels[i]}</span>`;
+        }
         btn.addEventListener('click', () => toggle(btn));
         cell.appendChild(btn);
         cellsEl.appendChild(cell);
