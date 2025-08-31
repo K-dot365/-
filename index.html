@@ -295,11 +295,12 @@
     <img src="${imgSrc}" alt="">
     <span class="cell-text">${textLabel}</span>
   `;
-}
-
+        
         btn.addEventListener('click', () => toggle(btn));
         cell.appendChild(btn);
         cellsEl.appendChild(cell);
+}
+
       }
       updateCounts();
       totalCountEl.textContent = r*c;
