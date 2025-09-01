@@ -368,7 +368,9 @@ function load() {
     loadBtn.addEventListener('click', load);
     presetEl.addEventListener('change', (e)=>{ if (e.target.value) usePreset(e.target.value); });
 
-    buildGrid(R, C, labels);
+    // セレクトボックスで選ばれているプリセットを初期表示
+usePreset(presetEl.value);
+
   </script>
 </body>
 </html>
