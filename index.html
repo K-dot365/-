@@ -432,7 +432,7 @@ btn.innerHTML = `
       const litIndices = Array.from(cellsEl.querySelectorAll('button.lit')).map(b => +b.dataset.idx);
       const data = { R, C, labels, legendary:[...legendary], lit: litIndices };
       localStorage.setItem(getStorageKey(), JSON.stringify(data));
-      alert(保存しました（プリセット: ${presetEl.value || "custom"}）);
+      alert(`保存しました（プリセット: ${presetEl.value || "custom"}）`);
     }
     function load() {
       const raw = localStorage.getItem(getStorageKey());
@@ -447,7 +447,8 @@ btn.innerHTML = `
         colsEl.value = C;
         buildGrid(R, C, labels);
         for (const idx of data.lit || []) {
-          const btn = cellsEl.querySelector(button[data-idx="${idx}"]);
+          const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+
           if (btn) {
             btn.classList.add('lit');
             btn.setAttribute('aria-pressed','true');
