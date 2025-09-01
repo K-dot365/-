@@ -214,8 +214,6 @@
         </select>
         <button id="apply">作成 / 変更</button>
         <button id="reset">すべて消灯</button>
-        <button id="save">保存</button>
-        <button id="load">読込</button>
       </div>
     </header>
 
@@ -234,8 +232,6 @@
     const colsEl = document.getElementById('cols');
     const applyBtn = document.getElementById('apply');
     const resetBtn = document.getElementById('reset');
-    const saveBtn = document.getElementById('save');
-    const loadBtn = document.getElementById('load');
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
     const totalCountEl = document.getElementById('totalCount');
@@ -442,8 +438,18 @@
   const lit = btn.classList.toggle('lit');
   btn.setAttribute('aria-pressed', String(lit));
   updateCounts();
+  save();//クリックごとに自動保存
 }
 
+    function resetAll(){
+  cellsEl.querySelectorAll('button.lit').forEach(b=>{
+    b.classList.remove('lit');
+    b.setAttribute('aria-pressed','false');
+  });
+  updateCounts();
+  save();   // ✅ リセットごとに自動保存
+}
+    
     function updateCounts(){
   const litButtons = cellsEl.querySelectorAll('button.lit');
   litCountEl.textContent = litButtons.length;
@@ -501,6 +507,7 @@
       const r = clamp(parseInt(rowsEl.value||'4',10), 1, 12);
       const c = clamp(parseInt(colsEl.value||'5',10), 1, 12);
       buildGrid(r, c, labels);
+      save();
     }
 
     function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
@@ -508,13 +515,6 @@
     function getStorageKey() {
       const preset = presetEl.value || "custom";
       return "mc_like_achievements_" + preset;
-    }
-
-    function save() {
-      const litIndices = Array.from(cellsEl.querySelectorAll('button.lit')).map(b => +b.dataset.idx);
-      const data = { R, C, labels, legendary:[...legendary], lit: litIndices };
-      localStorage.setItem(getStorageKey(), JSON.stringify(data));
-      alert(`保存しました（プリセット: ${presetEl.value || "custom"}）`);
     }
 
     function load() {
@@ -561,16 +561,16 @@
       rowsEl.value = p.size[0];
       colsEl.value = p.size[1];
       buildGrid(p.size[0], p.size[1], p.labels);
+      save();
     }
 
     applyBtn.addEventListener('click', applySizeFromInputs);
     resetBtn.addEventListener('click', resetAll);
-    saveBtn.addEventListener('click', save);
-    loadBtn.addEventListener('click', load);
     presetEl.addEventListener('change', (e)=>{ if (e.target.value) usePreset(e.target.value); });
 
     // セレクトボックスで選ばれているプリセットを初期表示
     usePreset(presetEl.value);
+    load(); //ページ表示時に自動読み込み
   </script>
 </body>
 </html>
