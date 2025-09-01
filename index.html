@@ -267,23 +267,12 @@ function buildGrid(r=R, c=C, givenLabels=null) {
     btn.setAttribute('aria-pressed', 'false');
     if (legendary.has(i)) btn.classList.add('legendary');
 
-    let imgSrc = "images/placeholder.png";
-    let textLabel = "";
-
-    if (labels[i] && typeof labels[i] === "object") {
-      imgSrc = labels[i].img || "images/placeholder.png";
-      textLabel = labels[i].text || "";
-    } else if (typeof labels[i] === "string") {
-      if (labels[i].match(/\.(jpg|png|gif)$/)) {
-        imgSrc = labels[i];
-        textLabel = "";
-      } else {
-        textLabel = labels[i];
-      }
-    } else {
-      textLabel = `実績 ${i+1}`;
-    }
-
+    // 画像かどうかを判定
+    const isImage = (labels[i] && labels[i].match(/\.(jpg|png|gif)$/));
+    const imgSrc = isImage ? labels[i] :
+      "images/placeholder.png";
+    
+    // 画像とテキストを同じマスに配置
     btn.innerHTML = `
       <span class="badge">#${i+1}</span>
       <img src="${imgSrc}" alt="">
