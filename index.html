@@ -456,10 +456,15 @@ function updateCounts(){
 
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    const lastIdx = labels.length - 1;
+    
+    // ⭐ null を除いた最後の有効セルを対象にする
+    let lastIdx = labels.length - 1;
+    while (lastIdx >= 0 && labels[lastIdx] === null) {
+      lastIdx--;
+    }
+
     const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
     if (lastBtn) {
-      // 最後のマス以外がすべて点灯していれば、最後のマスも自動点灯
       const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
       const allLit = otherBtns.every(b => b.classList.contains('lit'));
       if (allLit) {
@@ -472,6 +477,7 @@ function updateCounts(){
     }
   }
 }
+
     
     function applySizeFromInputs(){
       const r = clamp(parseInt(rowsEl.value||'4',10), 1, 12);
