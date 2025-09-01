@@ -373,58 +373,62 @@
     let legendary = new Set();
 
     function buildGrid(r=R, c=C, givenLabels=null) {
-      R = r;
-      C = c;
-      cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
+  R = r;
+  C = c;
+  cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
 
-      if (givenLabels && givenLabels.length) {
-        labels = givenLabels; // slice は削除
-      } else {
-        labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
-      }
-      
-      cellsEl.innerHTML = '';
-      for (let i=0; i<r*c; i++) {
-  const label = labels[i] || null;
-  const cell = document.createElement('div');
-  cell.className = 'cell';
+  if (givenLabels && givenLabels.length) {
+    labels = givenLabels;
+  } else {
+    labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
+  }
   
-  if (label === null) {
-    // 空セルは div のみ、ボタンは作らない
-    cellsEl.appendChild(cell);
-    continue;
-  }
+  cellsEl.innerHTML = '';
+  let effectiveCount = 0;  // ✅ 実際にカウント対象になるマス数
 
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.dataset.idx = i;
-  btn.setAttribute('aria-pressed', 'false');
-  if (legendary.has(i)) btn.classList.add('legendary');
-
-  let imgSrc = "images/placeholder.png";
-  let textLabel = "";
-
-  if (typeof label === "object") {
-    imgSrc = label.img || imgSrc;
-    textLabel = label.text || "";
-  } else if (typeof label === "string") {
-    if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
-    else textLabel = label;
-  }
-
-  btn.innerHTML =`
-    <span class="badge">#${i+1}</span>
-    <img src="${imgSrc}" alt="">
-    <span class="cell-text">${textLabel}</span>`;
-
-  btn.addEventListener('click', () => toggle(btn));
-  cell.appendChild(btn);
-  cellsEl.appendChild(cell);
-}
-
-      updateCounts();
-      totalCountEl.textContent = r*c;
+  for (let i=0; i<r*c; i++) {
+    const label = labels[i] || null;
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+  
+    if (label === null) {
+      // 空セルは div のみ、カウントしない
+      cellsEl.appendChild(cell);
+      continue;
     }
+
+    effectiveCount++; // ✅ 実際の有効マスをカウント
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.idx = i;
+    btn.setAttribute('aria-pressed', 'false');
+    if (legendary.has(i)) btn.classList.add('legendary');
+
+    let imgSrc = "images/placeholder.png";
+    let textLabel = "";
+
+    if (typeof label === "object") {
+      imgSrc = label.img || imgSrc;
+      textLabel = label.text || "";
+    } else if (typeof label === "string") {
+      if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
+      else textLabel = label;
+    }
+
+    btn.innerHTML =`
+      <span class="badge">#${i+1}</span>
+      <img src="${imgSrc}" alt="">
+      <span class="cell-text">${textLabel}</span>`;
+
+    btn.addEventListener('click', () => toggle(btn));
+    cell.appendChild(btn);
+    cellsEl.appendChild(cell);
+  }
+
+  updateCounts();
+  totalCountEl.textContent = effectiveCount;  // ✅ 有効セルだけ表示
+}
 
     function toggle(btn){
       const lit = btn.classList.toggle('lit');
