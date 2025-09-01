@@ -449,17 +449,14 @@
   updateCounts();
 }
 
-function updateCounts(){
+    function updateCounts(){
   const litButtons = cellsEl.querySelectorAll('button.lit');
   litCountEl.textContent = litButtons.length;
 
   // ✅ tenkenmin / specialist / explorer の特殊処理
   const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer"];
-
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    
-    // ⭐ null を除いた最後の有効セルを対象にする
     let lastIdx = labels.length - 1;
     while (lastIdx >= 0 && labels[lastIdx] === null) {
       lastIdx--;
@@ -478,24 +475,18 @@ function updateCounts(){
       }
     }
   }
-}
-    
-// ✅ MVP 専用処理
+
+  // ✅ MVP専用処理（updateCounts の中に入れる！）
   if (presetEl.value === "mvp") {
-    const lastIdx = 9; // 実績達成セルのインデックス
+    const lastIdx = 9; // 実績達成セル
     const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
     if (lastBtn) {
-      // 参加系（すべて点灯）
       const participate = [0, 3, 6].every(i =>
         cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
       );
-
-      // 優勝系（少なくとも1つ）
       const champion = [1, 4, 7].some(i =>
         cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
       );
-
-      // MVP系（少なくとも1つ）
       const mvp = [2, 5, 8].some(i =>
         cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
       );
