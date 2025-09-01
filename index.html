@@ -364,7 +364,12 @@
         legendary:[12, 15]
       }
     };
-
+    
+    const totalCells = PRESETS.tenkenmin.labels.length; // 49
+    const cols = 5;
+    const rows = Math.ceil(totalCells / cols); // 10行
+    PRESETS.tenkenmin.size = [rows, cols];
+    
     let R = 4, C = 5;
     let labels = [];
     let legendary = new Set();
@@ -375,11 +380,11 @@
       cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
 
       if (givenLabels && givenLabels.length) {
-        labels = givenLabels.slice(0, r*c);
+        labels = givenLabels; // slice は削除
       } else {
         labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
       }
-
+      
       cellsEl.innerHTML = '';
       for (let i=0; i<r*c; i++) {
         const cell = document.createElement('div');
