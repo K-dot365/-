@@ -520,7 +520,7 @@
     function load() {
       const raw = localStorage.getItem(getStorageKey());
       if (!raw) {
-        alert('保存データがありません');
+        //alert('保存データがありません');
         return;
       }
       try {
@@ -540,9 +540,9 @@
           }
         }
         updateCounts();
-        alert(`読込完了（プリセット: ${presetEl.value || "custom"}）`);
+        //alert(`読込完了（プリセット: ${presetEl.value || "custom"}）`);
       } catch(e) {
-        alert('読込に失敗しました');
+        console.warn('読込に失敗しました', e);
       }
     }
 
@@ -561,13 +561,19 @@
       rowsEl.value = p.size[0];
       colsEl.value = p.size[1];
       buildGrid(p.size[0], p.size[1], p.labels);
-      save();
+      //save();
     }
 
     applyBtn.addEventListener('click', applySizeFromInputs);
     resetBtn.addEventListener('click', resetAll);
     presetEl.addEventListener('change', (e)=>{ if (e.target.value) usePreset(e.target.value); });
-
+    if (e.target.value) {
+    save();              // ✅ 現在のプリセットを保存
+    usePreset(e.target.value);
+    load();              // ✅ 新しいプリセットの進捗を読み込む
+  }
+});
+    
     // セレクトボックスで選ばれているプリセットを初期表示
     usePreset(presetEl.value);
     load(); //ページ表示時に自動読み込み
