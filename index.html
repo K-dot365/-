@@ -342,7 +342,7 @@
         legendary:[10, 14]
       },
       "top-adventure-explorer": {
-        size:[3,3],
+        size:[4,3],
         labels:[
           {img:"実績解除画像/ex001.jpg",text:"けた"},
           {img:"実績解除画像/ex001.jpg",text:"けた"},
@@ -355,8 +355,10 @@
           {img:"実績解除画像/ex001.jpg",text:"けた"},
           {img:"実績解除画像/ex001.jpg",text:"けた"},
           {img:"実績解除画像/ex001.jpg",text:"けた"},
-          //下段に左詰めで追加1マス
+          //下段に左2マスをnullにして右端に1マスだけ
           {img:"実績解除画像/ex001.jpg",text:"追加"},
+          null,
+          null,
         ],
         legendary:[5]
       }
@@ -384,39 +386,43 @@
       
       cellsEl.innerHTML = '';
       for (let i=0; i<r*c; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.dataset.idx = i;
-        btn.setAttribute('aria-pressed', 'false');
-        if (legendary.has(i)) btn.classList.add('legendary');
+  const label = labels[i] || null;
+  const cell = document.createElement('div');
+  cell.className = 'cell';
+  
+  if (label === null) {
+    // 空セルは div のみ、ボタンは作らない
+    cellsEl.appendChild(cell);
+    continue;
+  }
 
-        let imgSrc = "images/placeholder.png";
-        let textLabel = "";
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.dataset.idx = i;
+  btn.setAttribute('aria-pressed', 'false');
+  if (legendary.has(i)) btn.classList.add('legendary');
 
-        if (labels[i]) {
-          if (typeof labels[i] === "object") {
-            imgSrc = labels[i].img || imgSrc;
-            textLabel = labels[i].text || "";
-          } else if (typeof labels[i] === "string") {
-            if (labels[i].match(/\.(jpg|png|gif)$/)) {
-              imgSrc = labels[i];
-            } else {
-              textLabel = labels[i];
-            }
-          }
-        }
+  let imgSrc = "images/placeholder.png";
+  let textLabel = "";
 
-        btn.innerHTML =`
-          <span class="badge">#${i+1}</span>
-          <img src="${imgSrc}" alt="">
-          <span class="cell-text">${textLabel}</span>`;
+  if (typeof label === "object") {
+    imgSrc = label.img || imgSrc;
+    textLabel = label.text || "";
+  } else if (typeof label === "string") {
+    if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
+    else textLabel = label;
+  }
 
-        btn.addEventListener('click', () => toggle(btn));
-        cell.appendChild(btn);
-        cellsEl.appendChild(cell);
-      }
+  btn.innerHTML =`
+    <span class="badge">#${i+1}</span>
+    <img src="${imgSrc}" alt="">
+    <span class="cell-text">${textLabel}</span>`;
+
+  btn.addEventListener('click', () => toggle(btn));
+  cell.appendChild(btn);
+  cellsEl.appendChild(cell);
+}
+
       updateCounts();
       totalCountEl.textContent = r*c;
     }
