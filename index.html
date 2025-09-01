@@ -435,18 +435,13 @@
     function toggle(btn){
   const idx = +btn.dataset.idx;
   // ✅ 特殊処理が必要なプリセット
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer"];
+  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer"];
 
   // 最後のマスはクリック禁止
   if (specialPresets.includes(presetEl.value)) {
     let lastIdx = labels.length - 1;
     while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
     if (idx === lastIdx) return;
-  }
-
-  // ✅ MVP専用: インデックス9（実績達成）はクリック禁止
-  if (presetEl.value === "mvp" && idx === 9) {
-    return;
   }
 
   const lit = btn.classList.toggle('lit');
