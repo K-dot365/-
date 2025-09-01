@@ -431,15 +431,41 @@
 }
 
     function toggle(btn){
-      const lit = btn.classList.toggle('lit');
-      btn.setAttribute('aria-pressed', String(lit));
-      updateCounts();
-    }
+  const idx = +btn.dataset.idx;
+  // 「天研民」の最後のマスはクリックで点灯させない
+  if (presetEl.value === "tenkenmin" && idx === labels.length - 1) {
+    return;
+  }
 
-    function updateCounts(){
-      const lit = cellsEl.querySelectorAll('button.lit').length;
-      litCountEl.textContent = lit;
+  const lit = btn.classList.toggle('lit');
+  btn.setAttribute('aria-pressed', String(lit));
+  updateCounts();
+}
+
+function updateCounts(){
+  const litButtons = cellsEl.querySelectorAll('button.lit');
+  litCountEl.textContent = litButtons.length;
+
+  // ✅ 「天研民」専用処理
+  if (presetEl.value === "tenkenmin") {
+    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
+    const lastIdx = labels.length - 1;
+    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+    if (lastBtn) {
+      // 最後のマス以外がすべて点灯していれば、最後のマスも自動点灯
+      const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
+      const allLit = otherBtns.every(b => b.classList.contains('lit'));
+      if (allLit) {
+        lastBtn.classList.add('lit');
+        lastBtn.setAttribute('aria-pressed','true');
+      } else {
+        lastBtn.classList.remove('lit');
+        lastBtn.setAttribute('aria-pressed','false');
+      }
     }
+  }
+}
+
 
     function applySizeFromInputs(){
       const r = clamp(parseInt(rowsEl.value||'4',10), 1, 12);
