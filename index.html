@@ -200,19 +200,12 @@
     <header>
       <h1>2025夏合宿 実績解除</h1>
       <div class="controls">
-        <label class="control">
-          サイズ：
-          <input id="rows" type="number" min="1" max="12" value="4" style="width:4.5em; margin-left:.5em;">
-          ×
-          <input id="cols" type="number" min="1" max="12" value="5" style="width:4.5em; margin-left:.5em;">
-        </label>
         <select id="preset">
           <option value="tenkenmin">天研民との交流</option>
           <option value="stargazing-specialist">観測のスペシャリスト</option>
           <option value="mvp">ＭＶＰ(もっとも ヴァを盛り上げた ぱーそん)</option>
           <option value="top-adventure-explorer">一流冒険家</option>
         </select>
-        <button id="apply">作成 / 変更</button>
         <button id="reset">すべて消灯</button>
       </div>
     </header>
@@ -238,7 +231,7 @@
 
     const PRESETS = {
       "tenkenmin": {
-        size:[13,4],
+        size:[18,3],
         labels:[
           {img:"実績解除画像/ex001.jpg",text:"けた"},
           {img:"実績解除画像/ex001.jpg",text:"けた"},
@@ -291,6 +284,8 @@
           {img:"実績解除画像/ex001.jpg",text:"けた"},
           {img:"実績解除画像/ex001.jpg",text:"けた"},//50
           {img:"実績解除画像/ex001.jpg",text:"全員達成"},
+          null,
+          null,
           null,
         ],
         legendary:[50]
@@ -502,13 +497,6 @@
     }
   }
 }
-    
-    function applySizeFromInputs(){
-      const r = clamp(parseInt(rowsEl.value||'4',10), 1, 12);
-      const c = clamp(parseInt(colsEl.value||'5',10), 1, 12);
-      buildGrid(r, c, labels);
-      save();
-    }
 
     function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
 
@@ -546,14 +534,6 @@
       }
     }
 
-    function resetAll(){
-      cellsEl.querySelectorAll('button.lit').forEach(b=>{
-        b.classList.remove('lit');
-        b.setAttribute('aria-pressed','false');
-      });
-      updateCounts();
-    }
-
     function usePreset(name){
       const p = PRESETS[name];
       if (!p) return;
@@ -566,17 +546,13 @@
 
     applyBtn.addEventListener('click', applySizeFromInputs);
     resetBtn.addEventListener('click', resetAll);
-    presetEl.addEventListener('change', (e)=>{ if (e.target.value) usePreset(e.target.value); });
-    if (e.target.value) {
-    save();              // ✅ 現在のプリセットを保存
-    usePreset(e.target.value);
-    load();              // ✅ 新しいプリセットの進捗を読み込む
-  }
-});
-    
-    // セレクトボックスで選ばれているプリセットを初期表示
+    presetEl.addEventListener('change', (e)=>{
+    if (e.target.value) usePreset(e.target.value);
+    });
+    // ページ初期表示時にプリセットと保存データを読み込む
     usePreset(presetEl.value);
-    load(); //ページ表示時に自動読み込み
+    load();    
+
   </script>
 </body>
 </html>
