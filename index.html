@@ -221,9 +221,6 @@
 
   <script>
     const cellsEl = document.getElementById('cells');
-    const rowsEl = document.getElementById('rows');
-    const colsEl = document.getElementById('cols');
-    const applyBtn = document.getElementById('apply');
     const resetBtn = document.getElementById('reset');
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
@@ -474,7 +471,8 @@
 
   // ✅ MVP専用処理（updateCounts の中に入れる！）
   if (presetEl.value === "mvp") {
-    const lastIdx = 9; // 実績達成セル
+    let lastIdx = labels.length - 1; // 実績達成セル
+    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
     const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
     if (lastBtn) {
       const participate = [0, 3, 6].every(i =>
@@ -497,9 +495,7 @@
     }
   }
 }
-
-    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
-
+    
     function getStorageKey() {
       const preset = presetEl.value || "custom";
       return "mc_like_achievements_" + preset;
@@ -517,8 +513,6 @@
         C = data.C;
         labels = data.labels || [];
         legendary = new Set(data.legendary || []);
-        rowsEl.value = R;
-        colsEl.value = C;
         buildGrid(R, C, labels);
         for (const idx of data.lit || []) {
           const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
@@ -538,16 +532,16 @@
       const p = PRESETS[name];
       if (!p) return;
       legendary = new Set(p.legendary || []);
-      rowsEl.value = p.size[0];
-      colsEl.value = p.size[1];
       buildGrid(p.size[0], p.size[1], p.labels);
       //save();
     }
 
-    applyBtn.addEventListener('click', applySizeFromInputs);
     resetBtn.addEventListener('click', resetAll);
     presetEl.addEventListener('change', (e)=>{
-    if (e.target.value) usePreset(e.target.value);
+    if (!e.target.value) return;
+      save();                     //現在のプリセットを保存
+      usePreset(e.target.value);  //新しいプリセットを読み込み
+      load();                     //そのプリセットの状態を反映
     });
     // ページ初期表示時にプリセットと保存データを読み込む
     usePreset(presetEl.value);
