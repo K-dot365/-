@@ -520,7 +520,7 @@ for (let i=0; i<r*c; i++) {
   updateCounts();
   save();   // ✅ リセットごとに自動保存
 }
-    
+
     function updateCounts(){
   // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
   const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
@@ -587,73 +587,7 @@ for (let i=0; i<r*c; i++) {
   }
 }
 
-
-litCountEl.textContent = litCount;
-
-
-  // ✅ tenkenmin / specialist / explorer/syaken-Aの特殊処理
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
-  if (specialPresets.includes(presetEl.value)) {
-    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) {
-      lastIdx--;
-    }
-
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn) {
-      const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
-      const allLit = otherBtns.every(b => b.classList.contains('lit'));
-      if (allLit) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }
-  }
-
-  // ✅ MVP専用処理（updateCounts の中に入れる！）
-  if (presetEl.value === "mvp") {
-    let lastIdx = labels.length - 1; // 実績達成セル
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn) {
-      const participate = [0, 3, 6].every(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const champion = [1, 4, 7].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const mvp = [2, 5, 8].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-
-      if (participate && champion && mvp) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }
-  }
-       // 報酬獲得ボタン制御（押せない状態で金色グロー）
-const rewardBtn = document.getElementById('rewardBtn');
-const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
-
-if (anyLegendaryLit) {
-  rewardBtn.style.display = "inline-block";
-  rewardBtn.disabled = true;             // 押せない
-  rewardBtn.classList.add("disabled");   // 金色グロー
-} else {
-  rewardBtn.style.display = "none";
-  rewardBtn.disabled = true;
-  rewardBtn.classList.remove("disabled");
-}
-
-}
+    
     function save(presetName = presetEl.value) {
   const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
     .map(b => +b.dataset.idx);
