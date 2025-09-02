@@ -262,6 +262,7 @@
           <option value="stargazing-specialist">観測のスペシャリスト</option>
           <option value="mvp">ＭＶＰ(もっとも ヴァを盛り上げた ぱーそん)</option>
           <option value="top-adventure-explorer">一流冒険家</option>
+          <option value="syaken-A">写研のエース</option>
         </select>
         <button id="reset">すべて消灯</button>
         <!-- ✅ 報酬獲得ボタン -->
@@ -409,7 +410,26 @@
           null,
         ],
         legendary:[10]
-      }
+      },
+      "syaken-A": {
+        size:[4,3],
+        labels:[
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
+          {img:"実績解除画像/ad001.jpg",text:"実績達成"},
+          null,
+  ],
+  legendary:[10]
+},
+
     };
     
     let R = 4, C = 5;
@@ -477,7 +497,7 @@ for (let i=0; i<r*c; i++) {
     function toggle(btn){
   const idx = +btn.dataset.idx;
   // ✅ 特殊処理が必要なプリセット
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer"];
+  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
 
   // 最後のマスはクリック禁止
   if (specialPresets.includes(presetEl.value)) {
@@ -519,8 +539,8 @@ litButtons.forEach(btn => {
 litCountEl.textContent = litCount;
 
 
-  // ✅ tenkenmin / specialist / explorer の特殊処理
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer"];
+  // ✅ tenkenmin / specialist / explorer/syaken-Aの特殊処理
+  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
     let lastIdx = labels.length - 1;
