@@ -193,6 +193,55 @@
       padding: 4px 0;
       font-size: 12px;
     }
+
+    .cell-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+
+    /* 報酬獲得ボタンのキラキラホバー */
+#rewardBtn {
+  position: relative;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #0a0a0a;
+  font-weight: bold;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.1s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+
+#rewardBtn::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.0) 50%, rgba(255,255,255,0.3) 75%);
+  transform: rotate(45deg) translateX(-100%);
+  pointer-events: none;
+  transition: transform 0.5s ease;
+}
+
+#rewardBtn:hover::before {
+  transform: rotate(45deg) translateX(100%);
+}
+
+#rewardBtn:hover {
+  box-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-glow);
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>
@@ -207,6 +256,8 @@
           <option value="top-adventure-explorer">一流冒険家</option>
         </select>
         <button id="reset">すべて消灯</button>
+        <!-- ✅ 報酬獲得ボタン -->
+        <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
       </div>
     </header>
 
@@ -493,6 +544,14 @@
         lastBtn.setAttribute('aria-pressed','false');
       }
     }
+  }
+        // ✅ 報酬獲得ボタン制御
+  const rewardBtn = document.getElementById('rewardBtn');
+  const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+  if (anyLegendaryLit) {
+    rewardBtn.style.display = "inline-block";
+  } else {
+    rewardBtn.style.display = "none";
   }
 }
     function save(presetName = presetEl.value) {
