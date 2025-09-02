@@ -522,19 +522,71 @@ for (let i=0; i<r*c; i++) {
 }
     
     function updateCounts(){
-      const litButtons = cellsEl.querySelectorAll('button.lit');
-let litCount = 0;
+      function updateCounts(){
+  // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
+  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
+  if (specialPresets.includes(presetEl.value)) {
+    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
+    let lastIdx = labels.length - 1;
+    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
 
-litButtons.forEach(btn => {
-  const idx = +btn.dataset.idx;
-  if (legendary.has(idx)) {
-    // legendary も点灯時はカウント
-    litCount++;
-  } else {
-    // 通常セルも点灯時はカウント
-    litCount++;
+    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+    if (lastBtn) {
+      const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
+      const allLit = otherBtns.every(b => b.classList.contains('lit'));
+      if (allLit) {
+        lastBtn.classList.add('lit');
+        lastBtn.setAttribute('aria-pressed','true');
+      } else {
+        lastBtn.classList.remove('lit');
+        lastBtn.setAttribute('aria-pressed','false');
+      }
+    }
   }
-});
+
+  // ✅ MVP専用処理
+  if (presetEl.value === "mvp") {
+    let lastIdx = labels.length - 1;
+    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
+    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+    if (lastBtn) {
+      const participate = [0, 3, 6].every(i =>
+        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+      );
+      const champion = [1, 4, 7].some(i =>
+        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+      );
+      const mvp = [2, 5, 8].some(i =>
+        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+      );
+
+      if (participate && champion && mvp) {
+        lastBtn.classList.add('lit');
+        lastBtn.setAttribute('aria-pressed','true');
+      } else {
+        lastBtn.classList.remove('lit');
+        lastBtn.setAttribute('aria-pressed','false');
+      }
+    }
+  }
+
+  // ✅ 分子は最後にまとめて数える
+  const litButtons = cellsEl.querySelectorAll('button.lit');
+  litCountEl.textContent = litButtons.length;
+
+  // ✅ 報酬獲得ボタン制御
+  const rewardBtn = document.getElementById('rewardBtn');
+  const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+  if (anyLegendaryLit) {
+    rewardBtn.style.display = "inline-block";
+    rewardBtn.disabled = true;
+    rewardBtn.classList.add("disabled");
+  } else {
+    rewardBtn.style.display = "none";
+    rewardBtn.disabled = true;
+    rewardBtn.classList.remove("disabled");
+  }
+}
 
 litCountEl.textContent = litCount;
 
