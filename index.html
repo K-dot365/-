@@ -510,16 +510,13 @@ function getStorageKey(presetName = presetEl.value) {
   return "mc_like_achievements_" + presetName;
 }
 
-function load(presetName = presetEl.value) {
+    //load
+    function load(presetName = presetEl.value) {
   const raw = localStorage.getItem(getStorageKey(presetName));
   if (!raw) return;
   try {
     const data = JSON.parse(raw);
-    R = data.R;
-    C = data.C;
-    labels = data.labels || [];
-    legendary = new Set(data.legendary || []);
-    buildGrid(R, C, labels);
+    // ✅ サイズやラベルはプリセットを使うので触らない
     for (const idx of data.lit || []) {
       const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
       if (btn) {
