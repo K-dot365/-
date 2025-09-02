@@ -522,7 +522,6 @@ for (let i=0; i<r*c; i++) {
 }
     
     function updateCounts(){
-      function updateCounts(){
   // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
   const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
   if (specialPresets.includes(presetEl.value)) {
@@ -570,7 +569,7 @@ for (let i=0; i<r*c; i++) {
     }
   }
 
-  // ✅ 分子は最後にまとめて数える
+  // ✅ litCount を正しく計算
   const litButtons = cellsEl.querySelectorAll('button.lit');
   litCountEl.textContent = litButtons.length;
 
@@ -587,6 +586,7 @@ for (let i=0; i<r*c; i++) {
     rewardBtn.classList.remove("disabled");
   }
 }
+
 
 litCountEl.textContent = litCount;
 
