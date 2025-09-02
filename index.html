@@ -428,20 +428,20 @@
   }
   
   cellsEl.innerHTML = '';
-  let effectiveCount = 0;  // ✅ 実際にカウント対象になるマス数
+    let effectiveCount = 0;
 
-  for (let i=0; i<r*c; i++) {
-    const label = labels[i] || null;
-    const cell = document.createElement('div');
-    cell.className = 'cell';
+for (let i=0; i<r*c; i++) {
+  const label = labels[i] || null;
+  const cell = document.createElement('div');
+  cell.className = 'cell';
   
-    if (label === null) {
-      // 空セルは div のみ、カウントしない
-      cellsEl.appendChild(cell);
-      continue;
-    }
+  if (label === null) {
+    cellsEl.appendChild(cell);
+    continue;
+  }
 
-    effectiveCount++; // ✅ 実際の有効マスをカウント
+  effectiveCount++; // ✅ null でなければ必ずカウント（legendary も含む）
+  
 
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -502,8 +502,22 @@
 }
     
     function updateCounts(){
-  const litButtons = cellsEl.querySelectorAll('button.lit');
-  litCountEl.textContent = litButtons.length;
+      const litButtons = cellsEl.querySelectorAll('button.lit');
+let litCount = 0;
+
+litButtons.forEach(btn => {
+  const idx = +btn.dataset.idx;
+  if (legendary.has(idx)) {
+    // legendary も点灯時はカウント
+    litCount++;
+  } else {
+    // 通常セルも点灯時はカウント
+    litCount++;
+  }
+});
+
+litCountEl.textContent = litCount;
+
 
   // ✅ tenkenmin / specialist / explorer の特殊処理
   const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer"];
