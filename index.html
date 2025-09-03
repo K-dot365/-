@@ -671,37 +671,24 @@ for (let i=0; i<r*c; i++) {
     const progressBtn = document.getElementById(btnId);
     if (!progressBtn) return;
 
-    // ✅ localStorage ではなく、現在のセルの状態を参照
-    let isLit = false;
-
-    // 特殊プリセットの場合
-    if (["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"].includes(preset)) {
-      const cellContainer = cellsEl; // 今のページのセル
-      const allButtons = cellContainer.querySelectorAll('button[data-idx]');
-      const lastBtn = cellContainer.querySelector(`button[data-idx="${lastIdx}"]`);
-      if (!lastBtn) return;
-
-      if (preset === "mvp") {
-        const participate = [0, 3, 6].every(i =>
-          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-        );
-        const champion = [1, 4, 7].some(i =>
-          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-        );
-        const mvp = [2, 5, 8].some(i =>
-          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-        );
-        isLit = participate && champion && mvp;
-      } else {
-        const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
-        isLit = otherBtns.every(b => b.classList.contains('lit'));
+    // ✅ localStorage からプリセットの lit 状態を読み込む
+    const raw = localStorage.getItem(getStorageKey(preset));
+    let litIndices = [];
+    if (raw) {
+      try {
+        const data = JSON.parse(raw);
+        litIndices = data.lit || [];
+      } catch (e) {
+        console.warn('読込に失敗しました', e);
       }
     }
 
-    if (isLit) progressBtn.classList.add('lit');
+    // 最後の実績マスが lit ならボタンを光らせる
+    if (litIndices.includes(lastIdx)) progressBtn.classList.add('lit');
     else progressBtn.classList.remove('lit');
   });
 }
+
 
     
     function getStorageKey(presetName) {
