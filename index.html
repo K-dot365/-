@@ -698,25 +698,34 @@ if (btn === lastBtn) return;
   localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
 }
 
-    //load
-    function load(presetName = presetEl.value) {
+    // ✅ 状態読み込み
+function load(presetName = presetEl.value) {
   const raw = localStorage.getItem(getStorageKey(presetName));
   if (!raw) return;
   try {
     const data = JSON.parse(raw);
-    // ✅ サイズやラベルはプリセットを使うので触らない
-    for (const idx of data.lit || []) {
+    if (!data || !Array.isArray(data.lit)) return;
+
+    // 一度すべて消灯
+    cellsEl.querySelectorAll('button').forEach(b=>{
+      b.classList.remove('lit');
+      b.setAttribute('aria-pressed','false');
+    });
+
+    // 保存されていたインデックスを再点灯
+    data.lit.forEach(idx=>{
       const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
       if (btn) {
         btn.classList.add('lit');
         btn.setAttribute('aria-pressed','true');
       }
-    }
+    });
+
     updateCounts();
   } catch(e) {
-    console.warn('読込に失敗しました', e);
+    console.error("load failed", e);
   }
-            // ✅ 進捗インジケーター更新
+  // ✅ 進捗インジケーター更新
   checkProgressButtons();
 }
 
@@ -753,7 +762,22 @@ if (lastPreset && PRESETS[lastPreset]) {
     usePreset(presetEl.value);
     load();    
 }
-    
+    // ✅ プリセット変更時
+presetEl.addEventListener('change', () => {
+  localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
+  legendary = new Set(PRESETS[presetEl.value].legendary || []);
+  buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
+  load(presetEl.value);
+});
+
+// ✅ ページ読み込み時
+window.addEventListener('DOMContentLoaded', () => {
+  const last = localStorage.getItem("lastPreset") || "tenkenmin";
+  presetEl.value = last;
+  legendary = new Set(PRESETS[last].legendary || []);
+  buildGrid(...PRESETS[last].size, PRESETS[last].labels);
+  load(last);
+});
 
   </script>
 </body>
