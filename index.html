@@ -557,9 +557,11 @@ for (let i=0; i<r*c; i++) {
 
   // 最後のマスはクリック禁止
   if (specialPresets.includes(presetEl.value)) {
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-    if (idx === lastIdx) return;
+    const allBtns = Array.from(cellsEl.querySelectorAll('button'))
+                      .filter(b => labels[b.dataset.idx] !== null);
+const lastBtn = allBtns[allBtns.length - 1];
+if (btn === lastBtn) return;
+
   }
 
   const lit = btn.classList.toggle('lit');
@@ -582,10 +584,9 @@ for (let i=0; i<r*c; i++) {
   const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+    const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
+                      .filter(b => labels[b.dataset.idx] !== null)
+                      .pop();
     if (lastBtn) {
       const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
       const allLit = otherBtns.every(b => b.classList.contains('lit'));
@@ -749,11 +750,11 @@ const lastPreset = localStorage.getItem('lastPreset');
 if (lastPreset && PRESETS[lastPreset]) {
   presetEl.value = lastPreset;
   currentPreset = lastPreset;
-}
-    
-    // ページ初期表示時にプリセットと保存データを読み込む
+  // ページ初期表示時にプリセットと保存データを読み込む
     usePreset(presetEl.value);
     load();    
+}
+    
 
   </script>
 </body>
