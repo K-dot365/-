@@ -657,35 +657,32 @@ if (btn === lastBtn) return;
     { btnId: "pb5", preset: "syaken-A" },
   ];
 
-  progressButtons.forEach(({ btnId, preset }) => {
-    const presetData = PRESETS[preset];
-    if (!presetData) return;
+  // ✅ 今選択されているプリセットだけ対象にする
+  const target = progressButtons.find(p => p.preset === presetEl.value);
+  if (!target) return;
 
-    // 最後の実績マス（nullを飛ばす）
-    let lastIdx = presetData.labels.length - 1;
-    for (let i = lastIdx; i >= 0; i--) {
-      if (presetData.labels[i] !== null) {
-        lastIdx = i;
-        break;
-      }
+  const presetData = PRESETS[target.preset];
+  if (!presetData) return;
+
+  // 最後の実績マス（nullを飛ばす）
+  let lastIdx = presetData.labels.length - 1;
+  for (let i = lastIdx; i >= 0; i--) {
+    if (presetData.labels[i] !== null) {
+      lastIdx = i;
+      break;
     }
+  }
 
-    const progressBtn = document.getElementById(btnId);
-    if (!progressBtn) return;
+  const progressBtn = document.getElementById(target.btnId);
+  if (!progressBtn) return;
 
-    // ✅ 現在のセル状態を直接参照
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn && lastBtn.classList.contains('lit')) {
-      progressBtn.classList.add('lit');
-    } else {
-      progressBtn.classList.remove('lit'); // ← 修正！
-    }
-  });
+  const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+  if (lastBtn && lastBtn.classList.contains('lit')) {
+    progressBtn.classList.add('lit');
+  } else {
+    progressBtn.classList.remove('lit');
+  }
 }
-
-    
-
-
     
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
