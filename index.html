@@ -588,6 +588,7 @@ if (btn === lastBtn) return;
                       .filter(b => labels[b.dataset.idx] !== null)
                       .pop();
     if (lastBtn) {
+      const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
       const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
       const allLit = otherBtns.every(b => b.classList.contains('lit'));
       if (allLit) {
@@ -672,16 +673,17 @@ if (btn === lastBtn) return;
     const progressBtn = document.getElementById(btnId);
     if (!progressBtn) return;
 
-     // ✅ 現在のセル状態を直接参照
+    // ✅ 現在のセル状態を直接参照
     const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
     if (lastBtn && lastBtn.classList.contains('lit')) {
       progressBtn.classList.add('lit');
     } else {
-      progressBtn.classList.remove('lit');
+      progressBtn.classList.remove('lit'); // ← 修正！
     }
-      }
   });
 }
+
+    
 
 
     
