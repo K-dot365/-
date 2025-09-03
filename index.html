@@ -646,8 +646,7 @@ for (let i=0; i<r*c; i++) {
 }
 
     // 進捗インジケーター更新
-    // 進捗インジケーター更新
-function checkProgressButtons() {
+    function checkProgressButtons() {
   const progressButtons = [
     { btnId: "pb1", preset: "tenkenmin" },
     { btnId: "pb2", preset: "stargazing-specialist" },
@@ -660,7 +659,7 @@ function checkProgressButtons() {
     const presetData = PRESETS[preset];
     if (!presetData) return;
 
-    // 最後の実績達成マス（nullを飛ばす）
+    // 最後の実績マス（nullを飛ばす）
     let lastIdx = presetData.labels.length - 1;
     for (let i = lastIdx; i >= 0; i--) {
       if (presetData.labels[i] !== null) {
@@ -669,43 +668,41 @@ function checkProgressButtons() {
       }
     }
 
-    // 現在のセルの状態を参照して進捗判定
-    progressButtons.forEach(({ btnId, preset }) => {
-  const presetData = PRESETS[preset];
-  if (!presetData) return;
+    const progressBtn = document.getElementById(btnId);
+    if (!progressBtn) return;
 
-  // 最後の実績達成マス（nullを飛ばす）
-  let lastIdx = presetData.labels.length - 1;
-  for (let i = lastIdx; i >= 0; i--) {
-    if (presetData.labels[i] !== null) {
-      lastIdx = i;
-      break;
-    }
-  }
+    // ✅ localStorage ではなく、現在のセルの状態を参照
+    let isLit = false;
 
-  const progressBtn = document.getElementById(btnId);
-  if (!progressBtn) return;
+    // 特殊プリセットの場合
+    if (["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"].includes(preset)) {
+      const cellContainer = cellsEl; // 今のページのセル
+      const allButtons = cellContainer.querySelectorAll('button[data-idx]');
+      const lastBtn = cellContainer.querySelector(`button[data-idx="${lastIdx}"]`);
+      if (!lastBtn) return;
 
-  // ✅ localStorage からそのプリセットのlit状態を取得
-  const raw = localStorage.getItem(getStorageKey(preset));
-  let isLit = false;
-  if (raw) {
-    try {
-      const data = JSON.parse(raw);
-      if (Array.isArray(data.lit)) {
-        isLit = data.lit.includes(lastIdx);
+      if (preset === "mvp") {
+        const participate = [0, 3, 6].every(i =>
+          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+        );
+        const champion = [1, 4, 7].some(i =>
+          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+        );
+        const mvp = [2, 5, 8].some(i =>
+          cellContainer.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+        );
+        isLit = participate && champion && mvp;
+      } else {
+        const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
+        isLit = otherBtns.every(b => b.classList.contains('lit'));
       }
-    } catch(e) {
-      console.warn('localStorage読み込み失敗', e);
     }
-  }
 
-  if (isLit) progressBtn.classList.add('lit');
-  else progressBtn.classList.remove('lit');
-});
-
+    if (isLit) progressBtn.classList.add('lit');
+    else progressBtn.classList.remove('lit');
   });
 }
+
     
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
