@@ -670,19 +670,40 @@ function checkProgressButtons() {
     }
 
     // 現在のセルの状態を参照して進捗判定
-    const gridBtn = document.querySelector(`#cells button[data-idx="${lastIdx}"]`);
-    const progressBtn = document.getElementById(btnId);
+    progressButtons.forEach(({ btnId, preset }) => {
+  const presetData = PRESETS[preset];
+  if (!presetData) return;
 
-    if (gridBtn && progressBtn) {
-      if (gridBtn.classList.contains('lit')) {
-        progressBtn.classList.add('lit');
-      } else {
-        progressBtn.classList.remove('lit');
-      }
-    } else if (progressBtn) {
-      // まだそのプリセットをロードしていない場合は消す
-      progressBtn.classList.remove('lit');
+  // 最後の実績達成マス（nullを飛ばす）
+  let lastIdx = presetData.labels.length - 1;
+  for (let i = lastIdx; i >= 0; i--) {
+    if (presetData.labels[i] !== null) {
+      lastIdx = i;
+      break;
     }
+  }
+
+  const progressBtn = document.getElementById(btnId);
+  if (!progressBtn) return;
+
+  // ✅ localStorage からそのプリセットのlit状態を取得
+  const raw = localStorage.getItem(getStorageKey(preset));
+  let isLit = false;
+  if (raw) {
+    try {
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.lit)) {
+        isLit = data.lit.includes(lastIdx);
+      }
+    } catch(e) {
+      console.warn('localStorage読み込み失敗', e);
+    }
+  }
+
+  if (isLit) progressBtn.classList.add('lit');
+  else progressBtn.classList.remove('lit');
+});
+
   });
 }
     
