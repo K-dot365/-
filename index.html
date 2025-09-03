@@ -671,15 +671,13 @@ for (let i=0; i<r*c; i++) {
     const progressBtn = document.getElementById(btnId);
     if (!progressBtn) return;
 
-    // ✅ localStorage からプリセットの lit 状態を読み込む
-    const raw = localStorage.getItem(getStorageKey(preset));
-    let litIndices = [];
-    if (raw) {
-      try {
-        const data = JSON.parse(raw);
-        litIndices = data.lit || [];
-      } catch (e) {
-        console.warn('読込に失敗しました', e);
+     // ✅ 現在のセル状態を直接参照
+    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+    if (lastBtn && lastBtn.classList.contains('lit')) {
+      progressBtn.classList.add('lit');
+    } else {
+      progressBtn.classList.remove('lit');
+    }
       }
     }
 
