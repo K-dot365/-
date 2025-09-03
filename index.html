@@ -739,9 +739,19 @@ for (let i=0; i<r*c; i++) {
   usePreset(newPreset);       // 新プリセットに切替
   load(newPreset);            // ✅ 新プリセットの保存済み状態を読み込み
   currentPreset = newPreset;  // 更新
+
+      // ✅ 最後に選択したプリセットを保存
+  localStorage.setItem('lastPreset', newPreset);
 });
 
     resetBtn.addEventListener('click', resetAll);
+
+    // ✅ 最後に選択したプリセットを取得
+const lastPreset = localStorage.getItem('lastPreset');
+if (lastPreset && PRESETS[lastPreset]) {
+  presetEl.value = lastPreset;
+  currentPreset = lastPreset;
+}
     
     // ページ初期表示時にプリセットと保存データを読み込む
     usePreset(presetEl.value);
