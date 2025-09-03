@@ -646,37 +646,55 @@ for (let i=0; i<r*c; i++) {
 }
 
     // 進捗インジケーター更新
-function checkProgressButtons() {
-  const lit = cellsEl.querySelectorAll('button.lit').length;
-  const total = +totalCountEl.textContent;
+    function checkProgressButtons() {
+  const progressButtons = [
+    { btnId: "pb1", preset: "tenkenmin", threshold: 0.8 },
+    { btnId: "pb2", preset: "stargazing-specialist", threshold: 0.8 },
+    { btnId: "pb3", preset: "mvp", threshold: 0.5 },
+    { btnId: "pb4", preset: "top-adventure-explorer", threshold: 0.8 },
+    { btnId: "pb5", preset: "syaken-A", threshold: 0.8 },
+  ];
 
-  const ratio = total > 0 ? lit / total : 0;
+  progressButtons.forEach(({ btnId, preset, threshold }) => {
+    const dataRaw = localStorage.getItem(getStorageKey(preset));
+    let litCount = 0, totalCount = 0;
 
-  const thresholds = [0.2, 0.4, 0.6, 0.8, 1.0]; // 20%,40%,60%,80%,100%
-  thresholds.forEach((th, i) => {
-    const btn = document.getElementById('pb' + (i+1));
-    if (ratio >= th) {
+    if (dataRaw) {
+      try {
+        const data = JSON.parse(dataRaw);
+        litCount = data.lit?.length || 0;
+      } catch(e) {
+        console.warn(`読み込み失敗: ${preset}`, e);
+      }
+    }
+
+    // 有効セルの総数はプリセットの labels から計算
+    const presetLabels = PRESETS[preset]?.labels || [];
+    totalCount = presetLabels.filter(l => l !== null).length;
+
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+
+    if (totalCount > 0 && litCount / totalCount >= threshold) {
       btn.classList.add('lit');
     } else {
       btn.classList.remove('lit');
     }
   });
 }
-
+    
+    function getStorageKey(presetName) {
+  return `achievements-${presetName}`;
+}
     
     function save(presetName = presetEl.value) {
   const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
     .map(b => +b.dataset.idx);
 
-  const data = { R, C, labels, legendary: Array.from(legendary), lit };
+  const data = { lit };
 
   // ✅ プリセット名ごとにキーを分ける
-  localStorage.setItem("mc_like_achievements_" + presetName, JSON.stringify(data));
-}
-
-// ✅ presetName を引数で受け取るように変更
-function getStorageKey(presetName = presetEl.value) {
-  return "mc_like_achievements_" + presetName;
+  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
 }
 
     //load
