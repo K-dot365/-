@@ -166,6 +166,13 @@
       .cell button .label { font-size: 10px; }
       .cell button .badge { font-size: 9px; padding: 2px 6px; }
       h1 { font-size: 16px; }
+
+      /* ✅ 追加: タイトルと進捗ボタンは横並び維持 */
+  .title-row {
+    flex-direction: row;
+    flex-wrap: wrap; /* 狭ければ折り返す */
+  }
+      
     }
 
     .cell {
@@ -250,12 +257,61 @@
   box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
 }
 
+    #rewardBtn.disabled {
+  cursor: default;
+  opacity: 1;
+  box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
+}
+
+/* h1 と進捗ボタンを横並びにする */
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* h1 とボタンの間の余白 */
+}
+
+/* 進捗ボタン群 */
+.progress-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.progress-btns button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #222;
+  border: 1px solid #444;
+  color: #aaa;
+  font-weight: bold;
+  pointer-events: none; /* 押せない */
+}
+
+.progress-btns button.lit {
+  background: #0f1419;
+  border-color: rgba(76, 175, 80, .7);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(76, 175, 80, .35),
+              0 4px 12px rgba(76, 175, 80, .4),
+              inset 0 0 18px rgba(76, 175, 80, .25);
+}
+
+
   </style>
 </head>
 <body>
   <div class="app">
     <header>
+      <div class="title-row">
       <h1>2025夏合宿 実績解除</h1>
+      <div id="progressBtns" class="progress-btns">
+    <button id="pb1" disabled>1</button>
+    <button id="pb2" disabled>2</button>
+    <button id="pb3" disabled>3</button>
+    <button id="pb4" disabled>4</button>
+    <button id="pb5" disabled>5</button>
+      </div>
+    </div>
       <div class="controls">
         <select id="preset">
           <option value="tenkenmin">天研民との交流</option>
@@ -576,15 +632,35 @@ for (let i=0; i<r*c; i++) {
   // ✅ 報酬獲得ボタン制御
   const rewardBtn = document.getElementById('rewardBtn');
   const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+      
   if (anyLegendaryLit) {
     rewardBtn.style.display = "inline-block";
-    rewardBtn.disabled = true;
-    rewardBtn.classList.add("disabled");
+    rewardBtn.disabled = false;
   } else {
     rewardBtn.style.display = "none";
     rewardBtn.disabled = true;
-    rewardBtn.classList.remove("disabled");
   }
+      // ✅ 進捗インジケーター更新
+  checkProgressButtons();
+      
+}
+
+    // 進捗インジケーター更新
+function checkProgressButtons() {
+  const lit = cellsEl.querySelectorAll('button.lit').length;
+  const total = +totalCountEl.textContent;
+
+  const ratio = total > 0 ? lit / total : 0;
+
+  const thresholds = [0.2, 0.4, 0.6, 0.8, 1.0]; // 20%,40%,60%,80%,100%
+  thresholds.forEach((th, i) => {
+    const btn = document.getElementById('pb' + (i+1));
+    if (ratio >= th) {
+      btn.classList.add('lit');
+    } else {
+      btn.classList.remove('lit');
+    }
+  });
 }
 
     
@@ -621,6 +697,8 @@ function getStorageKey(presetName = presetEl.value) {
   } catch(e) {
     console.warn('読込に失敗しました', e);
   }
+            // ✅ 進捗インジケーター更新
+  checkProgressButtons();
 }
 
     function usePreset(name){
