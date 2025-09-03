@@ -304,13 +304,6 @@
     <header>
       <div class="title-row">
       <h1>2025夏合宿 実績解除</h1>
-      <div id="progressBtns" class="progress-btns">
-    <button id="pb1" disabled>1</button>
-    <button id="pb2" disabled>2</button>
-    <button id="pb3" disabled>3</button>
-    <button id="pb4" disabled>4</button>
-    <button id="pb5" disabled>5</button>
-      </div>
     </div>
       <div class="controls">
         <select id="preset">
@@ -321,6 +314,13 @@
           <option value="syaken-A">写研のエース</option>
         </select>
         <button id="reset">すべて消灯</button>
+        <div id="progressBtns" class="progress-btns">
+    <button id="pb1" disabled>1</button>
+    <button id="pb2" disabled>2</button>
+    <button id="pb3" disabled>3</button>
+    <button id="pb4" disabled>4</button>
+    <button id="pb5" disabled>5</button>
+      </div>
         <!-- ✅ 報酬獲得ボタン -->
         <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
       </div>
@@ -648,41 +648,45 @@ for (let i=0; i<r*c; i++) {
     // 進捗インジケーター更新
     function checkProgressButtons() {
   const progressButtons = [
-    { btnId: "pb1", preset: "tenkenmin", threshold: 0.8 },
-    { btnId: "pb2", preset: "stargazing-specialist", threshold: 0.8 },
-    { btnId: "pb3", preset: "mvp", threshold: 0.5 },
-    { btnId: "pb4", preset: "top-adventure-explorer", threshold: 0.8 },
-    { btnId: "pb5", preset: "syaken-A", threshold: 0.8 },
+    { btnId: "pb1", preset: "tenkenmin" },
+    { btnId: "pb2", preset: "stargazing-specialist" },
+    { btnId: "pb3", preset: "mvp" },
+    { btnId: "pb4", preset: "top-adventure-explorer" },
+    { btnId: "pb5", preset: "syaken-A" },
   ];
 
-  progressButtons.forEach(({ btnId, preset, threshold }) => {
-    const dataRaw = localStorage.getItem(getStorageKey(preset));
-    let litCount = 0, totalCount = 0;
+  progressButtons.forEach(({ btnId, preset }) => {
+    const presetData = PRESETS[preset];
+    if (!presetData) return;
 
-    if (dataRaw) {
-      try {
-        const data = JSON.parse(dataRaw);
-        litCount = data.lit?.length || 0;
-      } catch(e) {
-        console.warn(`読み込み失敗: ${preset}`, e);
+    const lastIdx = presetData.labels.length - 1;
+    let idx = lastIdx;
+    // nullセルを飛ばして、最後の実績達成マスを取得
+    for (let i = lastIdx; i >= 0; i--) {
+      if (presetData.labels[i] !== null) {
+        idx = i;
+        break;
       }
     }
 
-    // 有効セルの総数はプリセットの labels から計算
-    const presetLabels = PRESETS[preset]?.labels || [];
-    totalCount = presetLabels.filter(l => l !== null).length;
+    // 対応するプリセットの実績達成マスが光っているか判定
+    const storedRaw = localStorage.getItem(getStorageKey(preset));
+    let lit = false;
+    if (storedRaw) {
+      try {
+        const stored = JSON.parse(storedRaw);
+        if (stored.lit && stored.lit.includes(idx)) lit = true;
+      } catch(e) {}
+    }
 
     const btn = document.getElementById(btnId);
-    if (!btn) return;
-
-    if (totalCount > 0 && litCount / totalCount >= threshold) {
-      btn.classList.add('lit');
-    } else {
-      btn.classList.remove('lit');
+    if (btn) {
+      if (lit) btn.classList.add('lit');
+      else btn.classList.remove('lit');
     }
   });
 }
-    
+
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
 }
