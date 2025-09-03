@@ -646,7 +646,8 @@ for (let i=0; i<r*c; i++) {
 }
 
     // 進捗インジケーター更新
-    function checkProgressButtons() {
+    // 進捗インジケーター更新
+function checkProgressButtons() {
   const progressButtons = [
     { btnId: "pb1", preset: "tenkenmin" },
     { btnId: "pb2", preset: "stargazing-specialist" },
@@ -659,34 +660,32 @@ for (let i=0; i<r*c; i++) {
     const presetData = PRESETS[preset];
     if (!presetData) return;
 
-    const lastIdx = presetData.labels.length - 1;
-    let idx = lastIdx;
-    // nullセルを飛ばして、最後の実績達成マスを取得
+    // 最後の実績達成マス（nullを飛ばす）
+    let lastIdx = presetData.labels.length - 1;
     for (let i = lastIdx; i >= 0; i--) {
       if (presetData.labels[i] !== null) {
-        idx = i;
+        lastIdx = i;
         break;
       }
     }
 
-    // 対応するプリセットの実績達成マスが光っているか判定
-    const storedRaw = localStorage.getItem(getStorageKey(preset));
-    let lit = false;
-    if (storedRaw) {
-      try {
-        const stored = JSON.parse(storedRaw);
-        if (stored.lit && stored.lit.includes(idx)) lit = true;
-      } catch(e) {}
-    }
+    // 現在のセルの状態を参照して進捗判定
+    const gridBtn = document.querySelector(`#cells button[data-idx="${lastIdx}"]`);
+    const progressBtn = document.getElementById(btnId);
 
-    const btn = document.getElementById(btnId);
-    if (btn) {
-      if (lit) btn.classList.add('lit');
-      else btn.classList.remove('lit');
+    if (gridBtn && progressBtn) {
+      if (gridBtn.classList.contains('lit')) {
+        progressBtn.classList.add('lit');
+      } else {
+        progressBtn.classList.remove('lit');
+      }
+    } else if (progressBtn) {
+      // まだそのプリセットをロードしていない場合は消す
+      progressBtn.classList.remove('lit');
     }
   });
 }
-
+    
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
 }
