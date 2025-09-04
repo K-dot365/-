@@ -764,7 +764,10 @@ if (lastPreset && PRESETS[lastPreset]) {
 }
     // ✅ プリセット変更時
 presetEl.addEventListener('change', () => {
+  save(presetEl.value); // ← 切り替え前のプリセットを保存
   localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
+
+  currentPreset = presetEl.value; // ← 現在のプリセット更新
   legendary = new Set(PRESETS[presetEl.value].legendary || []);
   buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
   load(presetEl.value);
