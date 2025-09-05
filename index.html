@@ -656,7 +656,7 @@ if (btn === lastBtn) return;
       "stargazing-specialist": "pb2",
       "mvp": "pb3",
       "top-adventure-explorer": "pb4",
-      "syaken-A": "pb5"
+      "syaken-A": "pb5",
     }[key];
 
     if (!btnId) return; // 未対応プリセットはスキップ
@@ -684,9 +684,8 @@ if (btn === lastBtn) return;
       lastIdx--;
     }
 
-    // そのプリセットの最後のセルが lit に含まれているかチェック
-    const total = preset.size[0] * preset.size[1];
-    if (lit.includes(total - 1)) {
+    // ✅ lastIdx を使う（total-1 ではない！）
+    if (lit.includes(lastIdx)) {
       pb.classList.add("lit");
       pb.setAttribute("aria-pressed","true");
     } else {
