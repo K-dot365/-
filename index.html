@@ -649,41 +649,53 @@ if (btn === lastBtn) return;
 
     // 進捗インジケーター更新
     function checkProgressButtons() {
-  const progressButtons = [
-    { btnId: "pb1", preset: "tenkenmin" },
-    { btnId: "pb2", preset: "stargazing-specialist" },
-    { btnId: "pb3", preset: "mvp" },
-    { btnId: "pb4", preset: "top-adventure-explorer" },
-    { btnId: "pb5", preset: "syaken-A" },
-  ];
+  // 各プリセットごとにチェック
+  Object.entries(PRESETS).forEach(([key, preset]) => {
+    const btnId = {
+      "tenkenmin": "pb1",
+      "stargazing-specialist": "pb2",
+      "mvp": "pb3",
+      "top-adventure-explorer": "pb4",
+      "syaken-A": "pb5"
+    }[key];
 
-  // ✅ 今選択されているプリセットだけ対象にする
-  const target = progressButtons.find(p => p.preset === presetEl.value);
-  if (!target) return;
+    if (!btnId) return; // 未対応プリセットはスキップ
 
-  const presetData = PRESETS[target.preset];
-  if (!presetData) return;
+    const pb = document.getElementById(btnId);
+    if (!pb) return;
 
-  // 最後の実績マス（nullを飛ばす）
-  let lastIdx = presetData.labels.length - 1;
-  for (let i = lastIdx; i >= 0; i--) {
-    if (presetData.labels[i] !== null) {
-      lastIdx = i;
-      break;
+    // 保存データを取得
+    const raw = localStorage.getItem(getStorageKey(key));
+    let lit = [];
+    if (raw) {
+      try {
+        const data = JSON.parse(raw);
+        if (data && Array.isArray(data.lit)) {
+          lit = data.lit;
+        }
+      } catch(e) {
+        console.error("parse failed", e);
+      }
     }
-  }
 
-  const progressBtn = document.getElementById(target.btnId);
-  if (!progressBtn) return;
+    // 🔽 labels の末尾から null をスキップして最後の有効セルを取得
+    let lastIdx = preset.labels.length - 1;
+    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+      lastIdx--;
+    }
 
-  const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-  if (lastBtn && lastBtn.classList.contains('lit')) {
-    progressBtn.classList.add('lit');
-  } else {
-    progressBtn.classList.remove('lit');
-  }
+    // そのプリセットの最後のセルが lit に含まれているかチェック
+    const total = preset.size[0] * preset.size[1];
+    if (lit.includes(total - 1)) {
+      pb.classList.add("lit");
+      pb.setAttribute("aria-pressed","true");
+    } else {
+      pb.classList.remove("lit");
+      pb.setAttribute("aria-pressed","false");
+    }
+  });
 }
-    
+
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
 }
