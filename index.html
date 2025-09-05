@@ -571,13 +571,20 @@ if (btn === lastBtn) return;
       checkProgressButtons();
 }
 
-    function resetAll(){
-  cellsEl.querySelectorAll('button.lit').forEach(b=>{
+    function resetAll() {
+  // 表示中のセルを消灯
+  cellsEl.querySelectorAll('button.lit').forEach(b => {
     b.classList.remove('lit');
     b.setAttribute('aria-pressed','false');
   });
+
   updateCounts();
-  save();   // ✅ リセットごとに自動保存
+
+  // ✅ 現在のプリセットの保存データを削除
+  localStorage.removeItem(getStorageKey(presetEl.value));
+
+  // ✅ インジケータ更新（このプリセットの光も消える）
+  checkProgressButtons(presetEl.value);
 }
 
     function updateCounts(){
