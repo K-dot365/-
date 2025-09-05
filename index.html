@@ -214,17 +214,24 @@
 #rewardBtnSpecial {
   display: none;
   margin-left: 8px;
+  position: relative;
   border: 1px solid #007bff;      /* 青 */
-  background: #0056b3;             /* 青 */
+  background: #0056b3;            /* 青 */
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   border-radius: 12px;
   padding: 8px 12px;
-  /* box-shadow と animation は削除する（緑ボタンのように変更するため） */
-  box-shadow: 0 0 6px rgba(0,123,255,0.5), 0 0 18px rgba(0,123,255,0.4);
+  box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5);
   transition: transform 0.1s ease, box-shadow 0.3s ease;
 }
+
+/* hover したらちょっと強めに光る */
+#rewardBtnSpecial:hover {
+  box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7);
+  transform: scale(1.05);
+}
+
 
     #rewardBtnSpecial::before {
   content: "";
@@ -248,25 +255,26 @@
   transform: scale(1.05);
 }
 
-
-@keyframes redPulse {
-  0%   { box-shadow: 0 0 8px rgba(255,0,0,0.6), 0 0 16px rgba(255,0,0,0.4); }
-  50%  { box-shadow: 0 0 18px rgba(255,0,0,1), 0 0 36px rgba(255,0,0,0.8); }
-  100% { box-shadow: 0 0 8px rgba(255,0,0,0.6), 0 0 16px rgba(255,0,0,0.4); }
+    /*緑の報酬ボタン*/
+    #rewardBtn {
+  position: relative;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(76,175,80,0.6), 0 0 20px rgba(76,175,80,0.5);
+  transition: transform 0.1s ease, box-shadow 0.3s ease;
 }
 
-#rewardBtn::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.0) 50%, rgba(255,255,255,0.3) 75%);
-  transform: rotate(45deg) translateX(-100%);
-  pointer-events: none;
-  transition: transform 0.5s ease;
+/* hover 時はちょっと強めに光らせる */
+#rewardBtn:hover {
+  box-shadow: 0 0 15px rgba(76,175,80,0.8), 0 0 30px rgba(76,175,80,0.7);
+  transform: scale(1.05);
 }
+
+
 
 #rewardBtn:hover::before {
   transform: rotate(45deg) translateX(100%);
