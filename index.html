@@ -568,6 +568,7 @@ if (btn === lastBtn) return;
   btn.setAttribute('aria-pressed', String(lit));
   updateCounts();
   save();//クリックごとに自動保存
+      checkProgressButtons();
 }
 
     function resetAll(){
@@ -648,53 +649,63 @@ if (btn === lastBtn) return;
 }
 
     // 進捗インジケーター更新
-    function checkProgressButtons() {
-  // 各プリセットごとにチェック
+    function checkProgressButtons(activePresetKey = null) {
   Object.entries(PRESETS).forEach(([key, preset]) => {
     const btnId = {
       "tenkenmin": "pb1",
       "stargazing-specialist": "pb2",
       "mvp": "pb3",
       "top-adventure-explorer": "pb4",
-      "syaken-A": "pb5",
+      "syaken-A": "pb5"
     }[key];
 
-    if (!btnId) return; // 未対応プリセットはスキップ
+    if (!btnId) return;
 
     const pb = document.getElementById(btnId);
     if (!pb) return;
 
-    // 保存データを取得
-    const raw = localStorage.getItem(getStorageKey(key));
+    // --- 保存データを取得 ---
     let lit = [];
+    const raw = localStorage.getItem(getStorageKey(key));
     if (raw) {
       try {
         const data = JSON.parse(raw);
         if (data && Array.isArray(data.lit)) {
           lit = data.lit;
         }
-      } catch(e) {
+      } catch (e) {
         console.error("parse failed", e);
       }
     }
 
-    // 🔽 labels の末尾から null をスキップして最後の有効セルを取得
+    // --- labels の末尾から null をスキップして最後の有効セルを取得 ---
     let lastIdx = preset.labels.length - 1;
     while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
       lastIdx--;
     }
 
-    // ✅ lastIdx を使う（total-1 ではない！）
+    // --- アクティブなプリセットは DOM を優先 ---
+    if (key === activePresetKey) {
+      const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+      if (lastBtn && lastBtn.classList.contains("lit")) {
+        lit = [lastIdx]; // 強制的に「点灯中」とする
+      } else {
+        lit = lit.filter(idx => idx === lastIdx);
+      }
+    }
+
+    // --- インジケータ更新 ---
     if (lit.includes(lastIdx)) {
       pb.classList.add("lit");
-      pb.setAttribute("aria-pressed","true");
+      pb.setAttribute("aria-pressed", "true");
     } else {
       pb.classList.remove("lit");
-      pb.setAttribute("aria-pressed","false");
+      pb.setAttribute("aria-pressed", "false");
     }
   });
 }
 
+    
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
 }
