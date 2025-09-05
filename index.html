@@ -619,8 +619,8 @@ if (btn === lastBtn) return;
   }
 
       
-  // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
+  // ✅ tenkenmin / explorer / syaken-A の特殊処理
+  const specialPresets = ["tenkenmin", "top-adventure-explorer","syaken-A"];
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
     const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
