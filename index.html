@@ -590,7 +590,7 @@ for (let i=0; i<r*c; i++) {
   }
 
   updateCounts();
-  totalCountEl.textContent = effectiveCount;  // ✅ 有効セルだけ表示
+  totalCountEl.textContent = labels.filter(l => l !== null).length;  
 }
 
     function toggle(btn){
@@ -707,8 +707,10 @@ if (btn === lastBtn) return;
     }
   }
 
-  // ✅ litCount を正しく計算
-  const litButtons = cellsEl.querySelectorAll('button.lit');
+       // ✅ litCount を正しく計算（legendary も含む）
+  const litButtons = Array.from(cellsEl.querySelectorAll('button.lit'))
+    .filter(b => labels[b.dataset.idx] !== null);  // 無効セル(null)は除外、legendaryは含む
+
   litCountEl.textContent = litButtons.length;
 
       // ✅ 全体進捗も更新
