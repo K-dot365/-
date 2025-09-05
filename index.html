@@ -339,7 +339,7 @@
       </div>
         <!-- ✅ 報酬獲得ボタン -->
         <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
-        <!-- 🔴 特別報酬ボタン -->
+        <!--  特別報酬ボタン -->
         <button id="rewardBtnSpecial">報酬獲得！</button>
       </div>
     </header>
@@ -395,7 +395,7 @@ const globalProgressBtn = document.getElementById("globalProgressBtn");
   const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
   globalProgressBtn.textContent = `${lit} / ${total} 解放 (${percent}%)`;
 
-  // 🔴 70%を超えたら赤ボタンを表示
+  // 青 70%を超えたら青ボタンを表示
   const rewardBtnSpecial = document.getElementById("rewardBtnSpecial");
   if (parseFloat(percent) > 70) {
     rewardBtnSpecial.style.display = "inline-block";
