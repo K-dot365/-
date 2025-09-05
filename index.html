@@ -375,12 +375,16 @@ function updateGlobalProgress() {
       total++;
 
       const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
-      if (saved[i]) lit++;
+      // ← lit 配列の中身を確認してカウント
+      if (saved.lit && saved.lit.includes(i)) {
+        lit++;
+      }
     }
   }
   const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
 
-  globalProgressBtn.textContent = `${lit} / ${total} 解放`;
+  // ✅ パーセンテージを表示に追加
+  globalProgressBtn.textContent = `${lit} / ${total} 解放 (${percent}%)`;
 }
 
     const PRESETS = {
