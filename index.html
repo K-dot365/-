@@ -276,6 +276,17 @@
   gap: 6px;
 }
 
+    #globalProgressBtn {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #aaa;
+  pointer-events: none; /* 押せない */
+}
+
+
 .progress-btns button {
   width: 32px;
   height: 32px;
@@ -305,6 +316,11 @@
       <div class="title-row">
       <h1>2025夏合宿 実績解除</h1>
     </div>
+      <!-- ✅ 全体進捗ボタンをここに追加 -->
+  <div style="margin: 6px 0 12px;">
+    <button id="globalProgressBtn" disabled>0 / 0 解放</button>
+  </div>
+      
       <div class="controls">
         <select id="preset">
           <option value="tenkenmin">天研民との交流</option>
@@ -341,6 +357,31 @@
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
     const totalCountEl = document.getElementById('totalCount');
+
+    // ✅ 全体進捗ボタンの参照
+const globalProgressBtn = document.getElementById("globalProgressBtn");
+
+// ✅ 全体進捗更新関数
+function updateGlobalProgress() {
+  let total = 0;
+  let lit = 0;
+
+  for (const key in PRESETS) {
+    const presetData = PRESETS[key];
+    const labels = presetData.labels;
+
+    for (let i = 0; i < labels.length; i++) {
+      if (labels[i] === null) continue;  // 無効マスは除外
+      total++;
+
+      const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
+      if (saved[i]) lit++;
+    }
+  }
+  const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
+
+  globalProgressBtn.textContent = `${lit} / ${total} 解放`;
+}
 
     const PRESETS = {
       "tenkenmin": {
@@ -670,6 +711,9 @@ if (btn === lastBtn) return;
   const litButtons = cellsEl.querySelectorAll('button.lit');
   litCountEl.textContent = litButtons.length;
 
+      // ✅ 全体進捗も更新
+updateGlobalProgress();
+
   // ✅ 報酬獲得ボタン制御
   const rewardBtn = document.getElementById('rewardBtn');
   const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
@@ -840,6 +884,10 @@ window.addEventListener('DOMContentLoaded', () => {
   legendary = new Set(PRESETS[last].legendary || []);
   buildGrid(...PRESETS[last].size, PRESETS[last].labels);
   load(last);
+
+  // ✅ ページ初期表示時にカウントと全体進捗を更新
+  updateCounts();
+  updateGlobalProgress();
 });
 
   </script>
