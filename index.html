@@ -595,14 +595,14 @@ if (btn === lastBtn) return;
     const allButtons = Array.from(cellsEl.querySelectorAll('button[data-idx]'));
     const lastBtn = cellsEl.querySelector('button[data-idx="25"]'); // #26
     if (lastBtn) {
-      // 1〜6 番
-      const firstSixLit = [0,1,2,3,4,5].every(i =>
+      // 1〜5 番
+      const firstSixLit = [0,1,2,3,4].every(i =>
         cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
       );
 
-      // 7〜25 番
+      // 6〜25 番
       let litCount = 0;
-      for (let i = 6; i <= 24; i++) {
+      for (let i = 5; i <= 24; i++) {
         if (cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')) {
           litCount++;
         }
