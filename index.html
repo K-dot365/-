@@ -630,7 +630,7 @@ for (let i=0; i<r*c; i++) {
 
     btn.innerHTML =`
       <span class="badge">#${i+1}</span>
-      <img src="${imgSrc}" alt="">
+      <img src="${imgSrc}" alt=""> loading="lazy">
       <span class="cell-text">${textLabel}</span>`;
 
     btn.addEventListener('click', () => toggle(btn));
@@ -842,6 +842,14 @@ updateGlobalProgress();
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
 }
+
+    function loadVisibleTabImages() {
+  const imgs = cellsEl.querySelectorAll('img[data-src]');
+  imgs.forEach(img => {
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+  });
+}
     
     function save(presetName = presetEl.value) {
   const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
@@ -926,6 +934,8 @@ presetEl.addEventListener('change', () => {
   legendary = new Set(PRESETS[presetEl.value].legendary || []);
   buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
   load(presetEl.value);
+
+  loadVisibleTabImages();
 });
 
 // ✅ ページ読み込み時
@@ -935,6 +945,8 @@ window.addEventListener('DOMContentLoaded', () => {
   legendary = new Set(PRESETS[last].legendary || []);
   buildGrid(...PRESETS[last].size, PRESETS[last].labels);
   load(last);
+
+  loadVisibleTabImages();
 
   // ✅ ページ初期表示時にカウントと全体進捗を更新
   updateCounts();
