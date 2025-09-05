@@ -371,21 +371,29 @@ function updateGlobalProgress() {
     const labels = presetData.labels;
 
     for (let i = 0; i < labels.length; i++) {
-      if (labels[i] === null) continue;  // 無効マスは除外
+      if (labels[i] === null) continue;  // 無効セルは除外
       total++;
 
-      const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
-      // ← lit 配列の中身を確認してカウント
-      if (saved.lit && saved.lit.includes(i)) {
-        lit++;
+      if (key === presetEl.value) {
+        // ✅ 表示中プリセットは DOM を参照して即時反映
+        const btn = cellsEl.querySelector(`button[data-idx="${i}"]`);
+        if (btn && btn.classList.contains("lit")) {
+          lit++;
+        }
+      } else {
+        // ✅ 他プリセットは localStorage の保存値を参照
+        const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
+        if (saved.lit && saved.lit.includes(i)) {
+          lit++;
+        }
       }
     }
   }
-  const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
 
-  // ✅ パーセンテージを表示に追加
+  const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
   globalProgressBtn.textContent = `${lit} / ${total} 解放 (${percent}%)`;
 }
+
 
     const PRESETS = {
       "tenkenmin": {
