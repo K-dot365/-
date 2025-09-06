@@ -318,7 +318,7 @@
     const resetBtn = document.getElementById('reset');
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
-    const totalCountEl = document.getElementById('totalCount');
+    const totalCountEl = document.getElementById('totalCount'); // ここを修正
     const globalProgressBtn = document.getElementById("globalProgressBtn");
 
     const PRESETS = {
@@ -596,10 +596,16 @@
           if (lastIdx !== -1) { // lastBtnCandidate が存在する場合のみ処理
               if (presetEl.value === "syaken-A") {
                   // --- syaken-A の特殊条件 (伝説級以外がすべて点灯で最後が解除) ---
-                  const excludeIdx = legendary.has(lastIdx) ? Array.from(legendary) : [lastIdx]; // 伝説級があればそれらを除外、なければ最後のボタンのみ除外
+                  // 注意: ここで最後のボタン(実績達成)はlegendaryに含めない前提
+                  // 現在のPRESETS["syaken-A"].legendaryは[10,11,12]なので、最後のボタン(idx 12)も伝説級。
+                  // そのため、最後のボタンが「実績達成」で、それ以外の通常実績が全て点灯した場合に解除される
+                  // というロジックであれば、`excludeIdx` の生成を見直す必要があります。
+                  // 今回はご要望の「伝説級ボタンが光ると報酬獲得を表示」に焦点を絞るため、
+                  // このロジック自体は現状維持とし、報酬ボタンの制御を別途行います。
+                  const excludeIdx = legendary.has(lastIdx) ? Array.from(legendary) : [lastIdx];
                   
                   const otherBtns = Array.from(allButtons)
-                                      .filter(b => !excludeIdx.includes(+b.dataset.idx));
+                                      .filter(b => labels[+b.dataset.idx] !== null && !excludeIdx.includes(+b.dataset.idx));
                   
                   const allLit = otherBtns.every(b => b.classList.contains('lit'));
                   if (allLit) {
@@ -635,15 +641,18 @@
       // ✅ 全体進捗も更新
       updateGlobalProgress();
 
-      // ✅ 報酬獲得ボタン制御 (syaken-Aのlegendaryが点灯しているか)
+      // ✅ 報酬獲得ボタン制御（syaken-Aで伝説級が点灯したら表示）
       const rewardBtn = document.getElementById('rewardBtn');
+      const pb5 = document.getElementById('pb5'); // 進捗ボタン5
       let shouldShowRewardBtn = false;
+
       if (presetEl.value === "syaken-A") {
-          // syaken-Aの伝説級(legendary)実績のいずれかが点灯しているかをチェック
+          // 現在のプリセットが「syaken-A」で、かつ伝説級の実績が1つでも点灯しているかチェック
           const anyLegendaryLitInSyakenA = Array.from(legendary).some(idx => {
               const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
               return btn && btn.classList.contains('lit');
           });
+          
           if (anyLegendaryLitInSyakenA) {
               shouldShowRewardBtn = true;
           }
@@ -652,9 +661,25 @@
       if (shouldShowRewardBtn) {
           rewardBtn.style.display = "inline-block";
           rewardBtn.disabled = false;
+          // 光らせるCSSクラスを追加 (必要であれば)
+          rewardBtn.classList.add('lit-reward-btn'); 
+          
+          // 進捗ボタン5を点灯させる
+          if (pb5) {
+              pb5.classList.add('lit');
+              pb5.setAttribute('aria-pressed', 'true');
+          }
       } else {
           rewardBtn.style.display = "none";
           rewardBtn.disabled = true;
+          // 光らせるCSSクラスを削除 (必要であれば)
+          rewardBtn.classList.remove('lit-reward-btn');
+
+          // 進捗ボタン5を消灯させる
+          if (pb5) {
+              pb5.classList.remove('lit');
+              pb5.setAttribute('aria-pressed', 'false');
+          }
       }
 
       // ✅ 進捗インジケーター更新
@@ -703,6 +728,13 @@
             lastIdx--;
           }
           const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+          
+          // 進捗ボタン5は、syaken-Aの報酬獲得ボタン表示に連動するため、
+          // syaken-Aの場合のみここでの処理をスキップし、updateCounts()内のロジックに任せる
+          if (key === "syaken-A") {
+            return; 
+          }
+
           if (lastBtn && lastBtn.classList.contains("lit")) {
             pb.classList.add("lit");
             pb.setAttribute("aria-pressed", "true");
