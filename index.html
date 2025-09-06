@@ -491,14 +491,10 @@
         cell.appendChild(btn);
         cellsEl.appendChild(cell);
       }
-      // buildGrid からの updateCounts と totalCountEl 更新を削除。
-      // load() が呼ばれた時に updateCounts が実行されるため重複を避ける。
-      // totalCountEl.textContent = labels.filter(l => l !== null).length;
     }
 
     function toggle(btn){
       const idx = +btn.dataset.idx;
-      // ✅ 特殊処理が必要なプリセット
       const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
 
       // 最後のマスはクリック禁止
@@ -523,7 +519,6 @@
         b.setAttribute('aria-pressed','false');
       });
 
-      // ✅ 現在のプリセットの保存データを削除
       localStorage.removeItem(getStorageKey(presetEl.value));
 
       updateCounts(); // カウントを更新し、特殊解除を再評価
@@ -644,6 +639,7 @@
       const rewardBtn = document.getElementById('rewardBtn');
       let shouldShowRewardBtn = false;
       if (presetEl.value === "syaken-A") {
+          // syaken-Aの伝説級(legendary)実績のいずれかが点灯しているかをチェック
           const anyLegendaryLitInSyakenA = Array.from(legendary).some(idx => {
               const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
               return btn && btn.classList.contains('lit');
@@ -793,7 +789,6 @@
 
       // 最後に選択したプリセットを保存
       localStorage.setItem('lastPreset', newPreset);
-      // checkProgressButtons は load の中で呼ばれるか、updateCounts の中で呼ばれる
     });
 
     resetBtn.addEventListener('click', resetAll);
@@ -830,7 +825,7 @@
 
       // 青 70%を超えたら青ボタンを表示 -> 70%以上なら表示に修正
       const rewardBtnSpecial = document.getElementById("rewardBtnSpecial");
-      if (parseFloat(percent) >= 70) { // ここを >= に変更
+      if (parseFloat(percent) >= 70) {
         rewardBtnSpecial.style.display = "inline-block";
       } else {
         rewardBtnSpecial.style.display = "none";
@@ -850,11 +845,6 @@
       
       usePreset(initialPreset); // 初回表示
       load(initialPreset);      // 保存データを読み込み
-
-      // ページ初期表示時にカウントと全体進捗を更新
-      // load()の中で updateCounts() が呼ばれるので、ここでは不要
-      // updateCounts(); // ここは削除
-      // updateGlobalProgress(); // updateCounts() の中で呼ばれるのでここでは削除
     });
 
   </script>
