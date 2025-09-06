@@ -110,22 +110,22 @@
       background: radial-gradient(120px 120px at 30% 20%, rgba(76,175,80,.20), transparent), #0f1419;
     }
     .cell button.lit img,
-.cell button.lit .cell-text {
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(76, 255, 80, 0.8));
-  transition: filter 0.3s ease;
-}
+    .cell button.lit .cell-text {
+      filter: brightness(1.3) drop-shadow(0 0 10px rgba(76, 255, 80, 0.8));
+      transition: filter 0.3s ease;
+    }
 
-.cell button.legendary.lit {
-  box-shadow: 0 0 0 1px rgba(244,197,66,.45),
-              0 6px 26px 0 rgba(244,197,66,.35),
-              inset 0 0 22px rgba(244,197,66,.3);
-  background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
-}
+    .cell button.legendary.lit {
+      box-shadow: 0 0 0 1px rgba(244,197,66,.45),
+                  0 6px 26px 0 rgba(244,197,66,.35),
+                  inset 0 0 22px rgba(244,197,66,.3);
+      background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
+    }
 
-.cell button.legendary.lit img,
-.cell button.legendary.lit .cell-text {
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 120, 0.9));
-}
+    .cell button.legendary.lit img,
+    .cell button.legendary.lit .cell-text {
+      filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 120, 0.9));
+    }
 
     .cell button.lit::after {
       content:"";
@@ -137,12 +137,7 @@
     }
     
     .cell button.legendary { border-color: rgba(244,197,66,.7); }
-    .cell button.legendary.lit {
-      box-shadow: 0 0 0 1px rgba(244,197,66,.45),
-                  0 6px 26px 0 rgba(244,197,66,.35),
-                  inset 0 0 22px rgba(244,197,66,.3);
-      background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
-    }
+
     .footer {
       display:flex;
       justify-content: space-between;
@@ -161,13 +156,6 @@
       .cell button .label { font-size: 10px; }
       .cell button .badge { font-size: 9px; padding: 2px 6px; }
       h1 { font-size: 16px; }
-
-      /* ✅ 追加: タイトルと進捗ボタンは横並び維持 */
-  .title-row {
-    flex-direction: row;
-    flex-wrap: wrap; /* 狭ければ折り返す */
-  }
-      
     }
 
     .cell {
@@ -197,108 +185,103 @@
     }
 
     /* 緑の報酬ボタン */
-#rewardBtn {
-  position: relative;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(76,175,80,0.6), 0 0 20px rgba(76,175,80,0.5);
-  transition: transform 0.1s ease, box-shadow 0.3s ease;
-}
+    #rewardBtn {
+      position: relative;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(76,175,80,0.6), 0 0 20px rgba(76,175,80,0.5);
+      transition: transform 0.1s ease, box-shadow 0.3s ease;
+    }
 
-#rewardBtn:hover {
-  box-shadow: 0 0 15px rgba(76,175,80,0.8), 0 0 30px rgba(76,175,80,0.7);
-  transform: scale(1.05);
-}
+    #rewardBtn:hover {
+      box-shadow: 0 0 15px rgba(76,175,80,0.8), 0 0 30px rgba(76,175,80,0.7);
+      transform: scale(1.05);
+    }
 
-/* 青の報酬ボタン（光り方の強さを緑と同じに統一） */
-#rewardBtnSpecial {
-  display: none;
-  margin-left: 8px;
-  position: relative;
-  border: 1px solid #007bff;
-  background: #0056b3;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 12px;
-  padding: 8px 12px;
-  box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5); /* 緑と同じ強さに変更 */
-  transition: transform 0.1s ease, box-shadow 0.3s ease;
-}
+    /* 青の報酬ボタン（光り方の強さを緑と同じに統一） */
+    #rewardBtnSpecial {
+      display: none;
+      margin-left: 8px;
+      position: relative;
+      border: 1px solid #007bff;
+      background: #0056b3;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 8px 12px;
+      box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5); /* 緑と同じ強さに変更 */
+      transition: transform 0.1s ease, box-shadow 0.3s ease;
+    }
 
-#rewardBtnSpecial:hover {
-  box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7); /* 緑と同じ強さに変更 */
-  transform: scale(1.05);
-}
+    #rewardBtnSpecial:hover {
+      box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7); /* 緑と同じ強さに変更 */
+      transform: scale(1.05);
+    }
 
-/* 押せない状態でも光らせる場合 */
-#rewardBtn.disabled {
-  cursor: default;
-  opacity: 1;
-  box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
-}
+    /* 押せない状態でも光らせる場合 */
+    #rewardBtn.disabled {
+      cursor: default;
+      opacity: 1;
+      box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
+    }
 
-/* h1 と進捗ボタンを横並びにする */
-.title-row {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* h1 とボタンの間の余白 */
-}
+    /* h1 と進捗ボタンを横並びにする */
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px; /* h1 とボタンの間の余白 */
+      flex-wrap: wrap; /* スマホで折り返すように */
+    }
 
-/* 進捗ボタン群 */
-.progress-btns {
-  display: flex;
-  gap: 6px;
-}
+    /* 進捗ボタン群 */
+    .progress-btns {
+      display: flex;
+      gap: 6px;
+    }
 
     #globalProgressBtn {
-  background: #222;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 6px 12px;
-  font-size: 13px;
-  color: #aaa;
-  pointer-events: none; /* 押せない */
-}
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #aaa;
+      pointer-events: none; /* 押せない */
+    }
 
+    .progress-btns button {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #aaa;
+      font-weight: bold;
+      pointer-events: none; /* 押せない */
+    }
 
-.progress-btns button {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #222;
-  border: 1px solid #444;
-  color: #aaa;
-  font-weight: bold;
-  pointer-events: none; /* 押せない */
-}
-
-.progress-btns button.lit {
-  background: #0f1419;
-  border-color: rgba(76, 175, 80, .7);
-  color: #fff;
-  box-shadow: 0 0 0 1px rgba(76, 175, 80, .35),
-              0 4px 12px rgba(76, 175, 80, .4),
-              inset 0 0 18px rgba(76, 175, 80, .25);
-}
-
-
+    .progress-btns button.lit {
+      background: #0f1419;
+      border-color: rgba(76, 175, 80, .7);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(76, 175, 80, .35),
+                  0 4px 12px rgba(76, 175, 80, .4),
+                  inset 0 0 18px rgba(76, 175, 80, .25);
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
       <div class="title-row">
-      <h1>2025夏合宿 実績解除</h1>
-    </div>
-      <!-- ✅ 全体進捗ボタンをここに追加 -->
-  <div style="margin: 6px 0 12px;">
-    <button id="globalProgressBtn" disabled>0 / 0 解放</button>
-  </div>
+        <h1>2025夏合宿 実績解除</h1>
+        <button id="globalProgressBtn" disabled>0 / 0 解放</button>
+      </div>
       
       <div class="controls">
         <select id="preset">
@@ -310,15 +293,13 @@
         </select>
         <button id="reset">すべて消灯</button>
         <div id="progressBtns" class="progress-btns">
-    <button id="pb1" disabled>1</button>
-    <button id="pb2" disabled>2</button>
-    <button id="pb3" disabled>3</button>
-    <button id="pb4" disabled>4</button>
-    <button id="pb5" disabled>5</button>
-      </div>
-        <!-- ✅ 報酬獲得ボタン -->
+          <button id="pb1" disabled>1</button>
+          <button id="pb2" disabled>2</button>
+          <button id="pb3" disabled>3</button>
+          <button id="pb4" disabled>4</button>
+          <button id="pb5" disabled>5</button>
+        </div>
         <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
-        <!--  特別報酬ボタン -->
         <button id="rewardBtnSpecial">報酬獲得！</button>
       </div>
     </header>
@@ -338,106 +319,28 @@
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
     const totalCountEl = document.getElementById('totalCount');
-
-    // ✅ 全体進捗ボタンの参照
-const globalProgressBtn = document.getElementById("globalProgressBtn");
-
-// ✅ 全体進捗更新関数
-    function updateGlobalProgress() {
-  let total = 0;
-  let lit = 0;
-
-  for (const key in PRESETS) {
-    const presetData = PRESETS[key];
-    const labels = presetData.labels;
-
-    for (let i = 0; i < labels.length; i++) {
-      if (labels[i] === null) continue; // 無効セルは除外
-      total++;
-
-      if (key === presetEl.value) {
-        // ✅ 表示中プリセットは DOM を参照
-        const btn = cellsEl.querySelector(`button[data-idx="${i}"]`);
-        if (btn && btn.classList.contains("lit")) {
-          lit++;
-        }
-      } else {
-        // ✅ 他プリセットは保存値を参照
-        const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
-        if (saved.lit && saved.lit.includes(i)) {
-          lit++;
-        }
-      }
-    }
-  }
-
-  const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
-  globalProgressBtn.textContent = `${lit} / ${total} 解放 (${percent}%)`;
-
-  // 青 70%を超えたら青ボタンを表示
-  const rewardBtnSpecial = document.getElementById("rewardBtnSpecial");
-  if (parseFloat(percent) > 70) {
-    rewardBtnSpecial.style.display = "inline-block";
-  } else {
-    rewardBtnSpecial.style.display = "none";
-  }
-}
-
+    const globalProgressBtn = document.getElementById("globalProgressBtn");
 
     const PRESETS = {
       "tenkenmin": {
         size:[17,3],
         labels:[
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//10
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//20
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//30
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//40
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//45
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//50
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, //10-12
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, //20-22
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, //30-32
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, //40-42
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, {img:"実績解除画像/ex001.jpg",text:"けた"}, //50-52 (51個目まで)
           {img:"実績解除画像/ex051.jpg",text:"全員達成"},
         ],
         legendary:[50]
@@ -529,427 +432,430 @@ const globalProgressBtn = document.getElementById("globalProgressBtn");
           {img:"実績解除画像/sy013.jpg",text:"実績達成"},
           null,
           null,
-  ],
-  legendary:[10,11,12]
-},
-
+        ],
+        legendary:[10,11,12]
+      },
     };
     
     let R = 4, C = 5;
     let labels = [];
     let legendary = new Set();
+    let currentPreset = presetEl.value; // ✅ 初期化をここで
 
     function buildGrid(r=R, c=C, givenLabels=null) {
-  R = r;
-  C = c;
-  cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
+      R = r;
+      C = c;
+      cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
 
-  if (givenLabels && givenLabels.length) {
-    labels = givenLabels;
-  } else {
-    labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
-  }
-  
-  cellsEl.innerHTML = '';
-    let effectiveCount = 0;
+      if (givenLabels && givenLabels.length) {
+        labels = givenLabels;
+      } else {
+        labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
+      }
+      
+      cellsEl.innerHTML = '';
 
-for (let i=0; i<r*c; i++) {
-  const label = labels[i] || null;
-  const cell = document.createElement('div');
-  cell.className = 'cell';
-  
-  if (label === null) {
-    cellsEl.appendChild(cell);
-    continue;
-  }
+      for (let i=0; i<r*c; i++) {
+        const label = labels[i] || null;
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        
+        if (label === null) {
+          cellsEl.appendChild(cell);
+          continue;
+        }
 
-  effectiveCount++; // ✅ null でなければ必ずカウント（legendary も含む）
-  
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.idx = i;
+        btn.setAttribute('aria-pressed', 'false');
+        if (legendary.has(i)) btn.classList.add('legendary');
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.dataset.idx = i;
-    btn.setAttribute('aria-pressed', 'false');
-    if (legendary.has(i)) btn.classList.add('legendary');
+        let imgSrc = "images/placeholder.png";
+        let textLabel = "";
 
-    let imgSrc = "images/placeholder.png";
-    let textLabel = "";
+        if (typeof label === "object") {
+          imgSrc = label.img || imgSrc;
+          textLabel = label.text || "";
+        } else if (typeof label === "string") {
+          if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
+          else textLabel = label;
+        }
 
-    if (typeof label === "object") {
-      imgSrc = label.img || imgSrc;
-      textLabel = label.text || "";
-    } else if (typeof label === "string") {
-      if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
-      else textLabel = label;
+        btn.innerHTML =`
+          <span class="badge">#${i+1}</span>
+          <img src="${imgSrc}" alt="" loading="lazy">
+          <span class="cell-text">${textLabel}</span>`;
+
+        btn.addEventListener('click', () => toggle(btn));
+        cell.appendChild(btn);
+        cellsEl.appendChild(cell);
+      }
+      // buildGrid からの updateCounts と totalCountEl 更新を削除。
+      // load() が呼ばれた時に updateCounts が実行されるため重複を避ける。
+      // totalCountEl.textContent = labels.filter(l => l !== null).length;
     }
 
-    btn.innerHTML =`
-      <span class="badge">#${i+1}</span>
-      <img src="${imgSrc}" alt="" loading="lazy">
-      <span class="cell-text">${textLabel}</span>`;
-
-    btn.addEventListener('click', () => toggle(btn));
-    cell.appendChild(btn);
-    cellsEl.appendChild(cell);
-  }
-
-  updateCounts();
-  totalCountEl.textContent = labels.filter(l => l !== null).length;  
-}
-
     function toggle(btn){
-  const idx = +btn.dataset.idx;
-  // ✅ 特殊処理が必要なプリセット
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
+      const idx = +btn.dataset.idx;
+      // ✅ 特殊処理が必要なプリセット
+      const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
 
-  // 最後のマスはクリック禁止
-  if (specialPresets.includes(presetEl.value)) {
-    const allBtns = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null);
-const lastBtn = allBtns[allBtns.length - 1];
-if (btn === lastBtn) return;
+      // 最後のマスはクリック禁止
+      if (specialPresets.includes(presetEl.value)) {
+        const allBtns = Array.from(cellsEl.querySelectorAll('button'))
+                        .filter(b => labels[b.dataset.idx] !== null);
+        const lastBtn = allBtns[allBtns.length - 1];
+        if (btn === lastBtn) return;
+      }
 
-  }
-
-  const lit = btn.classList.toggle('lit');
-  btn.setAttribute('aria-pressed', String(lit));
-  updateCounts();
-  save();//クリックごとに自動保存
+      const lit = btn.classList.toggle('lit');
+      btn.setAttribute('aria-pressed', String(lit));
+      updateCounts();
+      save();//クリックごとに自動保存
       checkProgressButtons();
-}
+    }
 
     function resetAll() {
-  // 表示中のセルを消灯
-  cellsEl.querySelectorAll('button.lit').forEach(b => {
-    b.classList.remove('lit');
-    b.setAttribute('aria-pressed','false');
-  });
+      // 表示中のセルを消灯
+      cellsEl.querySelectorAll('button.lit').forEach(b => {
+        b.classList.remove('lit');
+        b.setAttribute('aria-pressed','false');
+      });
 
-  updateCounts();
+      // ✅ 現在のプリセットの保存データを削除
+      localStorage.removeItem(getStorageKey(presetEl.value));
 
-  // ✅ 現在のプリセットの保存データを削除
-  localStorage.removeItem(getStorageKey(presetEl.value));
-
-  // ✅ インジケータ更新（このプリセットの光も消える）
-  checkProgressButtons(presetEl.value);
-}
+      updateCounts(); // カウントを更新し、特殊解除を再評価
+      checkProgressButtons(); // インジケータ更新（このプリセットの光も消える）
+    }
 
     function updateCounts(){
       // ✅ stargazing-specialist 専用処理
-  if (presetEl.value === "stargazing-specialist") {
-    const allButtons = Array.from(cellsEl.querySelectorAll('button[data-idx]'));
-    const lastBtn = cellsEl.querySelector('button[data-idx="25"]'); // #26
-    if (lastBtn) {
-      // 1〜5 番
-      const firstSixLit = [0,1,2,3,4].every(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
+      if (presetEl.value === "stargazing-specialist") {
+        const allButtons = Array.from(cellsEl.querySelectorAll('button[data-idx]'));
+        const lastBtn = cellsEl.querySelector('button[data-idx="25"]'); // #26
+        if (lastBtn) {
+          // 最初の5つ (インデックス0〜4)
+          const firstFiveLit = [0,1,2,3,4].every(i =>
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
 
-      // 6〜25 番
-      let litCount = 0;
-      for (let i = 5; i <= 24; i++) {
-        if (cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')) {
-          litCount++;
+          // 6〜25 番 (インデックス5〜24)
+          let litCount = 0;
+          for (let i = 5; i <= 24; i++) {
+            if (cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')) {
+              litCount++;
+            }
+          }
+
+          if (firstFiveLit && litCount >= 15) {
+            lastBtn.classList.add('lit');
+            lastBtn.setAttribute('aria-pressed','true');
+          } else {
+            lastBtn.classList.remove('lit');
+            lastBtn.setAttribute('aria-pressed','false');
+          }
         }
       }
 
-      if (firstSixLit && litCount >= 15) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }
-  }
+      // ✅ MVP専用処理
+      if (presetEl.value === "mvp") {
+        let lastIdx = labels.length - 1;
+        while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
+        const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+        if (lastBtn) {
+          const participate = [0, 3, 6].some(i => // どれか一つでも参加があれば
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
+          const champion = [1, 4, 7].some(i => // どれか一つでも優勝があれば
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
+          const mvp = [2, 5, 8].some(i => // どれか一つでもMVPがあれば
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
 
-      // ✅ syaken-A 専用処理（緑ボタンの表示判定）
-  if (presetEl.value === "syaken-A") {
-    const rewardBtn = document.getElementById("rewardBtn");
-    const lastIdx = labels.findIndex(l => l && l.text === "実績達成"); // 実績達成セルの位置
-    if (lastIdx >= 0) {
-      const btnLast   = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-      const btnPrev1  = cellsEl.querySelector(`button[data-idx="${lastIdx-1}"]`);
-      const btnPrev2  = cellsEl.querySelector(`button[data-idx="${lastIdx-2}"]`);
-
-      if ((btnLast   && btnLast.classList.contains("lit")) ||
-          (btnPrev1  && btnPrev1.classList.contains("lit")) ||
-          (btnPrev2  && btnPrev2.classList.contains("lit"))) {
-        rewardBtn.style.display = "inline-block";
-      } else {
-        rewardBtn.style.display = "none";
-      }
-    }
-  } else {
-    // 他のプリセットでは非表示
-    document.getElementById("rewardBtn").style.display = "none";
-  }
-
-  // ✅ tenkenmin / explorer / syaken-A の特殊処理
-  const specialPresets = ["tenkenmin", "top-adventure-explorer"];
-  if (specialPresets.includes(presetEl.value)) {
-    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null)
-                      .pop();
-    if (lastBtn) {
-      const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
-
-      if (presetEl.value === "syaken-A") {
-        // --- syaken-A の特殊条件 ---
-        const excludeIdx = [lastIdx, lastIdx - 1, lastIdx - 2];
-
-         // 「最後・最後の1つ前・最後の2つ前」を除外して判定
-  const otherBtns = Array.from(allButtons)
-    .filter(b => !excludeIdx.includes(+b.dataset.idx));
-        
-      const allLit = otherBtns.every(b => b.classList.contains('lit'));
-      if (allLit) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }else {
-        // --- tenkenmin / explorer は従来通り「最後以外すべて」 ---
-        const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
-        const allLit = otherBtns.every(b => b.classList.contains('lit'));
-
-        if (allLit) {
-          lastBtn.classList.add('lit');
-          lastBtn.setAttribute('aria-pressed', 'true');
-        } else {
-          lastBtn.classList.remove('lit');
-          lastBtn.setAttribute('aria-pressed', 'false');
+          if ((participate || champion || mvp)) { // どれか一つでも条件を満たせば
+            lastBtn.classList.add('lit');
+            lastBtn.setAttribute('aria-pressed','true');
+          } else {
+            lastBtn.classList.remove('lit');
+            lastBtn.setAttribute('aria-pressed','false');
+          }
         }
       }
-  
-      
-  }
 
-  // ✅ MVP専用処理
-  if (presetEl.value === "mvp") {
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn) {
-      const participate = [0, 3, 6].every(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const champion = [1, 4, 7].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const mvp = [2, 5, 8].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
+      // ✅ tenkenmin / explorer / syaken-A の特殊処理 (最後が自動解除されるプリセット)
+      const specialPresetsForLastBtn = ["tenkenmin", "top-adventure-explorer", "syaken-A"];
+      if (specialPresetsForLastBtn.includes(presetEl.value)) {
+          const allButtons = cellsEl.querySelectorAll('button[data-idx]');
+          const lastBtnCandidate = Array.from(cellsEl.querySelectorAll('button'))
+                          .filter(b => labels[b.dataset.idx] !== null)
+                          .pop();
 
-      if (participate && champion && mvp) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
+          let lastIdx = -1;
+          if (lastBtnCandidate) {
+              lastIdx = +lastBtnCandidate.dataset.idx;
+          }
+
+          if (lastIdx !== -1) { // lastBtnCandidate が存在する場合のみ処理
+              if (presetEl.value === "syaken-A") {
+                  // --- syaken-A の特殊条件 (伝説級以外がすべて点灯で最後が解除) ---
+                  const excludeIdx = legendary.has(lastIdx) ? Array.from(legendary) : [lastIdx]; // 伝説級があればそれらを除外、なければ最後のボタンのみ除外
+                  
+                  const otherBtns = Array.from(allButtons)
+                                      .filter(b => !excludeIdx.includes(+b.dataset.idx));
+                  
+                  const allLit = otherBtns.every(b => b.classList.contains('lit'));
+                  if (allLit) {
+                      lastBtnCandidate.classList.add('lit');
+                      lastBtnCandidate.setAttribute('aria-pressed','true');
+                  } else {
+                      lastBtnCandidate.classList.remove('lit');
+                      lastBtnCandidate.setAttribute('aria-pressed','false');
+                  }
+              } else {
+                  // --- tenkenmin / explorer は従来通り「最後以外すべて」 ---
+                  const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
+                  const allLit = otherBtns.every(b => b.classList.contains('lit'));
+
+                  if (allLit) {
+                      lastBtnCandidate.classList.add('lit');
+                      lastBtnCandidate.setAttribute('aria-pressed', 'true');
+                  } else {
+                      lastBtnCandidate.classList.remove('lit');
+                      lastBtnCandidate.setAttribute('aria-pressed', 'false');
+                  }
+              }
+          }
       }
-    }
-  }
 
-       // ✅ litCount を正しく計算（legendary も含む）
-  const litButtons = Array.from(cellsEl.querySelectorAll('button.lit'))
-    .filter(b => labels[b.dataset.idx] !== null);  // 無効セル(null)は除外、legendaryは含む
+      // ✅ litCount を正しく計算（legendary も含む）
+      const litButtons = Array.from(cellsEl.querySelectorAll('button.lit'))
+        .filter(b => labels[b.dataset.idx] !== null); // 無効セル(null)は除外
 
-  litCountEl.textContent = litButtons.length;
+      litCountEl.textContent = litButtons.length;
+      totalCountEl.textContent = labels.filter(l => l !== null).length; // totalCountEl もここで更新
 
       // ✅ 全体進捗も更新
-updateGlobalProgress();
+      updateGlobalProgress();
 
-  // ✅ 報酬獲得ボタン制御
-  const rewardBtn = document.getElementById('rewardBtn');
-  const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
-      
-  if (anyLegendaryLit) {
-    rewardBtn.style.display = "inline-block";
-    rewardBtn.disabled = false;
-  } else {
-    rewardBtn.style.display = "none";
-    rewardBtn.disabled = true;
-  }
+      // ✅ 報酬獲得ボタン制御 (syaken-Aのlegendaryが点灯しているか)
+      const rewardBtn = document.getElementById('rewardBtn');
+      let shouldShowRewardBtn = false;
+      if (presetEl.value === "syaken-A") {
+          const anyLegendaryLitInSyakenA = Array.from(legendary).some(idx => {
+              const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+              return btn && btn.classList.contains('lit');
+          });
+          if (anyLegendaryLitInSyakenA) {
+              shouldShowRewardBtn = true;
+          }
+      }
+          
+      if (shouldShowRewardBtn) {
+          rewardBtn.style.display = "inline-block";
+          rewardBtn.disabled = false;
+      } else {
+          rewardBtn.style.display = "none";
+          rewardBtn.disabled = true;
+      }
+
       // ✅ 進捗インジケーター更新
-  checkProgressButtons();
-      
-}
+      checkProgressButtons();
+    }
 
     // 進捗インジケーター更新
     function checkProgressButtons(activePresetKey = null) {
-  Object.entries(PRESETS).forEach(([key, preset]) => {
-    const btnId = {
-      "tenkenmin": "pb1",
-      "stargazing-specialist": "pb2",
-      "mvp": "pb3",
-      "top-adventure-explorer": "pb4",
-      "syaken-A": "pb5"
-    }[key];
+      Object.entries(PRESETS).forEach(([key, preset]) => {
+        const btnId = {
+          "tenkenmin": "pb1",
+          "stargazing-specialist": "pb2",
+          "mvp": "pb3",
+          "top-adventure-explorer": "pb4",
+          "syaken-A": "pb5"
+        }[key];
 
-    if (!btnId) return;
+        if (!btnId) return;
 
-    const pb = document.getElementById(btnId);
-    if (!pb) return;
+        const pb = document.getElementById(btnId);
+        if (!pb) return;
 
-    // --- 保存データを取得 ---
-    let lit = [];
-    const raw = localStorage.getItem(getStorageKey(key));
-    if (raw) {
-      try {
-        const data = JSON.parse(raw);
-        if (data && Array.isArray(data.lit)) {
-          lit = data.lit;
+        // --- 保存データを取得 ---
+        let isLastLitInStorage = false;
+        const raw = localStorage.getItem(getStorageKey(key));
+        if (raw) {
+          try {
+            const data = JSON.parse(raw);
+            if (data && Array.isArray(data.lit)) {
+              // labels の末尾から null をスキップして最後の有効セルを取得
+              let lastIdx = preset.labels.length - 1;
+              while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+                lastIdx--;
+              }
+              isLastLitInStorage = data.lit.includes(lastIdx);
+            }
+          } catch (e) {
+            console.error("parse failed", e);
+          }
         }
-      } catch (e) {
-        console.error("parse failed", e);
-      }
+
+        // --- アクティブなプリセットは DOM を優先 ---
+        if (key === presetEl.value) { // activePresetKeyではなく、常に現在の表示プリセットをDOMでチェック
+          let lastIdx = preset.labels.length - 1;
+          while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+            lastIdx--;
+          }
+          const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+          if (lastBtn && lastBtn.classList.contains("lit")) {
+            pb.classList.add("lit");
+            pb.setAttribute("aria-pressed", "true");
+          } else {
+            pb.classList.remove("lit");
+            pb.setAttribute("aria-pressed", "false");
+          }
+        } else {
+          // 非表示のプリセットは保存データに基づいてインジケーターを更新
+          if (isLastLitInStorage) {
+            pb.classList.add("lit");
+            pb.setAttribute("aria-pressed", "true");
+          } else {
+            pb.classList.remove("lit");
+            pb.setAttribute("aria-pressed", "false");
+          }
+        }
+      });
     }
 
-    // --- labels の末尾から null をスキップして最後の有効セルを取得 ---
-    let lastIdx = preset.labels.length - 1;
-    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-      lastIdx--;
-    }
-
-    // --- アクティブなプリセットは DOM を優先 ---
-    if (key === activePresetKey) {
-      const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-      if (lastBtn && lastBtn.classList.contains("lit")) {
-        lit = [lastIdx]; // 強制的に「点灯中」とする
-      } else {
-        lit = lit.filter(idx => idx === lastIdx);
-      }
-    }
-
-    // --- インジケータ更新 ---
-    if (lit.includes(lastIdx)) {
-      pb.classList.add("lit");
-      pb.setAttribute("aria-pressed", "true");
-    } else {
-      pb.classList.remove("lit");
-      pb.setAttribute("aria-pressed", "false");
-    }
-  });
-}
-
-    
     function getStorageKey(presetName) {
-  return `achievements-${presetName}`;
-}
+      return `achievements-${presetName}`;
+    }
 
-    function loadVisibleTabImages() {
-  const imgs = cellsEl.querySelectorAll('img[data-src]');
-  imgs.forEach(img => {
-    img.src = img.dataset.src;
-    img.removeAttribute('data-src');
-  });
-}
-    
     function save(presetName = presetEl.value) {
-  const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
-    .map(b => +b.dataset.idx);
+      const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
+        .map(b => +b.dataset.idx);
 
-  const data = { lit };
-
-  // ✅ プリセット名ごとにキーを分ける
-  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
-}
+      const data = { lit };
+      localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
+    }
 
     // ✅ 状態読み込み
-function load(presetName = presetEl.value) {
-  const raw = localStorage.getItem(getStorageKey(presetName));
-  if (!raw) return;
-  try {
-    const data = JSON.parse(raw);
-    if (!data || !Array.isArray(data.lit)) return;
+    function load(presetName = presetEl.value) {
+      const raw = localStorage.getItem(getStorageKey(presetName));
+      // 一度すべて消灯
+      cellsEl.querySelectorAll('button').forEach(b=>{
+        b.classList.remove('lit');
+        b.setAttribute('aria-pressed','false');
+      });
 
-    // 一度すべて消灯
-    cellsEl.querySelectorAll('button').forEach(b=>{
-      b.classList.remove('lit');
-      b.setAttribute('aria-pressed','false');
-    });
-
-    // 保存されていたインデックスを再点灯
-    data.lit.forEach(idx=>{
-      const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
-      if (btn) {
-        btn.classList.add('lit');
-        btn.setAttribute('aria-pressed','true');
+      if (!raw) {
+        updateCounts(); // 保存データがない場合もカウントを更新し、特殊解除を再評価
+        return;
       }
-    });
+      try {
+        const data = JSON.parse(raw);
+        if (!data || !Array.isArray(data.lit)) {
+          updateCounts(); // データが不正な場合もカウントを更新
+          return;
+        }
 
-    updateCounts();
-  } catch(e) {
-    console.error("load failed", e);
-  }
-  // ✅ 進捗インジケーター更新
-    checkProgressButtons();
-}
+        // 保存されていたインデックスを再点灯
+        data.lit.forEach(idx=>{
+          const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+          if (btn) {
+            btn.classList.add('lit');
+            btn.setAttribute('aria-pressed','true');
+          }
+        });
+
+        updateCounts();
+      } catch(e) {
+        console.error("load failed", e);
+        updateCounts(); // エラー時もカウントを更新
+      }
+    }
 
     function usePreset(name){
       const p = PRESETS[name];
       if (!p) return;
       legendary = new Set(p.legendary || []);
       buildGrid(p.size[0], p.size[1], p.labels);
-      //save();
     }
-    let currentPreset = presetEl.value;  // ✅ 追加：最初に現在のプリセットを保持
-
+    
     presetEl.addEventListener('change', (e)=>{
-  const newPreset = e.target.value;
-  if (!newPreset) return;
+      const newPreset = e.target.value;
+      if (!newPreset) return;
 
-  save(currentPreset);        // 旧プリセットを保存
-  usePreset(newPreset);       // 新プリセットに切替
-  load(newPreset);            // ✅ 新プリセットの保存済み状態を読み込み
-  currentPreset = newPreset;  // 更新
+      save(currentPreset);        // 旧プリセットを保存
+      usePreset(newPreset);       // 新プリセットに切替 (DOM再構築)
+      load(newPreset);            // 新プリセットの保存済み状態を読み込み
+      currentPreset = newPreset;  // 更新
 
-      // ✅ 最後に選択したプリセットを保存
-  localStorage.setItem('lastPreset', newPreset);
-});
+      // 最後に選択したプリセットを保存
+      localStorage.setItem('lastPreset', newPreset);
+      // checkProgressButtons は load の中で呼ばれるか、updateCounts の中で呼ばれる
+    });
 
     resetBtn.addEventListener('click', resetAll);
 
-    // ✅ 最後に選択したプリセットを取得
-const lastPreset = localStorage.getItem('lastPreset');
-if (lastPreset && PRESETS[lastPreset]) {
-  presetEl.value = lastPreset;
-  currentPreset = lastPreset;
-  // ページ初期表示時にプリセットと保存データを読み込む
-    usePreset(presetEl.value);
-    load();    
-}
-    // ✅ プリセット変更時
-presetEl.addEventListener('change', () => {
-  save(presetEl.value); // ← 切り替え前のプリセットを保存
-  localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
+    // ✅ 全体進捗更新関数
+    function updateGlobalProgress() {
+      let total = 0;
+      let lit = 0;
 
-  currentPreset = presetEl.value; // ← 現在のプリセット更新
-  legendary = new Set(PRESETS[presetEl.value].legendary || []);
-  buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
-  load(presetEl.value);
+      for (const key in PRESETS) {
+        const presetData = PRESETS[key];
+        const labels = presetData.labels;
 
-  loadVisibleTabImages();
-});
+        // nullでない有効な実績数をカウント
+        const currentPresetTotal = labels.filter(l => l !== null).length;
+        total += currentPresetTotal;
 
-// ✅ ページ読み込み時
-window.addEventListener('DOMContentLoaded', () => {
-  const last = localStorage.getItem("lastPreset") || "tenkenmin";
-  presetEl.value = last;
-  legendary = new Set(PRESETS[last].legendary || []);
-  buildGrid(...PRESETS[last].size, PRESETS[last].labels);
-  load(last);
+        if (key === presetEl.value) {
+          // ✅ 表示中プリセットは DOM を参照
+          lit += Array.from(cellsEl.querySelectorAll('button.lit'))
+                      .filter(b => labels[b.dataset.idx] !== null)
+                      .length;
+        } else {
+          // ✅ 他プリセットは保存値を参照
+          const saved = JSON.parse(localStorage.getItem(getStorageKey(key)) || "{}");
+          if (saved.lit && Array.isArray(saved.lit)) {
+            lit += saved.lit.filter(idx => presetData.labels[idx] !== null).length;
+          }
+        }
+      }
 
-  loadVisibleTabImages();
+      const percent = total > 0 ? ((lit / total) * 100).toFixed(1) : "0.0";
+      globalProgressBtn.textContent = `${lit} / ${total} 解放 (${percent}%)`;
 
-  // ✅ ページ初期表示時にカウントと全体進捗を更新
-  updateCounts();
-  updateGlobalProgress();
-});
+      // 青 70%を超えたら青ボタンを表示 -> 70%以上なら表示に修正
+      const rewardBtnSpecial = document.getElementById("rewardBtnSpecial");
+      if (parseFloat(percent) >= 70) { // ここを >= に変更
+        rewardBtnSpecial.style.display = "inline-block";
+      } else {
+        rewardBtnSpecial.style.display = "none";
+      }
+    }
+
+    // ✅ ページ読み込み時
+    window.addEventListener('DOMContentLoaded', () => {
+      const last = localStorage.getItem("lastPreset");
+      let initialPreset = "tenkenmin"; // デフォルトプリセット
+      if (last && PRESETS[last]) {
+        initialPreset = last;
+      }
+      
+      presetEl.value = initialPreset;
+      currentPreset = initialPreset; // currentPresetもここで初期化
+      
+      usePreset(initialPreset); // 初回表示
+      load(initialPreset);      // 保存データを読み込み
+
+      // ページ初期表示時にカウントと全体進捗を更新
+      // load()の中で updateCounts() が呼ばれるので、ここでは不要
+      // updateCounts(); // ここは削除
+      // updateGlobalProgress(); // updateCounts() の中で呼ばれるのでここでは削除
+    });
 
   </script>
 </body>
