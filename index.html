@@ -196,20 +196,6 @@
       font-size: 12px;
     }
 
-    /* 報酬獲得ボタンの文字を白に、金色グロー */
-#rewardBtn {
-  position: relative;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff; /*白文字*/
-  font-weight: bold;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.1s ease, box-shadow 0.3s ease;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(244,197,66,0.5), 0 0 18px rgba(244,197,66,0.4);
-}
-
     /* 緑の報酬ボタン */
 #rewardBtn {
   position: relative;
@@ -228,7 +214,7 @@
   transform: scale(1.05);
 }
 
-/* 青の報酬ボタン（緑と同じ光り方に統一） */
+/* 青の報酬ボタン（光り方の強さを緑と同じに統一） */
 #rewardBtnSpecial {
   display: none;
   margin-left: 8px;
@@ -240,24 +226,17 @@
   cursor: pointer;
   border-radius: 12px;
   padding: 8px 12px;
-  box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5);
+  box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5); /* 緑と同じ強さに変更 */
   transition: transform 0.1s ease, box-shadow 0.3s ease;
 }
 
 #rewardBtnSpecial:hover {
-  box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7);
+  box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7); /* 緑と同じ強さに変更 */
   transform: scale(1.05);
 }
 
-
 /* 押せない状態でも光らせる場合 */
 #rewardBtn.disabled {
-  cursor: default;
-  opacity: 1;
-  box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
-}
-
-    #rewardBtn.disabled {
   cursor: default;
   opacity: 1;
   box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
@@ -684,9 +663,30 @@ if (btn === lastBtn) return;
     }
   }
 
-      
+      // ✅ syaken-A 専用処理（緑ボタンの表示判定）
+  if (presetEl.value === "syaken-A") {
+    const rewardBtn = document.getElementById("rewardBtn");
+    const lastIdx = labels.findIndex(l => l && l.text === "実績達成"); // 実績達成セルの位置
+    if (lastIdx >= 0) {
+      const btnLast   = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+      const btnPrev1  = cellsEl.querySelector(`button[data-idx="${lastIdx-1}"]`);
+      const btnPrev2  = cellsEl.querySelector(`button[data-idx="${lastIdx-2}"]`);
+
+      if ((btnLast   && btnLast.classList.contains("lit")) ||
+          (btnPrev1  && btnPrev1.classList.contains("lit")) ||
+          (btnPrev2  && btnPrev2.classList.contains("lit"))) {
+        rewardBtn.style.display = "inline-block";
+      } else {
+        rewardBtn.style.display = "none";
+      }
+    }
+  } else {
+    // 他のプリセットでは非表示
+    document.getElementById("rewardBtn").style.display = "none";
+  }
+
   // ✅ tenkenmin / explorer / syaken-A の特殊処理
-  const specialPresets = ["tenkenmin", "top-adventure-explorer","syaken-A"];
+  const specialPresets = ["tenkenmin", "top-adventure-explorer"];
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
     const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
