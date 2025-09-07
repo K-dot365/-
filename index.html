@@ -193,6 +193,7 @@
       font-weight: bold;
       cursor: pointer;
       border-radius: 12px;
+      padding: 8px 12px; /* Add padding for consistency with rewardBtnSpecial */
       box-shadow: 0 0 10px rgba(76,175,80,0.6), 0 0 20px rgba(76,175,80,0.5);
       transition: transform 0.1s ease, box-shadow 0.3s ease;
     }
@@ -214,12 +215,12 @@
       cursor: pointer;
       border-radius: 12px;
       padding: 8px 12px;
-      box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5); /* 緑と同じ強さに変更 */
+      box-shadow: 0 0 10px rgba(0,123,255,0.6), 0 0 20px rgba(0,123,255,0.5);
       transition: transform 0.1s ease, box-shadow 0.3s ease;
     }
 
     #rewardBtnSpecial:hover {
-      box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7); /* 緑と同じ強さに変更 */
+      box-shadow: 0 0 15px rgba(0,123,255,0.8), 0 0 30px rgba(0,123,255,0.7);
       transform: scale(1.05);
     }
 
@@ -227,6 +228,7 @@
     #rewardBtn.disabled {
       cursor: default;
       opacity: 1;
+      /* Legendary lit effect for reward button when enabled by legendary cells */
       box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
     }
 
@@ -318,7 +320,7 @@
     const resetBtn = document.getElementById('reset');
     const presetEl = document.getElementById('preset');
     const litCountEl = document.getElementById('litCount');
-    const totalCountEl = document.getElementById('totalCount'); // ここを修正
+    const totalCountEl = document.getElementById('totalCount');
     const globalProgressBtn = document.getElementById("globalProgressBtn");
 
     const PRESETS = {
@@ -585,8 +587,8 @@
       if (specialPresetsForLastBtn.includes(presetEl.value)) {
           const allButtons = cellsEl.querySelectorAll('button[data-idx]');
           const lastBtnCandidate = Array.from(cellsEl.querySelectorAll('button'))
-                          .filter(b => labels[b.dataset.idx] !== null)
-                          .pop();
+                            .filter(b => labels[b.dataset.idx] !== null)
+                            .pop();
 
           let lastIdx = -1;
           if (lastBtnCandidate) {
@@ -596,16 +598,26 @@
           if (lastIdx !== -1) { // lastBtnCandidate が存在する場合のみ処理
               if (presetEl.value === "syaken-A") {
                   // --- syaken-A の特殊条件 (伝説級以外がすべて点灯で最後が解除) ---
-                  // 注意: ここで最後のボタン(実績達成)はlegendaryに含めない前提
-                  // 現在のPRESETS["syaken-A"].legendaryは[10,11,12]なので、最後のボタン(idx 12)も伝説級。
-                  // そのため、最後のボタンが「実績達成」で、それ以外の通常実績が全て点灯した場合に解除される
-                  // というロジックであれば、`excludeIdx` の生成を見直す必要があります。
-                  // 今回はご要望の「伝説級ボタンが光ると報酬獲得を表示」に焦点を絞るため、
-                  // このロジック自体は現状維持とし、報酬ボタンの制御を別途行います。
-                  const excludeIdx = legendary.has(lastIdx) ? Array.from(legendary) : [lastIdx];
+                  const currentPresetData = PRESETS[presetEl.value];
+                  const currentLegendaryIndices = new Set(currentPresetData.legendary || []);
                   
+                  // 最後の実績ボタンを除外リストに含めるか判定
+                  const excludeIndices = Array.from(currentLegendaryIndices);
+                  if (currentLegendaryIndices.has(lastIdx)) {
+                      // 最後のボタンが伝説級の場合、それは自動点灯の対象外（報酬獲得ボタンに影響）
+                      // ここでは、それ以外の「通常実績」が全て点灯したら最後のボタンを光らせるロジック
+                      // そのため、最後のボタンが「実績達成」である場合は、それはあくまで「達成を示す」ボタンであり、
+                      // 伝説級であっても他の通常実績の達成によって自動点灯されるものと考える。
+                      // なので、excludeIndicesからlastIdxを除外して、全ての通常実績が光れば最後の実績達成を点灯させる
+                      const idxInLegendary = excludeIndices.indexOf(lastIdx);
+                      if (idxInLegendary > -1) {
+                        excludeIndices.splice(idxInLegendary, 1);
+                      }
+                  }
+
+
                   const otherBtns = Array.from(allButtons)
-                                      .filter(b => labels[+b.dataset.idx] !== null && !excludeIdx.includes(+b.dataset.idx));
+                                      .filter(b => labels[+b.dataset.idx] !== null && !excludeIndices.includes(+b.dataset.idx));
                   
                   const allLit = otherBtns.every(b => b.classList.contains('lit'));
                   if (allLit) {
@@ -641,19 +653,19 @@
       // ✅ 全体進捗も更新
       updateGlobalProgress();
 
-      // ✅ 報酬獲得ボタン制御（syaken-Aで伝説級が点灯したら表示）
+      // ✅ 報酬獲得ボタン制御（現在のプリセットで伝説級が点灯したら表示）
       const rewardBtn = document.getElementById('rewardBtn');
-      const pb5 = document.getElementById('pb5'); // 進捗ボタン5
       let shouldShowRewardBtn = false;
+      const currentPresetData = PRESETS[presetEl.value];
 
-      if (presetEl.value === "syaken-A") {
-          // 現在のプリセットが「syaken-A」で、かつ伝説級の実績が1つでも点灯しているかチェック
-          const anyLegendaryLitInSyakenA = Array.from(legendary).some(idx => {
+      if (currentPresetData && currentPresetData.legendary && currentPresetData.legendary.length > 0) {
+          // 現在のプリセットに伝説級のセルがあり、そのうち1つでも点灯しているかチェック
+          const anyLegendaryLit = currentPresetData.legendary.some(idx => {
               const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
               return btn && btn.classList.contains('lit');
           });
           
-          if (anyLegendaryLitInSyakenA) {
+          if (anyLegendaryLit) {
               shouldShowRewardBtn = true;
           }
       }
@@ -661,25 +673,11 @@
       if (shouldShowRewardBtn) {
           rewardBtn.style.display = "inline-block";
           rewardBtn.disabled = false;
-          // 光らせるCSSクラスを追加 (必要であれば)
-          rewardBtn.classList.add('lit-reward-btn'); 
-          
-          // 進捗ボタン5を点灯させる
-          if (pb5) {
-              pb5.classList.add('lit');
-              pb5.setAttribute('aria-pressed', 'true');
-          }
+          rewardBtn.classList.add('disabled'); // 光らせるためのクラス
       } else {
           rewardBtn.style.display = "none";
           rewardBtn.disabled = true;
-          // 光らせるCSSクラスを削除 (必要であれば)
-          rewardBtn.classList.remove('lit-reward-btn');
-
-          // 進捗ボタン5を消灯させる
-          if (pb5) {
-              pb5.classList.remove('lit');
-              pb5.setAttribute('aria-pressed', 'false');
-          }
+          rewardBtn.classList.remove('disabled');
       }
 
       // ✅ 進捗インジケーター更新
@@ -687,70 +685,52 @@
     }
 
     // 進捗インジケーター更新
-    function checkProgressButtons(activePresetKey = null) {
-      Object.entries(PRESETS).forEach(([key, preset]) => {
-        const btnId = {
-          "tenkenmin": "pb1",
-          "stargazing-specialist": "pb2",
-          "mvp": "pb3",
-          "top-adventure-explorer": "pb4",
-          "syaken-A": "pb5"
-        }[key];
+    function checkProgressButtons() {
+      const progressBtnMap = {
+        "tenkenmin": "pb1",
+        "stargazing-specialist": "pb2",
+        "mvp": "pb3",
+        "top-adventure-explorer": "pb4",
+        "syaken-A": "pb5"
+      };
 
+      Object.entries(PRESETS).forEach(([key, preset]) => {
+        const btnId = progressBtnMap[key];
         if (!btnId) return;
 
         const pb = document.getElementById(btnId);
         if (!pb) return;
 
-        // --- 保存データを取得 ---
-        let isLastLitInStorage = false;
-        const raw = localStorage.getItem(getStorageKey(key));
-        if (raw) {
-          try {
-            const data = JSON.parse(raw);
-            if (data && Array.isArray(data.lit)) {
-              // labels の末尾から null をスキップして最後の有効セルを取得
-              let lastIdx = preset.labels.length - 1;
-              while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-                lastIdx--;
+        let isLegendaryLit = false;
+
+        // このプリセットにlegendaryセルが定義されている場合のみ処理
+        if (preset.legendary && preset.legendary.length > 0) {
+          if (key === presetEl.value) { // 表示中のプリセット
+            isLegendaryLit = preset.legendary.some(idx => {
+              const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+              return btn && btn.classList.contains('lit');
+            });
+          } else { // 非表示のプリセット（localStorageから取得）
+            const raw = localStorage.getItem(getStorageKey(key));
+            if (raw) {
+              try {
+                const data = JSON.parse(raw);
+                if (data && Array.isArray(data.lit)) {
+                  isLegendaryLit = preset.legendary.some(idx => data.lit.includes(idx));
+                }
+              } catch (e) {
+                console.error(`Error parsing localStorage for ${key}:`, e);
               }
-              isLastLitInStorage = data.lit.includes(lastIdx);
             }
-          } catch (e) {
-            console.error("parse failed", e);
           }
         }
 
-        // --- アクティブなプリセットは DOM を優先 ---
-        if (key === presetEl.value) { // activePresetKeyではなく、常に現在の表示プリセットをDOMでチェック
-          let lastIdx = preset.labels.length - 1;
-          while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-            lastIdx--;
-          }
-          const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-          
-          // 進捗ボタン5は、syaken-Aの報酬獲得ボタン表示に連動するため、
-          // syaken-Aの場合のみここでの処理をスキップし、updateCounts()内のロジックに任せる
-          if (key === "syaken-A") {
-            return; 
-          }
-
-          if (lastBtn && lastBtn.classList.contains("lit")) {
-            pb.classList.add("lit");
-            pb.setAttribute("aria-pressed", "true");
-          } else {
-            pb.classList.remove("lit");
-            pb.setAttribute("aria-pressed", "false");
-          }
+        if (isLegendaryLit) {
+          pb.classList.add("lit");
+          pb.setAttribute("aria-pressed", "true");
         } else {
-          // 非表示のプリセットは保存データに基づいてインジケーターを更新
-          if (isLastLitInStorage) {
-            pb.classList.add("lit");
-            pb.setAttribute("aria-pressed", "true");
-          } else {
-            pb.classList.remove("lit");
-            pb.setAttribute("aria-pressed", "false");
-          }
+          pb.classList.remove("lit");
+          pb.setAttribute("aria-pressed", "false");
         }
       });
     }
@@ -814,10 +794,10 @@
       const newPreset = e.target.value;
       if (!newPreset) return;
 
-      save(currentPreset);        // 旧プリセットを保存
-      usePreset(newPreset);       // 新プリセットに切替 (DOM再構築)
-      load(newPreset);            // 新プリセットの保存済み状態を読み込み
-      currentPreset = newPreset;  // 更新
+      save(currentPreset);     // 旧プリセットを保存
+      usePreset(newPreset);     // 新プリセットに切替 (DOM再構築)
+      load(newPreset);          // 新プリセットの保存済み状態を読み込み
+      currentPreset = newPreset; // 更新
 
       // 最後に選択したプリセットを保存
       localStorage.setItem('lastPreset', newPreset);
