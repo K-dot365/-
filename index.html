@@ -16,8 +16,7 @@
       --accent: #4caf50;
       --accent-glow: #b3ffb8;
       --gold: #f4c542;
-      /* ✅ 追加: 新しい報酬ボタンの色 */
-      --blue-glow: #87ceeb;
+      --blue-glow: #87ceeb; /* ✅ 追加: 青色のグロー */
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -169,11 +168,10 @@
       .cell button .badge { font-size: 9px; padding: 2px 6px; }
       h1 { font-size: 16px; }
 
-      /* ✅ 追加: タイトルと進捗ボタンは横並び維持 */
-  .title-row {
-    flex-direction: row;
-    flex-wrap: wrap; /* 狭ければ折り返す */
-  }
+      .title-row {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
       
     }
 
@@ -216,12 +214,11 @@
       font-size: 12px;
     }
 
-    /* 報酬獲得ボタンの文字を白に、金色グロー */
-#rewardBtn, #progressRewardBtn {
+    #rewardBtn, #progressRewardBtn {
   position: relative;
   border: 1px solid var(--accent);
   background: var(--accent);
-  color: #fff; /*白文字*/
+  color: #fff;
   font-weight: bold;
   cursor: pointer;
   overflow: hidden;
@@ -252,7 +249,6 @@
   transform: scale(1.05);
 }
     
-/* 押せない状態でも光らせる場合 */
 #rewardBtn.disabled, #progressRewardBtn.disabled {
   cursor: default;
   opacity: 1;
@@ -298,7 +294,7 @@
               inset 0 0 18px rgba(76, 175, 80, .25);
 }
 
-/* 進捗率表示ボタンのスタイル */
+/* ✅ 進捗率表示ボタンのスタイル */
 #progressRateBtn {
   background: var(--btn);
   color: var(--text);
@@ -337,7 +333,7 @@
     <header>
       <div class="title-row">
       <h1>2025夏合宿 実績解除</h1>
-            <button id="progressRateBtn" disabled style="display:none;"></button>
+      <button id="progressRateBtn" disabled style="display:none;"></button>
       </div>
       <div class="controls">
         <select id="preset">
@@ -355,8 +351,8 @@
     <button id="pb4" disabled>4</button>
     <button id="pb5" disabled>5</button>
       </div>
-                <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
-                <button id="progressRewardBtn" style="display:none;" disabled>進捗報酬！</button>
+        <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
+        <button id="progressRewardBtn" style="display:none;" disabled>進捗報酬！</button>
       </div>
     </header>
 
@@ -518,17 +514,15 @@
           {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
           {img:"実績解除画像/ad001.jpg",text:"実績達成"},
           null,
-  ],
-  legendary:[10]
-},
+      ],
+      legendary:[10]
+    },
 
     };
     
     let R = 4, C = 5;
     let labels = [];
     let legendary = new Set();
-    let totalCells = 0;
-
 
     function buildGrid(r=R, c=C, givenLabels=null) {
   R = r;
@@ -544,7 +538,7 @@
   cellsEl.innerHTML = '';
     let effectiveCount = 0;
 
-for (let i=0; i<r*c; i++) {
+ for (let i=0; i<r*c; i++) {
   const label = labels[i] || null;
   const cell = document.createElement('div');
   cell.className = 'cell';
@@ -554,7 +548,7 @@ for (let i=0; i<r*c; i++) {
     continue;
   }
 
-  effectiveCount++;
+  effectiveCount++; // ✅ null でなければ必ずカウント（legendary も含む）
   
 
     const btn = document.createElement('button');
@@ -584,27 +578,28 @@ for (let i=0; i<r*c; i++) {
     cellsEl.appendChild(cell);
   }
 
-  totalCells = effectiveCount;
   updateCounts();
-  totalCountEl.textContent = totalCells;
-}
+  totalCountEl.textContent = effectiveCount;  // ✅ 有効セルだけ表示
+ }
 
     function toggle(btn){
   const idx = +btn.dataset.idx;
+  // ✅ 特殊処理が必要なプリセット
   const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
 
+  // 最後のマスはクリック禁止
   if (specialPresets.includes(presetEl.value)) {
     const allBtns = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null);
-    const lastBtn = allBtns[allBtns.length - 1];
-    if (btn === lastBtn) return;
+                      .filter(b => labels[b.dataset.idx] !== null)
+                      .slice(0, -1); // 最後のマスを除外
+    const isLastBtn = btn.classList.contains('legendary');
+    if (isLastBtn) return;
   }
-
   const lit = btn.classList.toggle('lit');
   btn.setAttribute('aria-pressed', String(lit));
   updateCounts();
-  save();
-}
+  save();//クリックごとに自動保存
+ }
 
     function resetAll(){
   cellsEl.querySelectorAll('button.lit').forEach(b=>{
@@ -612,8 +607,8 @@ for (let i=0; i<r*c; i++) {
     b.setAttribute('aria-pressed','false');
   });
   updateCounts();
-  save();
-}
+  save();   // ✅ リセットごとに自動保存
+ }
 
     function updateCounts(){
   // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
@@ -624,7 +619,7 @@ for (let i=0; i<r*c; i++) {
                       .filter(b => labels[b.dataset.idx] !== null)
                       .pop();
     if (lastBtn) {
-      const lastIdx = +lastBtn.dataset.idx;
+      const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
       const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
       const allLit = otherBtns.every(b => b.classList.contains('lit'));
       if (allLit) {
@@ -667,22 +662,7 @@ for (let i=0; i<r*c; i++) {
   const litButtons = cellsEl.querySelectorAll('button.lit');
   litCountEl.textContent = litButtons.length;
 
-  // ✅ 進捗率表示ボタンの更新
-  const progress = totalCells > 0 ? (litButtons.length / totalCells) * 100 : 0;
-  progressRateBtn.textContent = `(${litButtons.length}/${totalCells} 解放 ${progress.toFixed(1)}%)`;
-
-  if (progress >= 70) {
-    progressRateBtn.style.display = "inline-block";
-    progressRewardBtn.style.display = "inline-block";
-    progressRewardBtn.classList.add("lit");
-    progressRewardBtn.disabled = true;
-  } else {
-    progressRateBtn.style.display = "none";
-    progressRewardBtn.style.display = "none";
-    progressRewardBtn.classList.remove("lit");
-  }
-
-  // ✅ 報酬獲得ボタン制御 (legendary)
+  // ✅ 報酬獲得ボタン制御
   const rewardBtn = document.getElementById('rewardBtn');
   const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
       
@@ -695,8 +675,23 @@ for (let i=0; i<r*c; i++) {
   }
       // ✅ 進捗インジケーター更新
   checkProgressButtons();
+
+  // ✅ 進捗率の計算と表示
+  const totalCells = cellsEl.querySelectorAll('.cell').length - cellsEl.querySelectorAll('.cell > :not(button)').length;
+  const percentage = totalCells > 0 ? ((litButtons.length / totalCells) * 100).toFixed(1) : 0;
+  progressRateBtn.textContent = `${litButtons.length} / ${totalCells} 解放 (${percentage}%)`;
+  progressRateBtn.style.display = "inline-block";
+
+  // ✅ 進捗率報酬ボタンの制御
+  if (percentage >= 70) {
+    progressRewardBtn.style.display = "inline-block";
+    progressRewardBtn.classList.add("lit");
+  } else {
+    progressRewardBtn.style.display = "none";
+    progressRewardBtn.classList.remove("lit");
+  }
       
-}
+ }
 
     // 進捗インジケーター更新
     function checkProgressButtons() {
@@ -710,20 +705,33 @@ for (let i=0; i<r*c; i++) {
       "syaken-A": "pb5",
     }[key];
 
-    if (!btnId) return;
+    if (!btnId) return; // 未対応プリセットはスキップ
+
     const pb = document.getElementById(btnId);
     if (!pb) return;
 
-    // 変更: 伝説級の実績が光っているかどうかを直接チェック
-    let isLegendaryLit = false;
-    const currentPresetData = PRESETS[key];
-    if (currentPresetData.legendary && currentPresetData.legendary.length > 0) {
-      const legendaryIndex = currentPresetData.legendary[0];
-      const currentPresetLitCells = loadLitIndices(key);
-      isLegendaryLit = currentPresetLitCells.includes(legendaryIndex);
+    // 保存データを取得
+    const raw = localStorage.getItem(getStorageKey(key));
+    let lit = [];
+    if (raw) {
+      try {
+        const data = JSON.parse(raw);
+        if (data && Array.isArray(data.lit)) {
+          lit = data.lit;
+        }
+      } catch(e) {
+        console.error("parse failed", e);
+      }
     }
 
-    if (isLegendaryLit) {
+    // 🔽 labels の末尾から null をスキップして最後の有効セルを取得
+    let lastIdx = preset.labels.length - 1;
+    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+      lastIdx--;
+    }
+
+    // ✅ lastIdx を使う（total-1 ではない！）
+    if (lit.includes(lastIdx)) {
       pb.classList.add("lit");
       pb.setAttribute("aria-pressed","true");
     } else {
@@ -731,25 +739,24 @@ for (let i=0; i<r*c; i++) {
       pb.setAttribute("aria-pressed","false");
     }
   });
-}
+ }
 
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
-}
+ }
     
     function save(presetName = presetEl.value) {
   const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
     .map(b => +b.dataset.idx);
 
   const data = { lit };
-  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
 
-  // 変更: 進捗ボタンの更新をここでも呼び出す
-  checkProgressButtons();
-}
+  // ✅ プリセット名ごとにキーを分ける
+  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
+ }
 
     // ✅ 状態読み込み
-    function load(presetName = presetEl.value) {
+ function load(presetName = presetEl.value) {
   const raw = localStorage.getItem(getStorageKey(presetName));
   if (!raw) return;
   try {
@@ -775,60 +782,62 @@ for (let i=0; i<r*c; i++) {
   } catch(e) {
     console.error("load failed", e);
   }
-  checkProgressButtons();
-}
-
-    // 変更: 保存されている点灯セルのインデックスを取得する関数
-    function loadLitIndices(presetName) {
-      const raw = localStorage.getItem(getStorageKey(presetName));
-      if (!raw) return [];
-      try {
-        const data = JSON.parse(raw);
-        return data && Array.isArray(data.lit) ? data.lit : [];
-      } catch(e) {
-        console.error("parse failed", e);
-        return [];
-      }
-    }
+  // ✅ 進捗インジケーター更新
+    checkProgressButtons();
+ }
 
     function usePreset(name){
       const p = PRESETS[name];
       if (!p) return;
       legendary = new Set(p.legendary || []);
       buildGrid(p.size[0], p.size[1], p.labels);
+      //save();
     }
-
-    let currentPreset = presetEl.value;
+    let currentPreset = presetEl.value;  // ✅ 追加：最初に現在のプリセットを保持
 
     presetEl.addEventListener('change', (e)=>{
   const newPreset = e.target.value;
   if (!newPreset) return;
 
-  save(currentPreset);
-  usePreset(newPreset);
-  load(newPreset);
-  currentPreset = newPreset;
+  save(currentPreset);        // 旧プリセットを保存
+  usePreset(newPreset);       // 新プリセットに切替
+  load(newPreset);            // ✅ 新プリセットの保存済み状態を読み込み
+  currentPreset = newPreset;  // 更新
 
+      // ✅ 最後に選択したプリセットを保存
   localStorage.setItem('lastPreset', newPreset);
-});
+ });
 
     resetBtn.addEventListener('click', resetAll);
 
-const lastPreset = localStorage.getItem('lastPreset');
-if (lastPreset && PRESETS[lastPreset]) {
+    // ✅ 最後に選択したプリセットを取得
+ const lastPreset = localStorage.getItem('lastPreset');
+ if (lastPreset && PRESETS[lastPreset]) {
   presetEl.value = lastPreset;
   currentPreset = lastPreset;
+  // ページ初期表示時にプリセットと保存データを読み込む
     usePreset(presetEl.value);
     load();    
-}
+ }
+    // ✅ プリセット変更時
+ presetEl.addEventListener('change', () => {
+  save(presetEl.value); // ← 切り替え前のプリセットを保存
+  localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
 
-window.addEventListener('DOMContentLoaded', () => {
+  currentPreset = presetEl.value; // ← 現在のプリセット更新
+  legendary = new Set(PRESETS[presetEl.value].legendary || []);
+  buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
+  load(presetEl.value);
+ });
+
+ // ✅ ページ読み込み時
+ window.addEventListener('DOMContentLoaded', () => {
   const last = localStorage.getItem("lastPreset") || "tenkenmin";
   presetEl.value = last;
   legendary = new Set(PRESETS[last].legendary || []);
   buildGrid(...PRESETS[last].size, PRESETS[last].labels);
   load(last);
-});
+ });
 
   </script>
 </body>
