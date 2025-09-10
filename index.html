@@ -357,6 +357,7 @@
     const litCountEl = document.getElementById('litCount');
     const totalCountEl = document.getElementById('totalCount');
 
+    // ✅ 変更: プリセット内容を更新
     const PRESETS = {
       "tenkenmin": {
         size:[17,3],
@@ -437,7 +438,7 @@
           {img:"実績解除画像/st017.jpg",text:"M30(やぎ)"},
           {img:"実績解除画像/st018.jpg",text:"M27(こぎつね)"},
           {img:"実績解除画像/st019.jpg",text:"M29(はくちょう)"},
-          {img:"実績解除画像/st020.jpg",text:"M57(こと)"},//20
+          {img:"実績解除画像/st020.jpg",text:"M57(こと)"},
           {img:"実績解除画像/st021.jpg",text:"M35(ふたご)"},
           {img:"実績解除画像/st022.jpg",text:"M42(オリオン)"},
           {img:"実績解除画像/st023.jpg",text:"M44(かに)"},
@@ -460,7 +461,7 @@
           {img:"実績解除画像/mv007.jpg",text:"クイズ参加"},
           {img:"実績解除画像/mv008.jpg",text:"クイズ優勝"},
           {img:"実績解除画像/mv009.jpg",text:"クイズMVP"},
-          {img:"実績解除画像/mv010.jpg",text:"実績達成"},//10
+          {img:"実績解除画像/mv010.jpg",text:"実績達成"},
           null,
           null,
         ],
@@ -478,8 +479,7 @@
           {img:"実績解除画像/ad007.jpg",text:"足湯"},
           {img:"実績解除画像/ad008.jpg",text:"鳥取砂丘の海"},
           {img:"実績解除画像/ad009.jpg",text:"鳥取砂丘の馬の背"},
-          //下段に左2マスを画像、右1マスを空白のセル
-          {img:"実績解除画像/ad010.jpg",text:"鳥取砂丘モニュメント"},//10
+          {img:"実績解除画像/ad010.jpg",text:"鳥取砂丘モニュメント"},
           {img:"実績解除画像/ad011.jpg",text:"実績達成"},
           null,
         ],
@@ -503,10 +503,9 @@
           {img:"実績解除画像/sy013.jpg",text:"全お題達成"},
           null,
           null,
-  ],
-  legendary:[10,11,12]
-},
-
+        ],
+        legendary:[10, 11, 12]
+      },
     };
     
     let R = 4, C = 5;
@@ -514,163 +513,207 @@
     let legendary = new Set();
 
     function buildGrid(r=R, c=C, givenLabels=null) {
-  R = r;
-  C = c;
-  cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
+      R = r;
+      C = c;
+      cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
 
-  if (givenLabels && givenLabels.length) {
-    labels = givenLabels;
-  } else {
-    labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
-  }
-  
-  cellsEl.innerHTML = '';
-    let effectiveCount = 0;
+      if (givenLabels && givenLabels.length) {
+        labels = givenLabels;
+      } else {
+        labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
+      }
+      
+      cellsEl.innerHTML = '';
+      let effectiveCount = 0;
 
-for (let i=0; i<r*c; i++) {
-  const label = labels[i] || null;
-  const cell = document.createElement('div');
-  cell.className = 'cell';
-  
-  if (label === null) {
-    cellsEl.appendChild(cell);
-    continue;
-  }
+      for (let i=0; i<r*c; i++) {
+        const label = labels[i] || null;
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        
+        if (label === null) {
+          cellsEl.appendChild(cell);
+          continue;
+        }
 
-  effectiveCount++; // ✅ null でなければ必ずカウント（legendary も含む）
-  
+        effectiveCount++;
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.idx = i;
+        btn.setAttribute('aria-pressed', 'false');
+        if (legendary.has(i)) btn.classList.add('legendary');
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.dataset.idx = i;
-    btn.setAttribute('aria-pressed', 'false');
-    if (legendary.has(i)) btn.classList.add('legendary');
+        let imgSrc = "images/placeholder.png";
+        let textLabel = "";
 
-    let imgSrc = "images/placeholder.png";
-    let textLabel = "";
+        if (typeof label === "object") {
+          imgSrc = label.img || imgSrc;
+          textLabel = label.text || "";
+        } else if (typeof label === "string") {
+          if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
+          else textLabel = label;
+        }
 
-    if (typeof label === "object") {
-      imgSrc = label.img || imgSrc;
-      textLabel = label.text || "";
-    } else if (typeof label === "string") {
-      if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
-      else textLabel = label;
+        btn.innerHTML =`
+          <span class="badge">#${i+1}</span>
+          <img src="${imgSrc}" alt="">
+          <span class="cell-text">${textLabel}</span>`;
+
+        btn.addEventListener('click', () => toggle(btn));
+        cell.appendChild(btn);
+        cellsEl.appendChild(cell);
+      }
+
+      updateCounts();
+      totalCountEl.textContent = effectiveCount;
     }
 
-    btn.innerHTML =`
-      <span class="badge">#${i+1}</span>
-      <img src="${imgSrc}" alt="">
-      <span class="cell-text">${textLabel}</span>`;
-
-    btn.addEventListener('click', () => toggle(btn));
-    cell.appendChild(btn);
-    cellsEl.appendChild(cell);
-  }
-
-  updateCounts();
-  totalCountEl.textContent = effectiveCount;  // ✅ 有効セルだけ表示
-}
-
+    // ✅ 変更: 自動点灯マスのクリック制御を更新
     function toggle(btn){
-  const idx = +btn.dataset.idx;
-  // ✅ 特殊処理が必要なプリセット
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
+        const idx = +btn.dataset.idx;
 
-  // 最後のマスはクリック禁止
-  if (specialPresets.includes(presetEl.value)) {
-    const allBtns = Array.from(cellsEl.querySelectorAll('button'))
-                        .filter(b => labels[b.dataset.idx] !== null);
-const lastBtn = allBtns[allBtns.length - 1];
-if (btn === lastBtn) return;
+        // 自動点灯するセルはクリックさせない
+        if (presetEl.value === 'syaken-A' && idx === 12) return;
+        if (presetEl.value === 'stargazing-specialist' && idx === 25) return;
+        
+        const preset = PRESETS[presetEl.value];
+        if (preset) {
+            const autoLitPresets = ["tenkenmin", "mvp", "top-adventure-explorer"];
+            if (autoLitPresets.includes(presetEl.value)) {
+                let lastIdx = preset.labels.length - 1;
+                while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+                    lastIdx--;
+                }
+                if (idx === lastIdx) return;
+            }
+        }
 
-  }
-
-  const lit = btn.classList.toggle('lit');
-  btn.setAttribute('aria-pressed', String(lit));
-  updateCounts();
-  save();//クリックごとに自動保存
-}
+        const lit = btn.classList.toggle('lit');
+        btn.setAttribute('aria-pressed', String(lit));
+        updateCounts();
+        save();
+    }
 
     function resetAll(){
-  cellsEl.querySelectorAll('button.lit').forEach(b=>{
-    b.classList.remove('lit');
-    b.setAttribute('aria-pressed','false');
-  });
-  updateCounts();
-  save();   // ✅ リセットごとに自動保存
-}
-
+      cellsEl.querySelectorAll('button.lit').forEach(b=>{
+        b.classList.remove('lit');
+        b.setAttribute('aria-pressed','false');
+      });
+      updateCounts();
+      save();
+    }
+    
+    // ✅ 変更: 各プリセットの専用ロジックを分離・更新
     function updateCounts(){
-  // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
-  if (specialPresets.includes(presetEl.value)) {
-    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
-                        .filter(b => labels[b.dataset.idx] !== null)
-                        .pop();
-    if (lastBtn) {
-      const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
-      const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
-      const allLit = otherBtns.every(b => b.classList.contains('lit'));
-      if (allLit) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
+      // tenkenmin / explorer の特殊処理
+      const simpleAllLitPresets = ["tenkenmin", "top-adventure-explorer"];
+      if (simpleAllLitPresets.includes(presetEl.value)) {
+        const allButtons = cellsEl.querySelectorAll('button[data-idx]');
+        const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
+                            .filter(b => labels[b.dataset.idx] !== null)
+                            .pop();
+        if (lastBtn) {
+          const lastIdx = +lastBtn.dataset.idx;
+          const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
+          const allLit = otherBtns.every(b => b.classList.contains('lit'));
+          if (allLit) {
+            lastBtn.classList.add('lit');
+            lastBtn.setAttribute('aria-pressed','true');
+          } else {
+            lastBtn.classList.remove('lit');
+            lastBtn.setAttribute('aria-pressed','false');
+          }
+        }
       }
-    }
-  }
 
-  // ✅ MVP専用処理
-  if (presetEl.value === "mvp") {
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn) {
-      const participate = [0, 3, 6].every(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const champion = [1, 4, 7].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const mvp = [2, 5, 8].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
+      // stargazing-specialist 専用処理
+      if (presetEl.value === "stargazing-specialist") {
+          const lastBtn = cellsEl.querySelector('button[data-idx="25"]');
+          if (lastBtn) {
+              const first5_indices = [0, 1, 2, 3, 4];
+              const next_indices = Array.from({length: 20}, (_, i) => i + 5); // #6-25 (indices 5-24)
 
-      if (participate && champion && mvp) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
+              const first5_lit = first5_indices.every(i => 
+                  cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+              );
+              const next_lit_count = next_indices.filter(i => 
+                  cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+              ).length;
+              
+              if (first5_lit && next_lit_count >= 15) {
+                  lastBtn.classList.add('lit');
+                  lastBtn.setAttribute('aria-pressed','true');
+              } else {
+                  lastBtn.classList.remove('lit');
+                  lastBtn.setAttribute('aria-pressed','false');
+              }
+          }
       }
+
+      // syaken-A 専用処理
+      if (presetEl.value === "syaken-A") {
+          const allCompleteBtn = cellsEl.querySelector('button[data-idx="12"]');
+          if (allCompleteBtn) {
+              const normal_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+              const allNormalLit = normal_indices.every(i => 
+                  cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+              );
+              if (allNormalLit) {
+                  allCompleteBtn.classList.add('lit');
+                  allCompleteBtn.setAttribute('aria-pressed','true');
+              } else {
+                  allCompleteBtn.classList.remove('lit');
+                  allCompleteBtn.setAttribute('aria-pressed','false');
+              }
+          }
+      }
+      
+      // MVP専用処理
+      if (presetEl.value === "mvp") {
+        let lastIdx = labels.length - 1;
+        while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
+        const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
+        if (lastBtn) {
+          const participate = [0, 3, 6].every(i =>
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
+          const champion = [1, 4, 7].some(i =>
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
+          const mvp = [2, 5, 8].some(i =>
+            cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
+          );
+
+          if (participate && champion && mvp) {
+            lastBtn.classList.add('lit');
+            lastBtn.setAttribute('aria-pressed','true');
+          } else {
+            lastBtn.classList.remove('lit');
+            lastBtn.setAttribute('aria-pressed','false');
+          }
+        }
+      }
+
+      const litButtons = cellsEl.querySelectorAll('button.lit');
+      litCountEl.textContent = litButtons.length;
+
+      const rewardBtn = document.getElementById('rewardBtn');
+      const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+          
+      if (anyLegendaryLit) {
+        rewardBtn.style.display = "inline-block";
+        rewardBtn.disabled = false;
+      } else {
+        rewardBtn.style.display = "none";
+        rewardBtn.disabled = true;
+      }
+      
+      checkProgressButtons();
+      updateTotalProgress();
     }
-  }
-
-  // ✅ litCount を正しく計算
-  const litButtons = cellsEl.querySelectorAll('button.lit');
-  litCountEl.textContent = litButtons.length;
-
-  // ✅ 報酬獲得ボタン制御
-  const rewardBtn = document.getElementById('rewardBtn');
-  const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
-      
-  if (anyLegendaryLit) {
-    rewardBtn.style.display = "inline-block";
-    rewardBtn.disabled = false;
-  } else {
-    rewardBtn.style.display = "none";
-    rewardBtn.disabled = true;
-  }
-      // ✅ 進捗インジケーター更新
-  checkProgressButtons();
-  // ✅ 新設: 全プリセットの進捗を更新
-  updateTotalProgress();
-      
-}
-
-    // ✅ 変更: 進捗インジケーター更新のロジックを修正
+    
+    // ✅ 変更: syaken-A の進捗ボタンロジックを更新
     function checkProgressButtons() {
         Object.entries(PRESETS).forEach(([key, preset]) => {
             const btnId = {
@@ -685,39 +728,54 @@ if (btn === lastBtn) return;
             const pb = document.getElementById(btnId);
             if (!pb) return;
 
-            // legendaryセルのインデックスを特定
-            let legendaryIdx = -1;
-            if(preset.legendary && preset.legendary.length > 0) {
-                legendaryIdx = preset.legendary[0];
-            } else {
-                // フォールバックとして最後の有効なセルを探す
-                let lastIdx = preset.labels.length - 1;
-                while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-                    lastIdx--;
-                }
-                legendaryIdx = lastIdx;
-            }
-            if (legendaryIdx === -1) return;
-
             let isLegendaryLit = false;
 
-            // ★変更点: 現在表示中のプリセットはDOMを直接見てリアルタイムに反映
-            if (key === presetEl.value) {
-                const legendaryBtn = cellsEl.querySelector(`button[data-idx="${legendaryIdx}"]`);
-                if (legendaryBtn && legendaryBtn.classList.contains('lit')) {
-                    isLegendaryLit = true;
+            if (key === 'syaken-A') {
+                const winnerIndices = [10, 11]; 
+                if (key === presetEl.value) {
+                    isLegendaryLit = winnerIndices.some(idx =>
+                        cellsEl.querySelector(`button[data-idx="${idx}"]`)?.classList.contains('lit')
+                    );
+                } else { 
+                    const raw = localStorage.getItem(getStorageKey(key));
+                    if (raw) {
+                        try {
+                            const data = JSON.parse(raw);
+                            if (data && Array.isArray(data.lit)) {
+                                isLegendaryLit = winnerIndices.some(idx => data.lit.includes(idx));
+                            }
+                        } catch (e) { console.error("parse failed", e); }
+                    }
                 }
             } else {
-                // 他
-                const raw = localStorage.getItem(getStorageKey(key));
-                if (raw) {
-                    try {
-                        const data = JSON.parse(raw);
-                        if (data && Array.isArray(data.lit) && data.lit.includes(legendaryIdx)) {
-                            isLegendaryLit = true;
+                let legendaryIdx = -1;
+                if(preset.legendary && preset.legendary.length > 0) {
+                    legendaryIdx = preset.legendary[0];
+                } else {
+                    let lastIdx = preset.labels.length - 1;
+                    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+                        lastIdx--;
+                    }
+                    legendaryIdx = lastIdx;
+                }
+                if (legendaryIdx === -1) return;
+
+                if (key === presetEl.value) {
+                    const legendaryBtn = cellsEl.querySelector(`button[data-idx="${legendaryIdx}"]`);
+                    if (legendaryBtn && legendaryBtn.classList.contains('lit')) {
+                        isLegendaryLit = true;
+                    }
+                } else {
+                    const raw = localStorage.getItem(getStorageKey(key));
+                    if (raw) {
+                        try {
+                            const data = JSON.parse(raw);
+                            if (data && Array.isArray(data.lit) && data.lit.includes(legendaryIdx)) {
+                                isLegendaryLit = true;
+                            }
+                        } catch (e) {
+                            console.error("parse failed", e);
                         }
-                    } catch (e) {
-                        console.error("parse failed", e);
                     }
                 }
             }
@@ -732,7 +790,6 @@ if (btn === lastBtn) return;
         });
     }
     
-    // ✅ 新設: 全プリセットの進捗を計算・表示する関数
     function updateTotalProgress() {
         const totalProgressDisplay = document.getElementById('totalProgressDisplay');
         const rewardBtnBlue = document.getElementById('rewardBtnBlue');
@@ -773,103 +830,80 @@ if (btn === lastBtn) return;
     }
 
     function getStorageKey(presetName) {
-  return `achievements-${presetName}`;
-}
+      return `achievements-${presetName}`;
+    }
     
     function save(presetName = presetEl.value) {
-  const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
-    .map(b => +b.dataset.idx);
+      const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
+        .map(b => +b.dataset.idx);
 
-  const data = { lit };
+      const data = { lit };
+      localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
+    }
 
-  // ✅ プリセット名ごとにキーを分ける
-  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
-}
-
-    // ✅ 状態読み込み
-function load(presetName = presetEl.value) {
-  const raw = localStorage.getItem(getStorageKey(presetName));
-  if (!raw) return;
-  try {
-    const data = JSON.parse(raw);
-    if (!data || !Array.isArray(data.lit)) return;
-
-    // 一度すべて消灯
-    cellsEl.querySelectorAll('button').forEach(b=>{
-      b.classList.remove('lit');
-      b.setAttribute('aria-pressed','false');
-    });
-
-    // 保存されていたインデックスを再点灯
-    data.lit.forEach(idx=>{
-      const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
-      if (btn) {
-        btn.classList.add('lit');
-        btn.setAttribute('aria-pressed','true');
+    function load(presetName = presetEl.value) {
+      const raw = localStorage.getItem(getStorageKey(presetName));
+      if (!raw) {
+        updateCounts(); // 保存データがなくても初回描画のために呼ぶ
+        return;
       }
-    });
+      try {
+        const data = JSON.parse(raw);
+        if (!data || !Array.isArray(data.lit)) {
+            updateCounts();
+            return;
+        }
 
-    updateCounts();
-  } catch(e) {
-    console.error("load failed", e);
-  }
-  // ✅ 進捗インジケーター更新
-    checkProgressButtons();
-}
+        cellsEl.querySelectorAll('button').forEach(b=>{
+          b.classList.remove('lit');
+          b.setAttribute('aria-pressed','false');
+        });
+
+        data.lit.forEach(idx=>{
+          const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+          if (btn) {
+            btn.classList.add('lit');
+            btn.setAttribute('aria-pressed','true');
+          }
+        });
+
+        updateCounts();
+      } catch(e) {
+        console.error("load failed", e);
+        updateCounts();
+      }
+      checkProgressButtons();
+    }
 
     function usePreset(name){
       const p = PRESETS[name];
       if (!p) return;
       legendary = new Set(p.legendary || []);
       buildGrid(p.size[0], p.size[1], p.labels);
-      //save();
     }
-    let currentPreset = presetEl.value;  // ✅ 追加：最初に現在のプリセットを保持
+
+    let currentPreset = presetEl.value;
 
     presetEl.addEventListener('change', (e)=>{
-  const newPreset = e.target.value;
-  if (!newPreset) return;
+      const newPreset = e.target.value;
+      if (!newPreset) return;
 
-  save(currentPreset);        // 旧プリセットを保存
-  usePreset(newPreset);       // 新プリセットに切替
-  load(newPreset);            // ✅ 新プリセットの保存済み状態を読み込み
-  currentPreset = newPreset;  // 更新
-
-      // ✅ 最後に選択したプリセットを保存
-  localStorage.setItem('lastPreset', newPreset);
-});
+      save(currentPreset);
+      usePreset(newPreset);
+      load(newPreset);
+      currentPreset = newPreset;
+      localStorage.setItem('lastPreset', newPreset);
+    });
 
     resetBtn.addEventListener('click', resetAll);
 
-    // ✅ 最後に選択したプリセットを取得
-const lastPreset = localStorage.getItem('lastPreset');
-if (lastPreset && PRESETS[lastPreset]) {
-  presetEl.value = lastPreset;
-  currentPreset = lastPreset;
-  // ページ初期表示時にプリセットと保存データを読み込む
-    usePreset(presetEl.value);
-    load();    
-}
-    // ✅ プリセット変更時
-presetEl.addEventListener('change', () => {
-  save(presetEl.value); // ← 切り替え前のプリセットを保存
-  localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
-
-  currentPreset = presetEl.value; // ← 現在のプリセット更新
-  legendary = new Set(PRESETS[presetEl.value].legendary || []);
-  buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
-  load(presetEl.value);
-});
-
-// ✅ ページ読み込み時
-window.addEventListener('DOMContentLoaded', () => {
-  const last = localStorage.getItem("lastPreset") || "tenkenmin";
-  presetEl.value = last;
-  legendary = new Set(PRESETS[last].legendary || []);
-  buildGrid(...PRESETS[last].size, PRESETS[last].labels);
-  load(last);
-});
-
+    window.addEventListener('DOMContentLoaded', () => {
+      const last = localStorage.getItem("lastPreset") || "tenkenmin";
+      presetEl.value = last;
+      currentPreset = last;
+      usePreset(last);
+      load(last);
+    });
   </script>
 </body>
 </html>
