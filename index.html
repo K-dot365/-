@@ -1,844 +1,509 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>2025夏合宿 実績解除</title>
-  <style>
-    :root {
-      --bg: #0e0f10;
-      --panel: #15191e;
-      --border: #2b3139;
-      --text: #dfe7ef;
-      --muted: #8d99a6;
-      --btn: #1e242b;
-      --btn-hover: #28313a;
-      --accent: #4caf50;
-      --accent-glow: #b3ffb8;
-      --gold: #f4c542;
-      --blue-glow: #87ceeb; /* ✅ 追加: 青色のグロー */
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background: radial-gradient(1000px 600px at 20% -10%, #1b2027, var(--bg));
-      color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-    .app { width: min(1100px, 96vw); }
-    header {
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    h1 {
-      font-size: clamp(18px, 2.3vw, 24px);
-      margin: 0;
-      letter-spacing: .02em;
-    }
-    .controls {
-      display:flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-    .control, button, select, input[type="number"] {
-      background: var(--btn);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font: inherit;
-      transition: transform .02s ease, background .2s ease, border-color .2s ease;
-      outline: none;
-    }
-    button:hover, select:hover, input[type="number"]:hover { background: var(--btn-hover); }
-    button:active { transform: translateY(1px); }
-    .grid {
-      background: linear-gradient(180deg, #13171c, var(--panel));
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      position: relative;
-    }
-    .cells { display: grid; gap: 12px; }
-    .cell { position: relative; }
-    .cell button {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 14px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      background: #0f1419;
-      border: 1px solid #212932;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-      min-width: 44px;
-      min-height: 44px;
-    }
-    .cell button .label {
-      position: absolute;
-      left: 10px;
-      bottom: 8px;
-      right: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.2;
-    }
-    .cell button .badge {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #1b222a;
-      border:1px solid #2a313a;
-      color: var(--muted);
-    }
-    .cell button.lit {
-      border-color: rgba(76, 175, 80, .7);
-      box-shadow: 0 0 0 1px rgba(76, 175, 80, .7),
-                  0 4px 22px 0 rgba(76, 175, 80, .25),
-                  inset 0 0 18px rgba(76, 175, 80, .25);
-      background: radial-gradient(120px 120px at 30% 20%, rgba(76,175,80,.20), transparent), #0f1419;
-    }
-    .cell button.lit img,
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2025夏合宿 実績解除</title>
+  <style>
+    :root {
+      --bg: #0e0f10;
+      --panel: #15191e;
+      --border: #2b3139;
+      --text: #dfe7ef;
+      --muted: #8d99a6;
+      --btn: #1e242b;
+      --btn-hover: #28313a;
+      --accent: #4caf50;
+      --accent-glow: #b3ffb8;
+      --gold: #f4c542;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1000px 600px at 20% -10%, #1b2027, var(--bg));
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .app { width: min(1100px, 96vw); }
+    header {
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: clamp(18px, 2.3vw, 24px);
+      margin: 0;
+      letter-spacing: .02em;
+    }
+    .controls {
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .control, button, select, input[type="number"] {
+      background: var(--btn);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font: inherit;
+      transition: transform .02s ease, background .2s ease, border-color .2s ease;
+      outline: none;
+    }
+    button:hover, select:hover, input[type="number"]:hover { background: var(--btn-hover); }
+    button:active { transform: translateY(1px); }
+    .grid {
+      background: linear-gradient(180deg, #13171c, var(--panel));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      position: relative;
+    }
+    .cells { display: grid; gap: 12px; }
+    .cell { position: relative; }
+    .cell button {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: #0f1419;
+      border: 1px solid #212932;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .cell button .label {
+      position: absolute;
+      left: 10px;
+      bottom: 8px;
+      right: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+    .cell button .badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #1b222a;
+      border:1px solid #2a313a;
+      color: var(--muted);
+    }
+    .cell button.lit {
+      border-color: rgba(76, 175, 80, .7);
+      box-shadow: 0 0 0 1px rgba(76, 175, 80, .35),
+                  0 4px 22px 0 rgba(76, 175, 80, .25),
+                  inset 0 0 18px rgba(76, 175, 80, .25);
+      background: radial-gradient(120px 120px at 30% 20%, rgba(76,175,80,.20), transparent), #0f1419;
+    }
+    .cell button.lit img,
 .cell button.lit .cell-text {
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(76, 255, 80, 0.8));
-  transition: filter 0.3s ease;
+  filter: brightness(1.3) drop-shadow(0 0 10px rgba(76, 255, 80, 0.8));
+  transition: filter 0.3s ease;
 }
 
 .cell button.legendary.lit {
-  box-shadow: 0 0 0 1px rgba(244,197,66,.45),
-              0 6px 26px 0 rgba(244,197,66,.35),
-              inset 0 0 22px rgba(244,197,66,.3);
-  background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
+  box-shadow: 0 0 0 1px rgba(244,197,66,.45),
+              0 6px 26px 0 rgba(244,197,66,.35),
+              inset 0 0 22px rgba(244,197,66,.3);
+  background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
 }
 
 .cell button.legendary.lit img,
 .cell button.legendary.lit .cell-text {
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 120, 0.9));
+  filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 120, 0.9));
 }
 
-    .cell button.lit::after {
-      content:"";
-      position:absolute;
-      inset:-4px;
-      border-radius: 16px;
-      pointer-events: none;
-      box-shadow: 0 0 22px 8px rgba(179,255,184,.12);
-      animation: pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%{ opacity:.45 }
-      50%{ opacity:.1 }
-      100%{ opacity:.45 }
-    }
-    .cell button.legendary { border-color: rgba(244,197,66,.7); }
-    .cell button.legendary.lit {
-      box-shadow: 0 0 0 1px rgba(244,197,66,.45),
-                  0 6px 26px 0 rgba(244,197,66,.35),
-                  inset 0 0 22px rgba(244,197,66,.3);
-      background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
-    }
-    .footer {
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .count { font-variant-numeric: tabular-nums; }
+    .cell button.lit::after {
+      content:"";
+      position:absolute;
+      inset:-4px;
+      border-radius: 16px;
+      pointer-events: none;
+      box-shadow: 0 0 22px 8px rgba(179,255,184,.12);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%{ opacity:.45 }
+      50%{ opacity:.1 }
+      100%{ opacity:.45 }
+    }
+    .cell button.legendary { border-color: rgba(244,197,66,.7); }
+    .cell button.legendary.lit {
+      box-shadow: 0 0 0 1px rgba(244,197,66,.45),
+                  0 6px 26px 0 rgba(244,197,66,.35),
+                  inset 0 0 22px rgba(244,197,66,.3);
+      background: radial-gradient(120px 120px at 30% 20%, rgba(244,197,66,.22), transparent), #0f1419;
+    }
+    .footer {
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .count { font-variant-numeric: tabular-nums; }
 
-    /* 📱 スマホ用調整 */
-    @media (max-width: 600px) {
-      body { padding: 12px; }
-      header { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .controls { width: 100%; justify-content: flex-start; }
-      .cell button .label { font-size: 10px; }
-      .cell button .badge { font-size: 9px; padding: 2px 6px; }
-      h1 { font-size: 16px; }
+    /* 📱 スマホ用調整 */
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .controls { width: 100%; justify-content: flex-start; }
+      .cell button .label { font-size: 10px; }
+      .cell button .badge { font-size: 9px; padding: 2px 6px; }
+      h1 { font-size: 16px; }
+    }
 
-      .title-row {
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-      
-    }
-
-    .cell {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1/1;
-      overflow: hidden;
-      border-radius: 8px;
-    }
-    .cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .cell-text {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-weight: bold;
-      text-align: center;
-      padding: 4px 0;
-      font-size: 12px;
-    }
-
-    .cell-text {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-weight: bold;
-      text-align: center;
-      padding: 4px 0;
-      font-size: 12px;
-    }
-
-    #rewardBtn, #progressRewardBtn {
-  position: relative;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.1s ease, box-shadow 0.3s ease;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(244,197,66,0.5), 0 0 18px rgba(244,197,66,0.4);
-}
-
-#rewardBtn::before, #progressRewardBtn::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.0) 50%, rgba(255,255,255,0.3) 75%);
-  transform: rotate(45deg) translateX(-100%);
-  pointer-events: none;
-  transition: transform 0.5s ease;
-}
-
-#rewardBtn:hover::before, #progressRewardBtn:hover::before {
-  transform: rotate(45deg) translateX(100%);
-}
-
-#rewardBtn:hover, #progressRewardBtn:hover {
-  box-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-glow);
-  transform: scale(1.05);
-}
-    
-#rewardBtn.disabled, #progressRewardBtn.disabled {
-  cursor: default;
-  opacity: 1;
-  box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
-}
-
-    #rewardBtn.disabled, #progressRewardBtn.disabled {
-  cursor: default;
-  opacity: 1;
-  box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
-}
-
-/* h1 と進捗ボタンを横並びにする */
-.title-row {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* h1 とボタンの間の余白 */
-}
-
-/* 進捗ボタン群 */
-.progress-btns {
-  display: flex;
-  gap: 6px;
-}
-
-.progress-btns button {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #222;
-  border: 1px solid #444;
-  color: #aaa;
-  font-weight: bold;
-  pointer-events: none; /* 押せない */
-}
-
-.progress-btns button.lit {
-  background: #0f1419;
-  border-color: rgba(76, 175, 80, .7);
-  color: #fff;
-  box-shadow: 0 0 0 1px rgba(76, 175, 80, .35),
-              0 4px 12px rgba(76, 175, 80, .4),
-              inset 0 0 18px rgba(76, 175, 80, .25);
-}
-
-/* ✅ 進捗率表示ボタンのスタイル */
-#progressRateBtn {
-  background: var(--btn);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 12px;
-  font: inherit;
-  pointer-events: none; /* クリック不可 */
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ✅ 新しい報酬ボタンのスタイル */
-#progressRewardBtn {
-  border-color: rgba(76, 175, 80, .7);
-  box-shadow: 0 0 0 1px rgba(76, 175, 80, .7),
-              0 4px 22px 0 rgba(76, 175, 80, .25),
-              inset 0 0 18px rgba(76, 175, 80, .25);
-  background: radial-gradient(120px 120px at 30% 20%, rgba(76,175,80,.20), transparent), #0f1419;
-}
-
-#progressRewardBtn.lit::after {
-  content:"";
-  position:absolute;
-  inset:-4px;
-  border-radius: 16px;
-  pointer-events: none;
-  box-shadow: 0 0 22px 8px rgba(179,255,184,.12);
-  animation: pulse 1.6s ease-in-out infinite;
-}
-
-  </style>
+    .cell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    .cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cell-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="title-row">
-      <h1>2025夏合宿 実績解除</h1>
-      <button id="progressRateBtn" disabled style="display:none;"></button>
-      </div>
-      <div class="controls">
-        <select id="preset">
-          <option value="tenkenmin">天研民との交流</option>
-          <option value="stargazing-specialist">観測のスペシャリスト</option>
-          <option value="mvp">ＭＶＰ(もっとも ヴァを盛り上げた ぱーそん)</option>
-          <option value="top-adventure-explorer">一流冒険家</option>
-          <option value="syaken-A">写研のエース</option>
-        </select>
-        <button id="reset">すべて消灯</button>
-        <div id="progressBtns" class="progress-btns">
-    <button id="pb1" disabled>1</button>
-    <button id="pb2" disabled>2</button>
-    <button id="pb3" disabled>3</button>
-    <button id="pb4" disabled>4</button>
-    <button id="pb5" disabled>5</button>
-      </div>
-        <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
-        <button id="progressRewardBtn" style="display:none;" disabled>進捗報酬！</button>
-      </div>
-    </header>
+  <div class="app">
+    <header>
+      <h1>2025夏合宿 実績解除</h1>
+      <div class="controls">
+        <label class="control">
+          サイズ：
+          <input id="rows" type="number" min="1" max="12" value="4" style="width:4.5em; margin-left:.5em;">
+          ×
+          <input id="cols" type="number" min="1" max="12" value="5" style="width:4.5em; margin-left:.5em;">
+        </label>
+        <select id="preset">
+          <option value="tenkenmin">天研民との交流</option>
+          <option value="stargazing-specialist">観測のスペシャリスト</option>
+          <option value="mvp">ＭＶＰ(もっとも ヴァを盛り上げた ぱーそん)</option>
+          <option value="top-adventure-explorer">一流冒険家</option>
+        </select>
+        <button id="apply">作成 / 変更</button>
+        <button id="reset">すべて消灯</button>
+        <button id="save">保存</button>
+        <button id="load">読込</button>
+      </div>
+    </header>
 
-    <section class="grid">
-      <div id="cells" class="cells"></div>
-      <div class="footer">
-        <div class="count"><span id="litCount">0</span> / <span id="totalCount">0</span> 解放</div>
-        <div class="hint">セルをクリックで点灯/消灯</div>
-      </div>
-    </section>
-  </div>
+    <section class="grid">
+      <div id="cells" class="cells"></div>
+      <div class="footer">
+        <div class="count"><span id="litCount">0</span> / <span id="totalCount">0</span> 解放</div>
+        <div class="hint">セルをクリックで点灯/消灯</div>
+      </div>
+    </section>
+  </div>
 
-  <script>
-    const cellsEl = document.getElementById('cells');
-    const resetBtn = document.getElementById('reset');
-    const presetEl = document.getElementById('preset');
-    const litCountEl = document.getElementById('litCount');
-    const totalCountEl = document.getElementById('totalCount');
-    const progressRateBtn = document.getElementById('progressRateBtn');
-    const progressRewardBtn = document.getElementById('progressRewardBtn');
+  <script>
+    const cellsEl = document.getElementById('cells');
+    const rowsEl = document.getElementById('rows');
+    const colsEl = document.getElementById('cols');
+    const applyBtn = document.getElementById('apply');
+    const resetBtn = document.getElementById('reset');
+    const saveBtn = document.getElementById('save');
+    const loadBtn = document.getElementById('load');
+    const presetEl = document.getElementById('preset');
+    const litCountEl = document.getElementById('litCount');
+    const totalCountEl = document.getElementById('totalCount');
 
-    const PRESETS = {
-      "tenkenmin": {
-        size:[18,3],
-        labels:[
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//10
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//20
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//30
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//40
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//45
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},
-          {img:"実績解除画像/ex001.jpg",text:"けた"},//50
-          {img:"実績解除画像/ex001.jpg",text:"全員達成"},
-          null,
-          null,
-          null,
-        ],
-        legendary:[50]
-      },
-      "stargazing-specialist": {
-        size:[7,3],
-        labels:[
-          {img:"実績解除画像/st001.jpg",text:"望遠鏡組み立てに携わる"},
-          {img:"実績解除画像/st002.jpg",text:"総観さんを大きな声で呼ぶ"},
-          {img:"実績解除画像/st003.jpg",text:"ウォッチングを開く"},
-          {img:"実績解除画像/st004.jpg",text:"同定をお願いする"},
-          {img:"実績解除画像/st005.jpg",text:"一晩中起きておく"},
-          {img:"実績解除画像/st006.jpg",text:"M"},
-          {img:"実績解除画像/st007.jpg",text:"M"},
-          {img:"実績解除画像/st008.jpg",text:"M"},
-          {img:"実績解除画像/st009.jpg",text:"M"},
-          {img:"実績解除画像/st010.jpg",text:"M"},
-          {img:"実績解除画像/st011.jpg",text:"M"},
-          {img:"実績解除画像/st012.jpg",text:"M"},
-          {img:"実績解除画像/st013.jpg",text:"M"},
-          {img:"実績解除画像/st014.jpg",text:"M"},
-          {img:"実績解除画像/st015.jpg",text:"M"},
-          {img:"実績解除画像/st016.jpg",text:"M"},
-          {img:"実績解除画像/st017.jpg",text:"M"},
-          {img:"実績解除画像/st018.jpg",text:"M"},
-          {img:"実績解除画像/st019.jpg",text:"M"},
-          {img:"実績解除画像/st020.jpg",text:"M"},//20
-          {img:"実績解除画像/st021.jpg",text:"実績達成"},
-        ],
-        legendary:[20]
-      },
-      "mvp": {
-        size:[4,3],
-        labels:[
-          {img:"実績解除画像/mv001.jpg",text:"バスレク参加"},
-          {img:"実績解除画像/mv002.jpg",text:"バスレク優勝"},
-          {img:"実績解除画像/mv003.jpg",text:"バスレクMVP"},
-          {img:"実績解除画像/mv004.jpg",text:"運動参加"},
-          {img:"実績解除画像/mv005.jpg",text:"運動優勝"},
-          {img:"実績解除画像/mv006.jpg",text:"運動MVP"},
-          {img:"実績解除画像/mv007.jpg",text:"クイズ参加"},
-          {img:"実績解除画像/mv008.jpg",text:"クイズ優勝"},
-          {img:"実績解除画像/mv009.jpg",text:"クイズMVP"},
-          {img:"実績解除画像/mv010.jpg",text:"実績達成"},//10
-          null,
-          null,
-        ],
-        legendary:[9]
-      },
-      "top-adventure-explorer": {
-        size:[4,3],
-        labels:[
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad002.jpg",text:"大神山神社参拝"},
-          {img:"実績解除画像/ad003.jpg",text:"スキージャンプ台"},
-          {img:"実績解除画像/ad004.jpg",text:"ゲレンデリフト乗り場"},
-          {img:"実績解除画像/ad005.jpg",text:"モンベル大山店"},
-          {img:"実績解除画像/ad006.jpg",text:"大山自然館"},
-          {img:"実績解除画像/ad007.jpg",text:"足湯"},
-          {img:"実績解除画像/ad008.jpg",text:"鳥取砂丘の海"},
-          {img:"実績解除画像/ad009.jpg",text:"鳥取砂丘の馬の背"},
-          //下段に左2マスを画像、右1マスを空白のセル
-          {img:"実績解除画像/ad010.jpg",text:"鳥取砂丘モニュメント"},//10
-          {img:"実績解除画像/ad011.jpg",text:"実績達成"},
-          null,
-        ],
-        legendary:[10]
-      },
-      "syaken-A": {
-        size:[4,3],
-        labels:[
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"お寺参拝"},
-          {img:"実績解除画像/ad001.jpg",text:"実績達成"},
-          null,
-      ],
-      legendary:[10]
-    },
+    const PRESETS = {
+      "tenkenmin": {
+        size:[9,5],
+        labels:[
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},//45
+          //下に追加する4マス(左詰めなので順番通りでOK)
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+        ],
+        legendary:[48]
+      },
+      "stargazing-specialist": {
+        size:[3,4],
+        labels:[
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+        ],
+        legendary:[0, 11]
+      },
+      "mvp": {
+        size:[4,5],
+        labels:[
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+        ],
+        legendary:[10, 14]
+      },
+      "top-adventure-explorer": {
+        size:[4,4],
+        labels:[
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+          {img:"実績解除画像/ex001.jpg",text:"けた"},
+        ],
+        legendary:[12, 15]
+      }
+    };
 
-    };
-    
-    let R = 4, C = 5;
-    let labels = [];
-    let legendary = new Set();
+    let R = 4, C = 5;
+    let labels = [];
+    let legendary = new Set();
 
-    function buildGrid(r=R, c=C, givenLabels=null) {
-  R = r;
-  C = c;
-  cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
+    function buildGrid(r=R, c=C, givenLabels=null) {
+      R = r;
+      C = c;
+      cellsEl.style.gridTemplateColumns = `repeat(${C}, minmax(50px, 1fr))`;
 
-  if (givenLabels && givenLabels.length) {
-    labels = givenLabels;
-  } else {
-    labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
-  }
-  
-  cellsEl.innerHTML = '';
-    let effectiveCount = 0;
+      if (givenLabels && givenLabels.length) {
+        labels = givenLabels.slice(0, r*c);
+      } else {
+        labels = Array.from({length: r*c}, (_,i)=>`実績 ${i+1}`);
+      }
 
- for (let i=0; i<r*c; i++) {
-  const label = labels[i] || null;
-  const cell = document.createElement('div');
-  cell.className = 'cell';
-  
-  if (label === null) {
-    cellsEl.appendChild(cell);
-    continue;
-  }
+      cellsEl.innerHTML = '';
+      for (let i=0; i<r*c; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.idx = i;
+        btn.setAttribute('aria-pressed', 'false');
+        if (legendary.has(i)) btn.classList.add('legendary');
 
-  effectiveCount++; // ✅ null でなければ必ずカウント（legendary も含む）
-  
+        let imgSrc = "images/placeholder.png";
+        let textLabel = "";
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.dataset.idx = i;
-    btn.setAttribute('aria-pressed', 'false');
-    if (legendary.has(i)) btn.classList.add('legendary');
+        if (labels[i]) {
+          if (typeof labels[i] === "object") {
+            imgSrc = labels[i].img || imgSrc;
+            textLabel = labels[i].text || "";
+          } else if (typeof labels[i] === "string") {
+            if (labels[i].match(/\.(jpg|png|gif)$/)) {
+              imgSrc = labels[i];
+            } else {
+              textLabel = labels[i];
+            }
+          }
+        }
 
-    let imgSrc = "images/placeholder.png";
-    let textLabel = "";
+        btn.innerHTML =`
+          <span class="badge">#${i+1}</span>
+          <img src="${imgSrc}" alt="">
+          <span class="cell-text">${textLabel}</span>`;
 
-    if (typeof label === "object") {
-      imgSrc = label.img || imgSrc;
-      textLabel = label.text || "";
-    } else if (typeof label === "string") {
-      if (label.match(/\.(jpg|png|gif)$/)) imgSrc = label;
-      else textLabel = label;
-    }
+        btn.addEventListener('click', () => toggle(btn));
+        cell.appendChild(btn);
+        cellsEl.appendChild(cell);
+      }
+      updateCounts();
+      totalCountEl.textContent = r*c;
+    }
 
-    btn.innerHTML =`
-      <span class="badge">#${i+1}</span>
-      <img src="${imgSrc}" alt="">
-      <span class="cell-text">${textLabel}</span>`;
+    function toggle(btn){
+      const lit = btn.classList.toggle('lit');
+      btn.setAttribute('aria-pressed', String(lit));
+      updateCounts();
+    }
 
-    btn.addEventListener('click', () => toggle(btn));
-    cell.appendChild(btn);
-    cellsEl.appendChild(cell);
-  }
+    function updateCounts(){
+      const lit = cellsEl.querySelectorAll('button.lit').length;
+      litCountEl.textContent = lit;
+    }
 
-  updateCounts();
-  totalCountEl.textContent = effectiveCount;  // ✅ 有効セルだけ表示
- }
+    function applySizeFromInputs(){
+      const r = clamp(parseInt(rowsEl.value||'4',10), 1, 12);
+      const c = clamp(parseInt(colsEl.value||'5',10), 1, 12);
+      buildGrid(r, c, labels);
+    }
 
-    function toggle(btn){
-  const idx = +btn.dataset.idx;
-  // ✅ 特殊処理が必要なプリセット
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "mvp", "top-adventure-explorer","syaken-A"];
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
 
-  // 最後のマスはクリック禁止
-  if (specialPresets.includes(presetEl.value)) {
-    const allBtns = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null)
-                      .slice(0, -1); // 最後のマスを除外
-    const isLastBtn = btn.classList.contains('legendary');
-    if (isLastBtn) return;
-  }
-  const lit = btn.classList.toggle('lit');
-  btn.setAttribute('aria-pressed', String(lit));
-  updateCounts();
-  save();//クリックごとに自動保存
- }
+    function getStorageKey() {
+      const preset = presetEl.value || "custom";
+      return "mc_like_achievements_" + preset;
+    }
 
-    function resetAll(){
-  cellsEl.querySelectorAll('button.lit').forEach(b=>{
-    b.classList.remove('lit');
-    b.setAttribute('aria-pressed','false');
-  });
-  updateCounts();
-  save();   // ✅ リセットごとに自動保存
- }
+    function save() {
+      const litIndices = Array.from(cellsEl.querySelectorAll('button.lit')).map(b => +b.dataset.idx);
+      const data = { R, C, labels, legendary:[...legendary], lit: litIndices };
+      localStorage.setItem(getStorageKey(), JSON.stringify(data));
+      alert(`保存しました（プリセット: ${presetEl.value || "custom"}）`);
+    }
 
-    function updateCounts(){
-  // ✅ tenkenmin / specialist / explorer / syaken-A の特殊処理
-  const specialPresets = ["tenkenmin", "stargazing-specialist", "top-adventure-explorer","syaken-A"];
-  if (specialPresets.includes(presetEl.value)) {
-    const allButtons = cellsEl.querySelectorAll('button[data-idx]');
-    const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null)
-                      .pop();
-    if (lastBtn) {
-      const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
-      const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
-      const allLit = otherBtns.every(b => b.classList.contains('lit'));
-      if (allLit) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }
-  }
+    function load() {
+      const raw = localStorage.getItem(getStorageKey());
+      if (!raw) {
+        alert('保存データがありません');
+        return;
+      }
+      try {
+        const data = JSON.parse(raw);
+        R = data.R;
+        C = data.C;
+        labels = data.labels || [];
+        legendary = new Set(data.legendary || []);
+        rowsEl.value = R;
+        colsEl.value = C;
+        buildGrid(R, C, labels);
+        for (const idx of data.lit || []) {
+          const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
+          if (btn) {
+            btn.classList.add('lit');
+            btn.setAttribute('aria-pressed','true');
+          }
+        }
+        updateCounts();
+        alert(`読込完了（プリセット: ${presetEl.value || "custom"}）`);
+      } catch(e) {
+        alert('読込に失敗しました');
+      }
+    }
 
-  // ✅ MVP専用処理
-  if (presetEl.value === "mvp") {
-    let lastIdx = labels.length - 1;
-    while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
-    const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
-    if (lastBtn) {
-      const participate = [0, 3, 6].every(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const champion = [1, 4, 7].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
-      const mvp = [2, 5, 8].some(i =>
-        cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
-      );
+    function resetAll(){
+      cellsEl.querySelectorAll('button.lit').forEach(b=>{
+        b.classList.remove('lit');
+        b.setAttribute('aria-pressed','false');
+      });
+      updateCounts();
+    }
 
-      if (participate && champion && mvp) {
-        lastBtn.classList.add('lit');
-        lastBtn.setAttribute('aria-pressed','true');
-      } else {
-        lastBtn.classList.remove('lit');
-        lastBtn.setAttribute('aria-pressed','false');
-      }
-    }
-  }
+    function usePreset(name){
+      const p = PRESETS[name];
+      if (!p) return;
+      legendary = new Set(p.legendary || []);
+      rowsEl.value = p.size[0];
+      colsEl.value = p.size[1];
+      buildGrid(p.size[0], p.size[1], p.labels);
+    }
 
-  // ✅ litCount を正しく計算
-  const litButtons = cellsEl.querySelectorAll('button.lit');
-  litCountEl.textContent = litButtons.length;
+    applyBtn.addEventListener('click', applySizeFromInputs);
+    resetBtn.addEventListener('click', resetAll);
+    saveBtn.addEventListener('click', save);
+    loadBtn.addEventListener('click', load);
+    presetEl.addEventListener('change', (e)=>{ if (e.target.value) usePreset(e.target.value); });
 
-  // ✅ 報酬獲得ボタン制御
-  const rewardBtn = document.getElementById('rewardBtn');
-  const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
-      
-  if (anyLegendaryLit) {
-    rewardBtn.style.display = "inline-block";
-    rewardBtn.disabled = false;
-  } else {
-    rewardBtn.style.display = "none";
-    rewardBtn.disabled = true;
-  }
-      // ✅ 進捗インジケーター更新
-  checkProgressButtons();
-
-  // ✅ 進捗率の計算と表示
-  const totalCells = cellsEl.querySelectorAll('.cell').length - cellsEl.querySelectorAll('.cell > :not(button)').length;
-  const percentage = totalCells > 0 ? ((litButtons.length / totalCells) * 100).toFixed(1) : 0;
-  progressRateBtn.textContent = `${litButtons.length} / ${totalCells} 解放 (${percentage}%)`;
-  progressRateBtn.style.display = "inline-block";
-
-  // ✅ 進捗率報酬ボタンの制御
-  if (percentage >= 70) {
-    progressRewardBtn.style.display = "inline-block";
-    progressRewardBtn.classList.add("lit");
-  } else {
-    progressRewardBtn.style.display = "none";
-    progressRewardBtn.classList.remove("lit");
-  }
-      
- }
-
-    // 進捗インジケーター更新
-    function checkProgressButtons() {
-  // 各プリセットごとにチェック
-  Object.entries(PRESETS).forEach(([key, preset]) => {
-    const btnId = {
-      "tenkenmin": "pb1",
-      "stargazing-specialist": "pb2",
-      "mvp": "pb3",
-      "top-adventure-explorer": "pb4",
-      "syaken-A": "pb5",
-    }[key];
-
-    if (!btnId) return; // 未対応プリセットはスキップ
-
-    const pb = document.getElementById(btnId);
-    if (!pb) return;
-
-    // 保存データを取得
-    const raw = localStorage.getItem(getStorageKey(key));
-    let lit = [];
-    if (raw) {
-      try {
-        const data = JSON.parse(raw);
-        if (data && Array.isArray(data.lit)) {
-          lit = data.lit;
-        }
-      } catch(e) {
-        console.error("parse failed", e);
-      }
-    }
-
-    // 🔽 labels の末尾から null をスキップして最後の有効セルを取得
-    let lastIdx = preset.labels.length - 1;
-    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-      lastIdx--;
-    }
-
-    // ✅ lastIdx を使う（total-1 ではない！）
-    if (lit.includes(lastIdx)) {
-      pb.classList.add("lit");
-      pb.setAttribute("aria-pressed","true");
-    } else {
-      pb.classList.remove("lit");
-      pb.setAttribute("aria-pressed","false");
-    }
-  });
- }
-
-    function getStorageKey(presetName) {
-  return `achievements-${presetName}`;
- }
-    
-    function save(presetName = presetEl.value) {
-  const lit = Array.from(cellsEl.querySelectorAll('button.lit'))
-    .map(b => +b.dataset.idx);
-
-  const data = { lit };
-
-  // ✅ プリセット名ごとにキーを分ける
-  localStorage.setItem(getStorageKey(presetName), JSON.stringify(data));
- }
-
-    // ✅ 状態読み込み
- function load(presetName = presetEl.value) {
-  const raw = localStorage.getItem(getStorageKey(presetName));
-  if (!raw) return;
-  try {
-    const data = JSON.parse(raw);
-    if (!data || !Array.isArray(data.lit)) return;
-
-    // 一度すべて消灯
-    cellsEl.querySelectorAll('button').forEach(b=>{
-      b.classList.remove('lit');
-      b.setAttribute('aria-pressed','false');
-    });
-
-    // 保存されていたインデックスを再点灯
-    data.lit.forEach(idx=>{
-      const btn = cellsEl.querySelector(`button[data-idx="${idx}"]`);
-      if (btn) {
-        btn.classList.add('lit');
-        btn.setAttribute('aria-pressed','true');
-      }
-    });
-
-    updateCounts();
-  } catch(e) {
-    console.error("load failed", e);
-  }
-  // ✅ 進捗インジケーター更新
-    checkProgressButtons();
- }
-
-    function usePreset(name){
-      const p = PRESETS[name];
-      if (!p) return;
-      legendary = new Set(p.legendary || []);
-      buildGrid(p.size[0], p.size[1], p.labels);
-      //save();
-    }
-    let currentPreset = presetEl.value;  // ✅ 追加：最初に現在のプリセットを保持
-
-    presetEl.addEventListener('change', (e)=>{
-  const newPreset = e.target.value;
-  if (!newPreset) return;
-
-  save(currentPreset);        // 旧プリセットを保存
-  usePreset(newPreset);       // 新プリセットに切替
-  load(newPreset);            // ✅ 新プリセットの保存済み状態を読み込み
-  currentPreset = newPreset;  // 更新
-
-      // ✅ 最後に選択したプリセットを保存
-  localStorage.setItem('lastPreset', newPreset);
- });
-
-    resetBtn.addEventListener('click', resetAll);
-
-    // ✅ 最後に選択したプリセットを取得
- const lastPreset = localStorage.getItem('lastPreset');
- if (lastPreset && PRESETS[lastPreset]) {
-  presetEl.value = lastPreset;
-  currentPreset = lastPreset;
-  // ページ初期表示時にプリセットと保存データを読み込む
-    usePreset(presetEl.value);
-    load();    
- }
-    // ✅ プリセット変更時
- presetEl.addEventListener('change', () => {
-  save(presetEl.value); // ← 切り替え前のプリセットを保存
-  localStorage.setItem("lastPreset", presetEl.value); // ← 最後のプリセット記録
-
-  currentPreset = presetEl.value; // ← 現在のプリセット更新
-  legendary = new Set(PRESETS[presetEl.value].legendary || []);
-  buildGrid(...PRESETS[presetEl.value].size, PRESETS[presetEl.value].labels);
-  load(presetEl.value);
- });
-
- // ✅ ページ読み込み時
- window.addEventListener('DOMContentLoaded', () => {
-  const last = localStorage.getItem("lastPreset") || "tenkenmin";
-  presetEl.value = last;
-  legendary = new Set(PRESETS[last].legendary || []);
-  buildGrid(...PRESETS[last].size, PRESETS[last].labels);
-  load(last);
- });
-
-  </script>
+    // セレクトボックスで選ばれているプリセットを初期表示
+    usePreset(presetEl.value);
+  </script>
 </body>
 </html>
