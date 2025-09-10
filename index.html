@@ -296,6 +296,20 @@
               inset 0 0 18px rgba(76, 175, 80, .25);
 }
 
+/* ✅ 新設: 青色の報酬獲得ボタン */
+#rewardBtnBlue {
+    position: relative;
+    border: 1px solid #42a5f5; /* 青色 */
+    background: #42a5f5; /* 青色 */
+    color: #fff;
+    font-weight: bold;
+    cursor: default; /* クリック不可 */
+    overflow: hidden;
+    border-radius: 12px;
+    opacity: 1;
+    /* 青色のグロー効果 */
+    box-shadow: 0 0 15px rgba(66, 165, 245, 0.7), 0 0 30px rgba(66, 165, 245, 0.6);
+}
 
   </style>
 </head>
@@ -303,7 +317,8 @@
 <div class="app">
     <header>
       <div class="title-row">
-      <h1>2025夏合宿 実績解除</h1>
+        <h1>2025夏合宿 実績解除</h1>
+        <button id="totalProgressDisplay" class="control" style="pointer-events: none;"></button>
     </div>
       <div class="controls">
         <select id="preset">
@@ -321,8 +336,8 @@
     <button id="pb4" disabled>4</button>
     <button id="pb5" disabled>5</button>
       </div>
-        <!-- ✅ 報酬獲得ボタン -->
         <button id="rewardBtn" style="display:none;" disabled>報酬獲得！</button>
+        <button id="rewardBtnBlue" style="display:none;" disabled>報酬獲得！</button>
       </div>
     </header>
 
@@ -558,7 +573,7 @@ for (let i=0; i<r*c; i++) {
   // 最後のマスはクリック禁止
   if (specialPresets.includes(presetEl.value)) {
     const allBtns = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null);
+                        .filter(b => labels[b.dataset.idx] !== null);
 const lastBtn = allBtns[allBtns.length - 1];
 if (btn === lastBtn) return;
 
@@ -585,8 +600,8 @@ if (btn === lastBtn) return;
   if (specialPresets.includes(presetEl.value)) {
     const allButtons = cellsEl.querySelectorAll('button[data-idx]');
     const lastBtn = Array.from(cellsEl.querySelectorAll('button'))
-                      .filter(b => labels[b.dataset.idx] !== null)
-                      .pop();
+                        .filter(b => labels[b.dataset.idx] !== null)
+                        .pop();
     if (lastBtn) {
       const lastIdx = +lastBtn.dataset.idx; // ← ここで lastIdx を定義
       const otherBtns = Array.from(allButtons).filter(b => +b.dataset.idx !== lastIdx);
@@ -644,56 +659,112 @@ if (btn === lastBtn) return;
   }
       // ✅ 進捗インジケーター更新
   checkProgressButtons();
+  // ✅ 新設: 全プリセットの進捗を更新
+  updateTotalProgress();
       
 }
 
-    // 進捗インジケーター更新
+    // ✅ 変更: 進捗インジケーター更新のロジックを修正
     function checkProgressButtons() {
-  // 各プリセットごとにチェック
-  Object.entries(PRESETS).forEach(([key, preset]) => {
-    const btnId = {
-      "tenkenmin": "pb1",
-      "stargazing-specialist": "pb2",
-      "mvp": "pb3",
-      "top-adventure-explorer": "pb4",
-      "syaken-A": "pb5",
-    }[key];
+        Object.entries(PRESETS).forEach(([key, preset]) => {
+            const btnId = {
+                "tenkenmin": "pb1",
+                "stargazing-specialist": "pb2",
+                "mvp": "pb3",
+                "top-adventure-explorer": "pb4",
+                "syaken-A": "pb5",
+            }[key];
 
-    if (!btnId) return; // 未対応プリセットはスキップ
+            if (!btnId) return;
+            const pb = document.getElementById(btnId);
+            if (!pb) return;
 
-    const pb = document.getElementById(btnId);
-    if (!pb) return;
+            // legendaryセルのインデックスを特定
+            let legendaryIdx = -1;
+            if(preset.legendary && preset.legendary.length > 0) {
+                legendaryIdx = preset.legendary[0];
+            } else {
+                // フォールバックとして最後の有効なセルを探す
+                let lastIdx = preset.labels.length - 1;
+                while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
+                    lastIdx--;
+                }
+                legendaryIdx = lastIdx;
+            }
+            if (legendaryIdx === -1) return;
 
-    // 保存データを取得
-    const raw = localStorage.getItem(getStorageKey(key));
-    let lit = [];
-    if (raw) {
-      try {
-        const data = JSON.parse(raw);
-        if (data && Array.isArray(data.lit)) {
-          lit = data.lit;
+            let isLegendaryLit = false;
+
+            // ★変更点: 現在表示中のプリセットはDOMを直接見てリアルタイムに反映
+            if (key === presetEl.value) {
+                const legendaryBtn = cellsEl.querySelector(`button[data-idx="${legendaryIdx}"]`);
+                if (legendaryBtn && legendaryBtn.classList.contains('lit')) {
+                    isLegendaryLit = true;
+                }
+            } else {
+                // 他
+                const raw = localStorage.getItem(getStorageKey(key));
+                if (raw) {
+                    try {
+                        const data = JSON.parse(raw);
+                        if (data && Array.isArray(data.lit) && data.lit.includes(legendaryIdx)) {
+                            isLegendaryLit = true;
+                        }
+                    } catch (e) {
+                        console.error("parse failed", e);
+                    }
+                }
+            }
+
+            if (isLegendaryLit) {
+                pb.classList.add("lit");
+                pb.setAttribute("aria-pressed", "true");
+            } else {
+                pb.classList.remove("lit");
+                pb.setAttribute("aria-pressed", "false");
+            }
+        });
+    }
+    
+    // ✅ 新設: 全プリセットの進捗を計算・表示する関数
+    function updateTotalProgress() {
+        const totalProgressDisplay = document.getElementById('totalProgressDisplay');
+        const rewardBtnBlue = document.getElementById('rewardBtnBlue');
+
+        let totalLitCount = 0;
+        let totalEffectiveCellCount = 0;
+
+        Object.entries(PRESETS).forEach(([key, preset]) => {
+            const presetEffectiveCells = preset.labels.filter(l => l !== null).length;
+            totalEffectiveCellCount += presetEffectiveCells;
+
+            if (key === presetEl.value) {
+                totalLitCount += cellsEl.querySelectorAll('button.lit').length;
+            } else {
+                const raw = localStorage.getItem(getStorageKey(key));
+                if (raw) {
+                    try {
+                        const data = JSON.parse(raw);
+                        if (data && data.lit) {
+                            totalLitCount += data.lit.length;
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse stored data for", key, e);
+                    }
+                }
+            }
+        });
+
+        const percentage = totalEffectiveCellCount > 0 ? (totalLitCount / totalEffectiveCellCount) * 100 : 0;
+
+        totalProgressDisplay.textContent = `${totalLitCount}/${totalEffectiveCellCount} 解放 (${percentage.toFixed(1)}%)`;
+
+        if (percentage >= 70) {
+            rewardBtnBlue.style.display = 'inline-block';
+        } else {
+            rewardBtnBlue.style.display = 'none';
         }
-      } catch(e) {
-        console.error("parse failed", e);
-      }
     }
-
-    // 🔽 labels の末尾から null をスキップして最後の有効セルを取得
-    let lastIdx = preset.labels.length - 1;
-    while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
-      lastIdx--;
-    }
-
-    // ✅ lastIdx を使う（total-1 ではない！）
-    if (lit.includes(lastIdx)) {
-      pb.classList.add("lit");
-      pb.setAttribute("aria-pressed","true");
-    } else {
-      pb.classList.remove("lit");
-      pb.setAttribute("aria-pressed","false");
-    }
-  });
-}
 
     function getStorageKey(presetName) {
   return `achievements-${presetName}`;
