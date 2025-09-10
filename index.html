@@ -731,7 +731,7 @@
             let isLegendaryLit = false;
 
             if (key === 'syaken-A') {
-                const winnerIndices = [10, 11]; 
+                const winnerIndices = [10, 11, 12]; 
                 if (key === presetEl.value) {
                     isLegendaryLit = winnerIndices.some(idx =>
                         cellsEl.querySelector(`button[data-idx="${idx}"]`)?.classList.contains('lit')
