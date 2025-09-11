@@ -328,7 +328,6 @@
           <option value="top-adventure-explorer">一流冒険家</option>
           <option value="syaken-A">写研のエース</option>
         </select>
-        <button id="reset">すべて消灯</button>
         <div id="progressBtns" class="progress-btns">
     <button id="pb1" disabled>1</button>
     <button id="pb2" disabled>2</button>
@@ -593,15 +592,6 @@
         btn.setAttribute('aria-pressed', String(lit));
         updateCounts();
         save();
-    }
-
-    function resetAll(){
-      cellsEl.querySelectorAll('button.lit').forEach(b=>{
-        b.classList.remove('lit');
-        b.setAttribute('aria-pressed','false');
-      });
-      updateCounts();
-      save();
     }
     
     // ✅ 変更: 各プリセットの専用ロジックを分離・更新
@@ -894,8 +884,6 @@
       currentPreset = newPreset;
       localStorage.setItem('lastPreset', newPreset);
     });
-
-    resetBtn.addEventListener('click', resetAll);
 
     window.addEventListener('DOMContentLoaded', () => {
       const last = localStorage.getItem("lastPreset") || "tenkenmin";
