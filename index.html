@@ -257,7 +257,7 @@
   box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
 }
 
-    #rewardBtn.disabled {
+#rewardBtn.disabled {
   cursor: default;
   opacity: 1;
   box-shadow: 0 0 15px rgba(244,197,66,0.7), 0 0 30px rgba(244,197,66,0.6);
@@ -464,12 +464,7 @@
           null,
           null,
         ],
-        legendary:[9],
-       exclusiveGroups: [
-        [1, 2], // 0-indexed: "バスレク優勝"(idx 1) と "バスレクMVP"(idx 2)
-        [4, 5], // "運動優勝"(idx 4) と "運動MVP"(idx 5)
-        [7, 8],  // "クイズ優勝"(idx 7) と "クイズMVP"(idx 8)
-        ]
+        legendary:[9]
       },
       "top-adventure-explorer": {
         size:[4,3],
@@ -562,7 +557,7 @@
 
         btn.innerHTML =`
           <span class="badge">#${i+1}</span>
-          <img src="${imgSrc}" alt="" loading="lazy">
+          <img src="${imgSrc}" alt="">
           <span class="cell-text">${textLabel}</span>`;
 
         btn.addEventListener('click', () => toggle(btn));
@@ -577,30 +572,6 @@
     // ✅ 変更: 自動点灯マスのクリック制御を更新
     function toggle(btn){
         const idx = +btn.dataset.idx;
-     const currentPresetName = presetEl.value;
-        const presetData = PRESETS[currentPresetName];
-
-     // MVPプリセットの場合のみ、排他グループのロジックを適用
-        if (currentPresetName === "mvp" && presetData.exclusiveGroups) {
-            let isExclusiveClick = false;
-            for (const group of presetData.exclusiveGroups) {
-                if (group.includes(idx)) { // クリックされたセルが排他グループに含まれる場合
-                    isExclusiveClick = true;
-                    const otherIndicesInGroup = group.filter(i => i !== idx);
-                    const otherBtn = cellsEl.querySelector(`button[data-idx="${otherIndicesInGroup[0]}"]`);
-
-                    if (btn.classList.contains('lit')) { // クリックされたセルが既に点灯している場合 (消灯処理)
-                        // 何もしない、通常通り消灯させる
-                    } else { // クリックされたセルが現在消灯している場合 (点灯処理)
-                        if (otherBtn && otherBtn.classList.contains('lit')) {
-                            // グループ内の他のセルが既に点灯している場合は、このセルをクリックさせない
-                            return; // クリック処理を中止
-                        }
-                    }
-                    break; // 該当するグループが見つかったのでループを抜ける
-                }
-            }
-        }
 
         // 自動点灯するセルはクリックさせない
         if (presetEl.value === 'syaken-A' && idx === 14) return;
@@ -691,31 +662,6 @@
       
       // MVP専用処理
       if (presetEl.value === "mvp") {
-       const presetData = PRESETS.mvp;
-        
-        // 排他グループのdisabled状態を更新
-        if (presetData.exclusiveGroups) {
-            for (const group of presetData.exclusiveGroups) {
-                const btn1 = cellsEl.querySelector(`button[data-idx="${group[0]}"]`);
-                const btn2 = cellsEl.querySelector(`button[data-idx="${group[1]}"]`);
-
-                if (btn1 && btn2) {
-                    if (btn1.classList.contains('lit')) {
-                        btn2.disabled = true;
-                        btn2.style.opacity = '0.5'; // 無効化されたことを視覚的に示す
-                    } else if (btn2.classList.contains('lit')) {
-                        btn1.disabled = true;
-                        btn1.style.opacity = '0.5';
-                    } else {
-                        // どちらも点灯していない場合は両方有効
-                        btn1.disabled = false;
-                        btn1.style.opacity = '1';
-                        btn2.disabled = false;
-                        btn2.style.opacity = '1';
-                    }
-                }
-            }
-        }
         let lastIdx = labels.length - 1;
         while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
         const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
@@ -777,7 +723,7 @@
               rewardBtn.disabled = false;
           }
       }
-      
+
       checkProgressButtons();
       updateTotalProgress();
     }
@@ -800,12 +746,13 @@
             let isLegendaryLit = false;
 
             if (key === 'syaken-A') {
-                const winnerIndices = [10, 11, 12]; 
-                if (key === presetEl.value) {
+                // syaken-Aの進捗ボタンは、伝説的セル(12, 13, 14)のいずれかが光れば点灯する
+                const winnerIndices = [12, 13, 14]; // 昼の部1位(12), 夜の部1位(13), 全お題達成(14)
+                if (key === presetEl.value) { // 現在のプリセットがsyaken-Aの場合
                     isLegendaryLit = winnerIndices.some(idx =>
                         cellsEl.querySelector(`button[data-idx="${idx}"]`)?.classList.contains('lit')
                     );
-                } else { 
+                } else { // 他のプリセットが選択されているがsyaken-Aの進捗をチェックする場合
                     const raw = localStorage.getItem(getStorageKey(key));
                     if (raw) {
                         try {
@@ -816,18 +763,20 @@
                         } catch (e) { console.error("parse failed", e); }
                     }
                 }
-            } else {
+            } else { // syaken-A以外のプリセットのロジック
                 let legendaryIdx = -1;
                 if(preset.legendary && preset.legendary.length > 0) {
+                    // 通常の伝説的セルが複数ある場合は最初のものを使う
                     legendaryIdx = preset.legendary[0];
                 } else {
+                    // legendaryが定義されていない場合は最後の有効なセルを対象とする
                     let lastIdx = preset.labels.length - 1;
                     while (lastIdx >= 0 && preset.labels[lastIdx] === null) {
                         lastIdx--;
                     }
                     legendaryIdx = lastIdx;
                 }
-                if (legendaryIdx === -1) return;
+                if (legendaryIdx === -1) return; // 有効な伝説的セルが見つからなければ処理を中断
 
                 if (key === presetEl.value) {
                     const legendaryBtn = cellsEl.querySelector(`button[data-idx="${legendaryIdx}"]`);
@@ -891,10 +840,12 @@
 
         totalProgressDisplay.textContent = `${totalLitCount}/${totalEffectiveCellCount} 解放 (${percentage.toFixed(1)}%)`;
 
+        // 全体進捗70%以上で青色ボタンを表示するロジックは残しておく
         if (percentage >= 70) {
             rewardBtnBlue.style.display = 'inline-block';
         } else {
-            rewardBtnBlue.style.display = 'none';
+            // ただし、syaken-Aの1位セルが光っている場合はこのdisplay:noneを上書きするため、
+            // ここで完全に消さない。（updateCountsで管理）
         }
     }
 
