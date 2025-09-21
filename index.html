@@ -742,15 +742,39 @@
       const litButtons = cellsEl.querySelectorAll('button.lit');
       litCountEl.textContent = litButtons.length;
 
-      const rewardBtn = document.getElementById('rewardBtn');
-      const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
-          
-      if (anyLegendaryLit) {
-        rewardBtn.style.display = "inline-block";
-        rewardBtn.disabled = false;
+      const rewardBtn = document.getElementById('rewardBtn'); // 緑色の報酬ボタン
+      const rewardBtnBlue = document.getElementById('rewardBtnBlue'); // 青色の報酬ボタン
+
+      // まず両方のボタンを非表示にする
+      rewardBtn.style.display = "none";
+      rewardBtn.disabled = true;
+      rewardBtnBlue.style.display = "none";
+      rewardBtnBlue.disabled = true;
+
+      // 「写研のエース」プリセットの1位セルが光った場合の特別な処理
+      if (presetEl.value === "syaken-A") {
+          const syakenWinner1Lit = cellsEl.querySelector('button[data-idx="12"]')?.classList.contains('lit'); // 昼の部投票数1位 (インデックス12)
+          const syakenWinner2Lit = cellsEl.querySelector('button[data-idx="13"]')?.classList.contains('lit'); // 夜の部投票数1位 (インデックス13)
+
+          if (syakenWinner1Lit || syakenWinner2Lit) {
+              rewardBtnBlue.style.display = "inline-block"; // 青色ボタンを表示
+              rewardBtnBlue.disabled = false;
+              // この条件の時、緑色のボタンは表示しないため、ここでは何もしない
+          } else {
+              // 「写研のエース」だが1位セルが光っていない場合、通常のロジックに進む
+              const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+              if (anyLegendaryLit) {
+                  rewardBtn.style.display = "inline-block"; // 緑色ボタンを表示
+                  rewardBtn.disabled = false;
+              }
+          }
       } else {
-        rewardBtn.style.display = "none";
-        rewardBtn.disabled = true;
+          // 「写研のエース」以外のプリセットの場合、通常のロジック (緑色ボタンのみ)
+          const anyLegendaryLit = cellsEl.querySelector('button.legendary.lit') !== null;
+          if (anyLegendaryLit) {
+              rewardBtn.style.display = "inline-block"; // 緑色ボタンを表示
+              rewardBtn.disabled = false;
+          }
       }
       
       checkProgressButtons();
