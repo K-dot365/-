@@ -504,7 +504,7 @@
           {img:"実績解除画像/st026.jpg",text:"全お題達成"},//〇
           null,
         ],
-        legendary:[11, 12, 13]
+        legendary:[12, 13, 14]
       },
     };
     
@@ -574,7 +574,7 @@
         const idx = +btn.dataset.idx;
 
         // 自動点灯するセルはクリックさせない
-        if (presetEl.value === 'syaken-A' && idx === 12) return;
+        if (presetEl.value === 'syaken-A' && idx === 14) return;
         if (presetEl.value === 'stargazing-specialist' && idx === 25) return;
         
         const preset = PRESETS[presetEl.value];
@@ -646,7 +646,7 @@
       if (presetEl.value === "syaken-A") {
           const allCompleteBtn = cellsEl.querySelector('button[data-idx="12"]');
           if (allCompleteBtn) {
-              const normal_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+              const normal_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
               const allNormalLit = normal_indices.every(i => 
                   cellsEl.querySelector(`button[data-idx="${i}"]`)?.classList.contains('lit')
               );
