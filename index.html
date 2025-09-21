@@ -465,6 +465,10 @@
           null,
         ],
         legendary:[9]
+       exclusiveGroups: [
+        [1, 2], // 0-indexed: "バスレク優勝"(idx 1) と "バスレクMVP"(idx 2)
+        [4, 5], // "運動優勝"(idx 4) と "運動MVP"(idx 5)
+        [7, 8]  // "クイズ優勝"(idx 7) と "クイズMVP"(idx 8)
       },
       "top-adventure-explorer": {
         size:[4,3],
@@ -572,6 +576,30 @@
     // ✅ 変更: 自動点灯マスのクリック制御を更新
     function toggle(btn){
         const idx = +btn.dataset.idx;
+     const currentPresetName = presetEl.value;
+        const presetData = PRESETS[currentPresetName];
+
+     // MVPプリセットの場合のみ、排他グループのロジックを適用
+        if (currentPresetName === "mvp" && presetData.exclusiveGroups) {
+            let isExclusiveClick = false;
+            for (const group of presetData.exclusiveGroups) {
+                if (group.includes(idx)) { // クリックされたセルが排他グループに含まれる場合
+                    isExclusiveClick = true;
+                    const otherIndicesInGroup = group.filter(i => i !== idx);
+                    const otherBtn = cellsEl.querySelector(`button[data-idx="${otherIndicesInGroup[0]}"]`);
+
+                    if (btn.classList.contains('lit')) { // クリックされたセルが既に点灯している場合 (消灯処理)
+                        // 何もしない、通常通り消灯させる
+                    } else { // クリックされたセルが現在消灯している場合 (点灯処理)
+                        if (otherBtn && otherBtn.classList.contains('lit')) {
+                            // グループ内の他のセルが既に点灯している場合は、このセルをクリックさせない
+                            return; // クリック処理を中止
+                        }
+                    }
+                    break; // 該当するグループが見つかったのでループを抜ける
+                }
+            }
+        }
 
         // 自動点灯するセルはクリックさせない
         if (presetEl.value === 'syaken-A' && idx === 14) return;
@@ -662,6 +690,31 @@
       
       // MVP専用処理
       if (presetEl.value === "mvp") {
+       const presetData = PRESETS.mvp;
+        
+        // 排他グループのdisabled状態を更新
+        if (presetData.exclusiveGroups) {
+            for (const group of presetData.exclusiveGroups) {
+                const btn1 = cellsEl.querySelector(`button[data-idx="${group[0]}"]`);
+                const btn2 = cellsEl.querySelector(`button[data-idx="${group[1]}"]`);
+
+                if (btn1 && btn2) {
+                    if (btn1.classList.contains('lit')) {
+                        btn2.disabled = true;
+                        btn2.style.opacity = '0.5'; // 無効化されたことを視覚的に示す
+                    } else if (btn2.classList.contains('lit')) {
+                        btn1.disabled = true;
+                        btn1.style.opacity = '0.5';
+                    } else {
+                        // どちらも点灯していない場合は両方有効
+                        btn1.disabled = false;
+                        btn1.style.opacity = '1';
+                        btn2.disabled = false;
+                        btn2.style.opacity = '1';
+                    }
+                }
+            }
+        }
         let lastIdx = labels.length - 1;
         while (lastIdx >= 0 && labels[lastIdx] === null) lastIdx--;
         const lastBtn = cellsEl.querySelector(`button[data-idx="${lastIdx}"]`);
