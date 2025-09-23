@@ -841,7 +841,7 @@
         totalProgressDisplay.textContent = `${totalLitCount}/${totalEffectiveCellCount} 解放 (${percentage.toFixed(1)}%)`;
 
         // 全体進捗70%以上で青色ボタンを表示するロジックは残しておく
-        if (percentage >= 70) {
+        if (percentage >= 64) {
             rewardBtnBlue.style.display = 'inline-block';
         } else {
             // ただし、syaken-Aの1位セルが光っている場合はこのdisplay:noneを上書きするため、
